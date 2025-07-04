@@ -1,23 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Lateef&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 @import "tailwindcss";
 
+:root {
+  /* Brand Primary */
+  --color-primary: #4057a7;
+
+  /* Accent and Functional Colors */
+  --color-accent: #ffad05; /* Gold/Amber */
+  --color-secondary: #5c6bc0; /* Soft Indigo */
+  --color-success: #4caf50; /* Green */
+  --color-error: #e53935; /* Red */
+  --color-info: #2196f3; /* Blue */
+
+  /* Backgrounds and Surfaces */
+  --color-background: #f9fafc; /* Off-white */
+  --color-surface: #ffffff; /* White surface (cards, modals) */
+
+  /* Text Colors */
+  --color-text-primary: #1e1e1e; /* High contrast, almost black */
+  --color-text-muted: #6e7dab; /* Muted gray-blue for subtitles/hints */
+
+  /* Optional Borders/Dividers */
+  --color-border: #e0e6f0;
+  --menuBG: radial-gradient(
+    circle,
+    rgba(208, 208, 208, 1) 0%,
+    rgba(148, 187, 233, 1) 100%
+  );
+}
 * {
   box-sizing: border-box;
 }
 
 body {
   min-height: 100vh;
-  min-width: 100vw;
-}
-
-.open{
   width: 100%;
-  padding-left: 0;
-  transition: all 0.5s ease-in-out;
-
+  overflow-x: hidden;
+  /* Beautiful gradient background from mild blue to white */
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+  background-attachment: fixed;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
 
-.close{
-  width: 0%;
-  padding-left: 0;
-  transition: all 0.5s ease-in-out;
+/* Alternative gradient options (commented out) */
+/*
+body {
+  background: linear-gradient(to bottom, #dbeafe 0%, #f8fafc 100%);
+}
+
+body {
+  background: linear-gradient(135deg, #bfdbfe 0%, #e0f2fe 30%, #f1f5f9 60%, #ffffff 100%);
+}
+*/
+
+/* Ensure all containers work well with the gradient */
+html {
+  background: transparent;
+}
+
+/* Optional: Add subtle pattern overlay for texture */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(
+      circle at 25% 25%,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 75% 75%,
+      rgba(59, 130, 246, 0.05) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.menuBG {
+  background-image: linear-gradient(355deg,rgba(217, 217, 217, 1) 0%, rgba(240, 237, 237, 1) 50%, rgba(217, 217, 217, 1) 100%);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
