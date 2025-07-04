@@ -1,10 +1,18 @@
-"use client";
-import Button from "@mui/material/Button";
+import React from "react";
+import Hero from "./components/MainPage/Hero";
+import LanguageSection from "./components/MainPage/LanguageSection";
 
-export default function Home() {
+
+
+const page = () => {
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center">
-      <Button variant="outlined">Hello World</Button>
+    <div>
+      
+        <Hero />
+        <LanguageSection />
+
     </div>
   );
-}
+};
+
+export default page;
