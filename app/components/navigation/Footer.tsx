@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <>
       {" "}
-      <div className="w-screen h-20 lg:h-24  bg-[var(--primary)] flex items-center fixed bottom-0 flex-col  justify-between ">
+      <div className="w-screen h-20 lg:h-24  bg-[var(--primary)] flex items-center bottom-0 flex-col  justify-between ">
         <div className="flex justify-between items-center w-full pt-3 pl-7 pr-7 pb-0">
           <div className="relative flex justify-center items-center  h-[40px] w-[40px] md:h-[40px] md:w-[40px] lg:h-[60px] lg:w-[60px] xl:h-[60px] xl:w-[60px] ">
             <Image

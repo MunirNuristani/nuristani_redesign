@@ -52,7 +52,7 @@ export function metadata(): Metadata {
         "Preserving Nuristani language, culture, and heritage of Nuristan, Afghanistan",
       images: [
         {
-          url: "/opengraph-image.png",
+          url: "/logo_original_noLabel.png",
           width: 1200,
           height: 630,
           alt: "Mirza Taza Gul Khan Cultural Foundation",
@@ -63,7 +63,7 @@ export function metadata(): Metadata {
       card: "summary_large_image",
       title: "Mirza Taza Gul Khan Cultural Foundation",
       description: "Preserving Nuristani language, culture, and heritage",
-      images: ["/twitter-image.png"],
+      images: ["/logo_original_noLabel.png"],
       creator: "@nuristani_info",
     },
     alternates: {
@@ -85,7 +85,7 @@ export default function RootLayout({
           <ThemeProvider>
             <ClientLayout>
               <Header />
-              <div className="h-full">{children}</div>
+              <div className="min-h-[calc(100dvh-180px)]">{children}</div>
               <Footer />
             </ClientLayout>
           </ThemeProvider>
