@@ -9,7 +9,8 @@
       "WebFetch(domain:mui.com)",
       "Bash(rm:*)",
       "Bash(npx tsc:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(grep:*)"
     ],
     "deny": []
   }

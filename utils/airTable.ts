@@ -7,4 +7,4 @@ Airtable.configure({
 });
 
 // Use environment variable for base ID
-export const Alphabet = Airtable.base(process.env.ALPHABET_BASE_ID || process.env.NEXT_PUBLIC_AT_BASE_ID || '');
+export const base = Airtable.base(process.env.AIRTABLE_BASE_ID || '');
