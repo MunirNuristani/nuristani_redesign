@@ -8,7 +8,13 @@ const nextConfig: NextConfig = {
         hostname: "icons8.com",
         port: "",
         pathname: "/**",
-      }
+      },
+      {
+        protocol: "https",
+        hostname: "v5.airtableusercontent.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
@@ -22,7 +28,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'X-Frame-Options',
-            value: 'DENY'
+            value: 'SAMEORIGIN'
           },
           {
             key: 'X-Content-Type-Options',

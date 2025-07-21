@@ -6,7 +6,7 @@ import { phrases } from "@/utils/i18n";
 import TextField from "@mui/material/TextField";
 import { InputLabel, MenuItem, Select } from "@mui/material";
 import { useAppContext } from "../../context/AppContext";
-
+import LoadingPage from "../loading";
 // Type definitions
 interface Article {
   id?: number;
@@ -30,10 +30,10 @@ function ListArticles() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("all");
 
   const {
-    articleTitle,
-    articleAuthor,
-    languageTitle,
-    publish,
+    // articleTitle,
+    // articleAuthor,
+    // languageTitle,
+    // publish,
     english,
     pashto,
     farsi,
@@ -94,7 +94,7 @@ function ListArticles() {
   }, [searchTerm, selectedLanguage, articles, lang]);
 
   const handleArticleClick = (article: Article) => {
-    router.push(`/articles/${article.id || article.No}`);
+    router.push(`/articles/${article.id}`);
   };
 
   const getLanguage = (writeLang: string) => {
@@ -116,12 +116,7 @@ function ListArticles() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 text-lg">در حال بارگذاری مقالات...</p>
-        </div>
-      </div>
+      <LoadingPage />
     );
   }
 
@@ -188,7 +183,7 @@ function ListArticles() {
                   <div className="flex-grow">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-grow ">
-                        <h3 className="text-xl font-bold text-gray-800 group-hover:text-blue-700 transition-colors duration-300 mb-1">
+                        <h3 className="text-2xl font-bold text-gray-800 group-hover:text-blue-700 transition-colors duration-300 mb-1">
                           {lang === "en"
                             ? article.Article_Name_en
                             : article.Article_Name}
@@ -201,47 +196,34 @@ function ListArticles() {
                       </span>
                     </div>
 
-                    <div className="flex items-center text-gray-600 text-sm mb-3">
-                      <svg
-                        className="w-4 h-4 ml-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        />
-                      </svg>
-                      <span className="font-medium">
+                    <div className="flex items-center justify-between text-gray-600 text-sm mb-3 ">
+                      <span className="font-medium text-xl">
                         {lang === "en"
                           ? article.Author_Name_en
                           : article.Author_Name}
                       </span>
-                    </div>
 
-                    <div className="flex items-center justify-between">
-                      
-
-                      <div className="flex items-center text-blue-600 group-hover:text-blue-700 transition-colors">
-                        <span className="text-lg font-medium ml-2">مطالعه</span>
-                        <svg
-                          className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M10 6L8 4 2 10l6 6 2-2m-2-4h8m4 0l2-2-2-2"
-                          />
-                        </svg>
+                  
+                        <div className="flex items-center text-blue-600 group-hover:text-blue-700 transition-colors">
+                          <span className="text-xl font-medium ml-2">
+                            مطالعه
+                          </span>
+                          <svg
+                            className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M10 6L8 4 2 10l6 6 2-2m-2-4h8m4 0l2-2-2-2"
+                            />
+                          </svg>
+                        </div>
                       </div>
-                    </div>
+                    
                   </div>
                 </div>
               </div>
