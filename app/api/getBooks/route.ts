@@ -5,13 +5,11 @@ export async function GET() {
   // For example, fetch data from your DB here
   try {
 
-    const data = await base("Articles").select({
+    const data = await base("Books").select({
       sort: [{ field: "No", direction: "asc" }]
     }).all();
-
-    const articles = data.map(item =>({ id: item.id, ...item.fields}));
-    console.log("alphabet", data);
-    return new Response(JSON.stringify(articles), {
+    const Books = data.map(item => ({ id: item.id, ...item.fields }));
+    return new Response(JSON.stringify(Books), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
