@@ -10,7 +10,6 @@ export async function GET() {
     }).all();
 
     const articles = data.map(item =>({ id: item.id, ...item.fields}));
-    console.log("alphabet", data);
     return new Response(JSON.stringify(articles), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }

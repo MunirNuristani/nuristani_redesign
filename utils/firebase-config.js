@@ -25,7 +25,8 @@ const recordingStorage = getStorage(
   "nuristanidict.appspot.com/audioRecordings"
 );
 const coverStorage  = getStorage(app, "nuristanidict.appspot.com/bookcovers")
-export { db, storage, coverStorage, recordingStorage };
+const landscapeStorage = getStorage(app, "nuristanidict.appspot.com/nuristanPics")
+export { db, storage, coverStorage, recordingStorage, landscapeStorage };
 
 
 
