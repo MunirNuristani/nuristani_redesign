@@ -84,7 +84,7 @@ const Menu = (props: Props) => {
       {
         key: 6,
         label: pictures[language] || "Pictures",
-        link: "/landScapes_images",
+        link: "/landscape_images",
       },
       {
         key: 7,
