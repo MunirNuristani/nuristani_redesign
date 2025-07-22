@@ -7,10 +7,11 @@ import LoadingPage from "../loading";
 import { useAppContext } from "@/context/AppContext"; // Adjust path as needed
 import axios from "axios";
 import Image from "next/image";
-
+import { phrases } from "@/utils/i18n";
 function PictureGallery() {
   const { state } = useAppContext();
   const { language: lang } = state;
+  const { historicalImageTitle, notFound } = phrases;
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [displayUrl, setDisplayUrl] = useState<string[]>([]);
@@ -34,7 +35,6 @@ function PictureGallery() {
         const imageUrls = imageList.data.map(
           (item: { url: string }) => item.url
         );
-        console.log(imageUrls);
         setImageUrls(imageUrls);
 
         // If no images are returned, set loading to false immediately
@@ -65,7 +65,6 @@ function PictureGallery() {
 
         const urls = await Promise.all(urlPromises);
         const validUrls = urls.filter((url): url is string => url !== null);
-        console.log(validUrls);
         setDisplayUrl(validUrls);
       } catch (error) {
         console.error("Error fetching images:", error);
@@ -165,8 +164,17 @@ function PictureGallery() {
 
   if (displayUrl.length === 0) {
     return (
-      <div className="container mx-auto py-20 text-center">
-        <p className="text-gray-500 text-lg">No images to display</p>
+      <div className="container flex justify-center items-center flex-col mx-auto py-20 text-center">
+        <svg
+          width="400px"
+          height="400px"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M7.828 5l-1-1H22v15.172l-1-1v-.69l-3.116-3.117-.395.296-.714-.714.854-.64a.503.503 0 0 1 .657.046L21 16.067V5zM3 20v-.519l2.947-2.947a1.506 1.506 0 0 0 .677.163 1.403 1.403 0 0 0 .997-.415l2.916-2.916-.706-.707-2.916 2.916a.474.474 0 0 1-.678-.048.503.503 0 0 0-.704.007L3 18.067V5.828l-1-1V21h16.172l-1-1zM17 8.5A1.5 1.5 0 1 1 15.5 7 1.5 1.5 0 0 1 17 8.5zm-1 0a.5.5 0 1 0-.5.5.5.5 0 0 0 .5-.5zm5.646 13.854l.707-.707-20-20-.707.707z" />
+          <path fill="none" d="M0 0h24v24H0z" />
+        </svg>
+        <p className="text-2xl">{notFound[lang]}</p>
       </div>
     );
   }
@@ -175,7 +183,7 @@ function PictureGallery() {
     <div className="container mx-auto my-10 px-4 max-w-7xl" dir={dir}>
       <div className="text-center mb-8">
         <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent mb-2">
-          عکس های تاریخی نورستان
+          {historicalImageTitle[lang]}
         </h1>
       </div>
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">

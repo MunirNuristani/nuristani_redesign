@@ -2,7 +2,10 @@
 import React, { useState, useEffect } from "react";
 import wordslist from "../../WordBank.json";
 import { phrases } from "../../utils/i18n";
-
+import { useAppContext } from "@/context/AppContext";
+import { inputBaseClasses } from "@mui/material/InputBase";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
 // Type definitions
 interface WordData {
   index: number;
@@ -13,7 +16,23 @@ interface WordData {
 }
 
 const Page: React.FC = () => {
-  const {} = phrases;
+  const { state } = useAppContext();
+  const { language: lang } = state;
+  const {
+    dictionaryTitle,
+    search,
+    wordSearch,
+    searchPlaceholder,
+    dicWelcomeText,
+    dicDescriptionText,
+    exactMatches,
+    similarMatches,
+    newSearch,
+    noResultFound,
+    noResultDetail,
+    kalashaAla,
+  } = phrases;
+
   const data: WordData[] = wordslist as WordData[];
   const [searchValue, setSearchValue] = useState<string>("");
   const [displayWords, setDisplayWords] = useState<string[]>([]);
@@ -25,12 +44,10 @@ const Page: React.FC = () => {
   const [hasSearched, setHasSearched] = useState<boolean>(false);
 
   const [dir, setDir] = useState<string>("");
-  const lan =
-    (typeof window !== "undefined" && localStorage.getItem("lan")) || "";
 
   useEffect(() => {
-    setDir(lan === "en" ? "ltr" : "rtl");
-  }, [lan]);
+    setDir(lang === "en" ? "ltr" : "rtl");
+  }, [lang]);
 
   const handleSearch = (
     e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLSpanElement>,
@@ -104,106 +121,82 @@ const Page: React.FC = () => {
   };
 
   return (
-    <div dir={dir} className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-8 px-4">
+    <div
+      dir={dir}
+      className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-8 px-4"
+    >
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-full mb-6 shadow-lg">
-            <svg
-              className="w-10 h-10 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-              />
-            </svg>
-          </div>
           <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent mb-2">
-            قاموس دری – نورستانی
+            {dictionaryTitle[lang]}
           </h1>
-          <p className="text-lg text-gray-600 font-medium">(کلښه الا)</p>
-          <p className="text-sm text-gray-500 mt-2">
-            Dari - Nuristani Dictionary
-          </p>
+          <p className="text-lg text-gray-600 font-medium">{`( ${kalashaAla[lang]} )`}</p>
         </div>
-        {/* Welcome Message */}
-        {!hasSearched && (
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 text-center mb-8 hidden md:block lg:block">
-            {/* <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center">
-              <svg
-                className="w-10 h-10 text-blue-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-            </div> */}
-            <h3 className="text-2xl font-bold text-gray-700 mb-3">
-              به قاموس دری - نورستانی خوش آمدید
-            </h3>
-            <p className="text-gray-600 leading-relaxed">
-              برای شروع، لغت مورد نظر خود را در وارد کنید. این دیکشنری شامل
-              هزاران لغت از زبان دری به نورستانی است.
-            </p>
-          </div>
-        )}
-
         {/* Search Section */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-8">
           <form onSubmit={handleSearch} className="space-y-6">
-            <div className="relative">
-              <label
-                htmlFor="word"
-                className="block text-lg font-semibold text-gray-700 mb-3 text-right"
-              >
-                جستجوی لغت
-              </label>
-              <div className="relative">
-                <input
-                  id="word"
-                  type="text"
-                  className="w-full px-6 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-right bg-gray-50 focus:bg-white"
-                  value={searchValue}
-                  placeholder="لغت مورد نظر خود را وارد کنید..."
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setSearchValue(e.target.value)
-                  }
-                />
-                {searchValue && (
-                  <button
-                    type="button"
-                    onClick={clearSearch}
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                  >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
-                )}
+            {!hasSearched && (
+              <div className="   py-2 text-center mb-8 hidden md:block lg:block">
+                <h3 className="text-2xl font-bold text-gray-700 mb-3">
+                  {dicWelcomeText[lang]}
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {dicDescriptionText[lang]}
+                </p>
               </div>
-            </div>
+            )}
 
+            <div>
+              <TextField
+                className="w-full mb-4 pb-4"
+                id="outlined-suffix-shrink"
+                label={wordSearch[lang]}
+                value={searchValue}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setSearchValue(e.target.value)
+                }
+                placeholder={searchPlaceholder[lang]}
+                variant="outlined"
+                slotProps={
+                  searchValue
+                    ? {
+                        input: {
+                          endAdornment: (
+                            <InputAdornment
+                              position="end"
+                              onClick={clearSearch}
+                              sx={{
+                                opacity: 0,
+
+                                cursor: "pointer",
+                                [`[data-shrink=true] ~ .${inputBaseClasses.root} > &`]:
+                                  {
+                                    opacity: 1,
+                                  },
+                              }}
+                            >
+                              <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M6 18L18 6M6 6l12 12"
+                                />
+                              </svg>
+                            </InputAdornment>
+                          ),
+                        },
+                      }
+                    : undefined
+                }
+              />
+            </div>
             <div className="flex justify-center">
               <button
                 type="submit"
@@ -217,20 +210,37 @@ const Page: React.FC = () => {
                   </div>
                 ) : (
                   <div className="flex items-center space-x-2">
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      />
-                    </svg>
-                    <span>جستجو</span>
+                    {lang === "en" && (
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                      </svg>
+                    )}
+                    <span>{search[lang]}</span>
+                    {lang !== "en" && (
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                      </svg>
+                    )}
                   </div>
                 )}
               </button>
@@ -259,45 +269,47 @@ const Page: React.FC = () => {
                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                       />
                     </svg>
-                    نتایج دقیق
+                    {exactMatches[lang]}
                   </h3>
                 </div>
                 <div className="p-6 space-y-4">
-                  {displaySelectedWord.map((wordData: WordData) => (
-                    <div
-                      key={wordData.index}
-                      className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-xl border border-green-200"
-                    >
-                      <div className=" space-y-2 ">
-                        <div className="flex items-center justify-start space-x-reverse space-x-2">
-                          <span className="text-3xl font-bold text-gray-800">
-                            {wordData.Word}
-                          </span>
-                          {wordData.pronunciation && (
-                            <span className="text-lg text-gray-600 bg-white mx-3 px-3 py-1 rounded-full border">
-                              [{wordData.pronunciation.trim()}]
+                  {displaySelectedWord.map(
+                    (wordData: WordData, index: number) => (
+                      <div
+                        key={index}
+                        className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-xl border border-green-200"
+                      >
+                        <div className=" space-y-2 ">
+                          <div className="flex items-center justify-start space-x-reverse space-x-2">
+                            <span className="text-3xl font-bold text-gray-800">
+                              {wordData.Word}
                             </span>
+                            {wordData.pronunciation && (
+                              <span className="text-lg text-gray-600 bg-white mx-3 px-3 py-1 rounded-full border">
+                                [{wordData.pronunciation.trim()}]
+                              </span>
+                            )}
+                          </div>
+
+                          {wordData.ABBR && (
+                            <div className="flex justify-start">
+                              <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                                {wordData.ABBR.trim()}
+                              </span>
+                            </div>
+                          )}
+
+                          {wordData.Meaning && (
+                            <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
+                              <p className="text-lg text-gray-700 leading-relaxed">
+                                {wordData.Meaning}
+                              </p>
+                            </div>
                           )}
                         </div>
-
-                        {wordData.ABBR && (
-                          <div className="flex justify-start">
-                            <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                              {wordData.ABBR.trim()}
-                            </span>
-                          </div>
-                        )}
-
-                        {wordData.Meaning && (
-                          <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
-                            <p className="text-lg text-gray-700 leading-relaxed">
-                              {wordData.Meaning}
-                            </p>
-                          </div>
-                        )}
                       </div>
-                    </div>
-                  ))}
+                    )
+                  )}
                 </div>
               </div>
             )}
@@ -320,7 +332,7 @@ const Page: React.FC = () => {
                         d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
                       />
                     </svg>
-                    لغات مشابه
+                    {similarMatches[lang]}
                   </h3>
                 </div>
                 <div className="p-6">
@@ -358,17 +370,16 @@ const Page: React.FC = () => {
                   </svg>
                 </div>
                 <h3 className="text-2xl font-bold text-gray-700 mb-3">
-                  نتیجه‌ای یافت نشد
+                  {noResultFound[lang]}
                 </h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  لغت مورد نظر شما در دیکشنری موجود نیست. لطفاً املای کلمه را
-                  بررسی کنید یا کلمه دیگری را امتحان کنید.
+                  {noResultDetail[lang]}
                 </p>
                 <button
                   onClick={clearSearch}
-                  className="px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white font-semibold rounded-xl hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-md hover:shadow-lg"
+                  className="px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white font-semibold text-xl rounded-xl hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-md hover:shadow-lg"
                 >
-                  جستجوی جدید
+                  {newSearch[lang]}
                 </button>
               </div>
             )}

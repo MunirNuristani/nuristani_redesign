@@ -103,3 +103,7 @@ body::before {
 @keyframes l1 {
     100% {background-size:100%}
 }
+
+.flip{
+  transform: scale(1, -1);
+}

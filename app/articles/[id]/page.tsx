@@ -5,6 +5,8 @@ import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import axios from "axios";
 import LoadingPage from "@/app/loading";
+import { phrases } from "@/utils/i18n";
+import { useAppContext } from "@/context/AppContext";
 // Type definitions
 interface Picture {
   id: string;
@@ -20,6 +22,19 @@ function ArticleDetail() {
   const router = useRouter();
   const params = useParams();
   const articleId = params?.id as string;
+  const { state } = useAppContext();
+  const { language: lang } = state;
+  const {
+    english,
+    farsi,
+    pashto,
+    nuristani,
+    noResultFound,
+    returnBack,
+    author,
+    morePics,
+  } = phrases;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [article, setArticle] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -48,22 +63,20 @@ function ArticleDetail() {
   const getLanguageDisplay = (language: string) => {
     switch (language) {
       case "en":
-        return "English";
+        return english[lang] || "English";
       case "prs":
-        return "دری";
+        return farsi[lang] || "دری";
       case "ps":
-        return "پشتو";
+        return pashto[lang] || "پشتو";
       case "nr":
-        return "نورستانی";
+        return nuristani[lang] || "نورستانی";
       default:
         return language;
     }
   };
 
   if (loading) {
-    return (
-      <LoadingPage />
-    );
+    return <LoadingPage />;
   }
 
   if (!article) {
@@ -86,7 +99,7 @@ function ArticleDetail() {
             </svg>
           </div>
           <h3 className="text-2xl font-bold text-gray-700 mb-3">
-            مقاله یافت نشد
+            {noResultFound[lang]}{" "}
           </h3>
           <p className="text-gray-600">مقاله مورد نظر پیدا نشد.</p>
         </div>
@@ -97,18 +110,21 @@ function ArticleDetail() {
   return (
     <div
       className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-8 px-4"
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
     >
       <div className="max-w-7xl mx-auto">
         {/* Back Button */}
-        <div className="mb-6 flex w-full justify-end">
+        <div className={`mb-6 flex w-full ${"justify-start"}`}>
           <button
             onClick={handleBackClick}
-            className="inline-flex  items-center px-4 py-2 bg-white rounded-xl shadow-lg border border-gray-100 text-gray-700 hover:bg-gray-50 hover:shadow-xl transition-all duration-300 group"
+            className={`inline-flex justify-center items-center px-4 py-2 bg-white rounded-xl shadow-lg border border-gray-100 text-gray-700 hover:bg-gray-50 hover:shadow-xl transition-all duration-300 group ${
+              lang === "en" ? "text-lg" : "text-xl"
+            }`}
           >
-            بازگشت
             <svg
-              className="w-5 h-5 mr-2 transform group-hover:translate-x-1 transition-transform duration-300"
+              className={`w-5 h-5 mr-2 transform group-hover:translate-x-1 transition-transform duration-300 ${
+                lang !== "en" ? "rotate-180" : ""
+              }`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -120,6 +136,7 @@ function ArticleDetail() {
                 d="M15 19l-7-7 7-7"
               />
             </svg>
+            {returnBack[lang]}
           </button>
         </div>
 
@@ -128,7 +145,9 @@ function ArticleDetail() {
           <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-6">
             <div className="flex-grow">
               <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent mb-4">
-                {article?.Article_Name}
+                {lang === "en"
+                  ? article?.Article_Name_en
+                  : article?.Article_Name}
               </h1>
 
               <div className="flex items-center text-gray-600 mb-4">
@@ -146,7 +165,10 @@ function ArticleDetail() {
                   />
                 </svg>
                 <span className="text-lg font-medium">
-                  نویسنده: {article?.Author_Name}
+                  {author[lang]}:{" "}
+                  {lang === "en"
+                    ? article?.Author_Name_en
+                    : article?.Author_Name}
                 </span>
               </div>
             </div>
@@ -175,6 +197,7 @@ function ArticleDetail() {
           )}
 
           <div
+            dir={article.language === "en" ? "ltr" : "rtl"}
             className="prose prose-lg text-2xl max-w-none text-justify leading-relaxed text-gray-800"
             dangerouslySetInnerHTML={{ __html: article?.Article_body }}
             style={{
@@ -188,7 +211,7 @@ function ArticleDetail() {
         {article?.Pictures && article?.Pictures.length > 1 && (
           <div className="space-y-6">
             <h3 className="text-2xl font-bold text-gray-800 mb-6">
-              تصاویر بیشتر
+              {morePics[lang]}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {article?.Pictures.slice(1).map((img: Picture, idx: number) => (

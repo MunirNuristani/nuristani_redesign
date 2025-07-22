@@ -40,7 +40,7 @@ export const phrases = {
     ps: "انځورونه",
     nr: "چَوېر",
   },
-  
+
   technology: {
     en: "Technology",
     prs: "تکنولوژی",
@@ -408,11 +408,11 @@ export const phrases = {
     ps: "تاسو کولی شئ د لاندې لینک څخه د مایکروسافټ وینډوز لپاره د نورستاني (کلښه الا) کیبورډ ډاونلوډ کړئ.",
     nr: "",
   },
-  download:{
-    en:"Download",
-    prs:"دانلود",
-    ps:"دانلود",
-    nr:"دانلود",
+  download: {
+    en: "Download",
+    prs: "دانلود",
+    ps: "دانلود",
+    nr: "دانلود",
   },
   installationGuide: {
     en: "Installation Guide",
@@ -420,5 +420,288 @@ export const phrases = {
     ps: "د نصب راهنما",
     nr: "د نصب راهنما",
   },
-};
+  windows: {
+    en: "Windows",
+    prs: "ويندوز",
+    ps: "ويندوز",
+    nr: "ويندوز"
+  },
+  macos: {
+    en: "macOS",
+    prs: "مك او اس",
+    ps: "مك او اس",
+    nr: "مك او اس"
+  },
+  ios: {
+    en: "iOS",
+    prs: "آي او اس",
+    ps: "آي او اس",
+    nr: "آي او اس"
+  },
+  android: {
+    en: "Android",
+    prs: "اندرويد",
+    ps: "اندرويد",
+    nr: "اندرويد"
+  },
+  comingSoon: {
+    en: "Coming Soon",
+    prs: "به زودی",
+    ps: "ژر راځي",
+    nr: "ژر راځي"
+  },
+  availableNow: {
+    en: "Available Now",
+    prs: "حالا موجود است",
+    ps: "اوس شتون لري",
+    nr: "اوس شتون لري"
+  },
+  langSupport: {
+    en: "Nuristani Language Support",
+    prs: "پشتیبانی زبان نورستانی",
+    ps: "د نورستان ژبې ملاتړ",
+    nr: "د نورستان ژبې ملاتړ"
+  },
+  langSupportDetail: {
+    en: "Choose your platform below to download or learn about keyboard            support for the Nuristani language.",
+    prs: "برای داونلود کیبورد زبان نورستانی یا راهنمای پشتیبانی کیبورد برای زبان نورستانی، پلتفرم خود را انتخاب کنید.",
+    ps: "د نورستاني ژبې کیبورډ یا د نورستاني ژبې لپاره د کیبورډ ملاتړ لارښود ډاونلوډ کولو لپاره خپل پلیټ فارم غوره کړئ.",
+    nr: "د نورستاني ژبې کیبورډ یا د نورستاني ژبې لپاره د کیبورډ ملاتړ لارښود ډاونلوډ کولو لپاره خپل پلیټ فارم غوره کړئ."
+  },
+  windowsLangSupportDetail: {
+    en: "Full keyboard layout with Nuristani character support",
+    prs: "طرح صفحه کلید کامل با پشتیبانی از الفبای نورستانی",
+    ps: "د نورستاني الفبا ملاتړ سره د کیبورډ بشپړ ترتیب",
+    nr: "د نورستاني الفبا ملاتړ سره د کیبورډ بشپړ ترتیب",
+  },
+  macOSLangSupportDetail: {
+    en: "Native macOS keyboard integration for Nuristani typing",
+    prs: " کیبورد سیستم ماک او اس برای نوشتن زبان نورستانی",
+    ps: "د نورستاني لیکلو لپاره د MacOS کیبورډ",
+    nr: "د نورستاني لیکلو لپاره د MacOS کیبورډ",
+  },
+  IOSLangSupportDetail: {
+    en: "Mobile keyboard for iPhone and iPad devices",
+    prs: "کیبورد موبایل برای دستگاه های ایفون و ایپد",
+    ps: "د نورستاني لپاره د ایفون او ایپد کیبورډ",
+    nr: "د نورستاني لپاره د ایفون او ایپد کیبورډ",
+  },
+  AndroidLangSupportDetail: {
+    en: "Android keyboard app with Nuristani language support",
+    prs: "اپلیکیشن صفحه کلید  زبان نورستانی برای اندروید.",
+    ps: "د نورستاني ژبې لپاره د اندروید کیبورډ",
+    nr: "د نورستاني ژبې لپاره د اندروید کیبورډ"
+  },
+  underDev: {
+    en: "Under Development",
+    prs: "تحت توسعه",
+    ps: "د پراختیا لاندې",
+    nr: "د پراختیا لاندې"
+  },
+  dictionaryTitle: {
+    en: "Dari - Nuristani Dictionary",
+    prs: "قاموس دری – نورستانی",
+    ps: "د دری - نورستاني ژبې قاموس",
+    nr: "دری - نورستانی الا به قاموس",
+  },
+  search: {
+    en: "Search",
+    prs: "جستجو",
+    ps: "لټون",
+    nr: "تڙۉݩ",
+  },
+  newSearch: {
+    en: "New Search",
+    prs: "جستجوی جدید",
+    ps: "نوی لټون",
+    nr: "نۉگه تڙۉݩ",
+  },
+  wordSearch: {
+    en: "Search word",
+    prs: "جستجوی لغت",
+    ps: "د لغت لټون",
+    nr: "باښ تڙۉݩ",
+  },
+  searchPlaceholder: {
+    en: "Enter the word you want to search for...",
+    prs: "کلمه ای را که می خواهید جستجو کنید وارد کنید...",
+    ps: "هغه کلمه ولیکئ چې تاسو یې لټول غواړئ...",
+    nr: "هغه کلمه ولیکئ چې تاسو یې لټول غواړئ...",
+  },
+  dicWelcomeText: {
+    en: "Welcome to Dari - Nuristani Dictionary",
+    prs: "به قاموس دری - نورستانی خوش آمدید",
+    ps: "دري - نورستاني قاموس ته ښه راغلاست",
+    nr: "دري - نورستاني قاموس ته ښه راغلاست",
+  },
+  dicDescriptionText: {
+    en: "Nuristani Dictionaries is a collection of dictionaries for Dari language. It includes the following dictionaries. Remember to use Dari/Pashto or try our new nuristani keyboard",
+    prs: "برای شروع، لغت مورد نظر خود را در وارد کنید. این دیکشنری شامل هزاران لغت از زبان دری به نورستانی است.",
+    ps: "د پیل لپاره، خپل مطلوب کلمه دننه کړئ. دا قاموس له دري څخه تر نورستاني پورې په زرګونو کلمې لري.",
+    nr: "د پیل لپاره، خپل مطلوب کلمه دننه کړئ. دا قاموس له دري څخه تر نورستاني پورې په زرګونو کلمې لري."
+  },
+  exactMatches: {
+    en: " Exact Matches",
+    prs: "نتایج دقیق",
+    ps: "دقیقې پایلې",
+    nr: " اپیله أدوشت اڅَله"
+  },
+  similarMatches: {
+    en: "Similar words",
+    prs: "لغات مشابه",
+    ps: "ورته کلمې",
+    nr: "اِی پْرؤ باښ"
+  },
+  noResultFound: {
+    en: "No result found",
+    prs: "نتیجه‌ای یافت نشد",
+    ps: "کومه پایله ونه موندل شوه",
+    nr: "کومه پایله ونه موندل شوه"
+  },
+  noResultDetail: {
+    en: "The word you want is not in the dictionary. Please check the spelling of the word or try another word.",
+    prs: "لغت مورد نظر شما در دیکشنری موجود نیست. لطفاً املای کلمه را بررسی کنید یا کلمه دیگری را امتحان کنید.",
+    ps: "هغه کلمه چې تاسو یې غواړئ په قاموس کې نشته. مهرباني وکړئ د کلمې املا وګورئ یا بل کلمه هڅه وکړئ.",
+    nr: "هغه کلمه چې تاسو یې غواړئ په قاموس کې نشته. مهرباني وکړئ د کلمې املا وګورئ یا بل کلمه هڅه وکړئ."
+  },
+  kalashaAla: {
+    en: "Kalasha Ala",
+    prs: "کلښه الا",
+    ps: "کلښه الا",
+    nr: "کلښه الا"
+  },
+  articleList: {
+    en: "List of Articles",
+    prs: "فهرست مقالات",
+    ps: "د مقالو فهرست",
+    nr: "مېله به فهرست"
+  },
+  searchArticleTitle: {
+    en: "Search Articles",
+    prs: "جستجو مقالات",
+    ps: "د مقالو لټون",
+    nr: "مېلو تڙۉݩ"
+  },
+  searchArticlePlaceholder: {
+    en: "Search by title or author…",
+    prs: "جستجو بر اساس عنوان یا نویسنده...",
+    ps: "د سرلیک یا لیکوال له مخې لټون وکړئ...",
+    nr: "عنوان کۍ چیتروَله اَله پَله کۊۋ تڙۉݩ ..."
+  },
+  articleLanguage: {
+    en: "Article Language",
+    prs: "زبان مقاله",
+    ps: "ژبه مقاله",
+    nr: "میلو به الا"
+  },
+  allLangs: {
+    en: "All Languages",
+    prs: "همه زبان‌ها",
+    ps: "تولې ژبۍ",
+    nr: "سَگل الا"
+  },
+  noArticleFound: {
+    en: "No article found",
+    prs: "مقاله‌ای یافت نشد",
+    ps: "هیڅ مقاله ونه موندل شوه",
+    nr: "کومه پایله ونه موندل شوه"
+  },
+  noArticleFoundDetails: {
+    en: "No articles were found with your selected filters. Please change the filters or do a new search.",
+    prs: "با فلترهای انتخابی شما هیچ مقاله‌ای پیدا نشد. لطفاً فلترها را تغییر دهید یا جستجوی جدیدی انجام دهید.",
+    ps: "ستاسو د غوره شویو فلټرونو سره هیڅ مقاله ونه موندل شوه. مهرباني وکړئ فلټرونه بدل کړئ یا نوې لټون وکړئ.",
+    nr: "ستاسو د غوره شویو فلټرونو سره هیڅ مقاله ونه موندل شوه. مهرباني وکړئ فلټرونه بدل کړئ یا نوې لټون وکړئ."
+  },
+  readMore: {
+    en: "Read more",
+    prs: "مطالعه بیشتر ",
+    ps: "نور لوستل",
+    nr: " وَشَمه مَترۉݩ"
+  },
+  returnBack: {
+    en: "Back",
+    prs: "بازگشت",
+    ps: "بیرته",
+    nr: "اڅَله لو"
+  },
+  morePics: {
+    en: "More Pictures",
+    prs: "تصاویر بیشتر",
+    ps: "نور انځورونه",
+    nr: "وَشَمه چَوېر"
+  },
+  digitalLibrary: {
+    en: "Digital Library",
+    prs: "کتابخانه دیجیتال",
+    ps: "ډیجیټل کتابتون",
+    nr: "دیجیتال کتاب به ټاو"
+  },
+  bookSearch: {
+    en: "Search Books",
+    prs: "جستجو کتاب‌ها",
+    ps: "د کتابون لټون",
+    nr: "چیترېشته تڙۉݩ "
+  },
+  bookSearchPlaceholder: {
+    en: "Search by title, author, or translator…",
+    prs: "جستجو بر اساس عنوان، نویسنده یا مترجم...",
+    ps: "د سرلیک، لیکوال، یا ژباړونکي له مخې لټون وکړئ...",
+    nr: "د سرلیک، لیکوال، یا ژباړونکي له مخې لټون وکړئ..."
+  },
+  noBookFound:{
+    en:"No books found",
+    prs:"کتابی یافت نشد",
+    ps:"کوم کتاب ونه موندل شو",
+    nr:"کوم کتاب ونه موندل شو"
+  },
+  noBookFoundDetail:{
+    en: "No books were found with your selective search. Please change the search phrase.",
+    Prs: "با جستجوی انتخابی شما هیچ کتابی پیدا نشد. لطفاً عبارت جستجو را تغییر دهید.",
+    ps: "ستاسو په انتخابي لټون کې هیڅ کتاب ونه موندل شو. مهرباني وکړئ د لټون جمله بدله کړئ.",
+    nr: "ستاسو په انتخابي لټون کې هیڅ کتاب ونه موندل شو. مهرباني وکړئ د لټون جمله بدله کړئ.",
 
+  },
+  prevPage:{
+    en: "Previous Page",
+    prs: "صفحه قبلی",
+    ps: "مخکینۍ پاڼه",
+    nr: "نؤشت مؤک"
+  },
+  nextPage:{
+    en: "Next Page",
+    prs: "صفحه بعدی",
+    ps: "بل پاڼه",
+    nr: "پَتم مؤک"
+  },
+  bookTitle: {
+    en: "Book Title",
+    prs: "عنوان کتاب",
+    ps: "د کتابون نوم",
+    nr: "کتاب به نوم"
+  }, 
+  landscapeTitle: {
+    en: "Beautiful photos of Nuristan",
+    prs: "عکس های زیبای نورستان",
+    ps: "د نورستان ښکلي انځورونه", 
+    nr: "د نورستان ښکلي انځورونه",
+  },
+  historicalImages2: {
+    en: "Historical Images",
+    prs: "عکس های تاریخی",
+    ps: "تاریخي انځورونه",
+    nr: "نؤشت به چَوېر"
+  },
+  historicalImageTitle:{
+    en: "Historical photos of Nuristan",
+    prs: "عکس های تاریخی نورستان",
+    ps: " د نورستان تاریخي انځورونه",
+    nr: "نورستان به نؤشتاری چَوېر  "
+  },
+  notFound:{
+    en: "Not Found",
+    prs: "یافت نشد",
+    ps: "ونه موندل شو",
+    nr: "ونه موندل شو"
+  }
+
+};

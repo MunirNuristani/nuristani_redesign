@@ -27,6 +27,8 @@ const Menu = (props: Props) => {
     technology,
     contact,
     mainH1,
+    historicalImages2,
+    
   } = phrases;
 
   // Handle hydration
@@ -88,7 +90,7 @@ const Menu = (props: Props) => {
       },
       {
         key: 7,
-        label: pictures[language] || "Historic",
+        label: historicalImages2[language] || "Historic",
         link: "/historic_images",
       },
       {
@@ -138,7 +140,7 @@ const Menu = (props: Props) => {
             return (
               <div
                 key={option.key}
-                className={`relative min-w-full flex-grow-0 flex items-center justify-start overflow-x-hidden md:my-2 my-4  px-1 py-1 overflow-hidden after:content-[''] after:bg-[var(--color-secondary)] after:h-1 after:w-0 after:transition-all after:duration-300 hover:after:w-full after:bottom-0 after:absolute ${
+                className={`relative w-full flex-grow-0 flex items-center justify-start overflow-x-hidden md:my-2 my-4  px-1 py-1 overflow-hidden after:content-[''] after:bg-[var(--color-secondary)] after:h-1 after:w-0 after:transition-all after:duration-300 hover:after:w-full after:bottom-0 after:absolute ${
                   isClient
                     ? language === "en"
                       ? "after:left-0"
