@@ -24,16 +24,37 @@ interface Book {
 interface Phrases {
   author: Record<string, string>;
   translator: Record<string, string>;
+  digitalLibrary: Record<string, string>;
+  bookSearch: Record<string, string>;
+  bookSearchPlaceholder: Record<string, string>;
+  readMore: Record<string, string>;
+  noBookFound: Record<string, string>;
+  noBookFoundDetail: Record<string, string>;
+  prevPage: Record<string, string>;
+  nextPage: Record<string, string>;
+  bookTitle: Record<string, string>;
 }
 
 export default function Index() {
-  const { author, translator } = phrases as Phrases;
+  const {
+    author,
+    translator,
+    digitalLibrary,
+    bookSearchPlaceholder,
+    bookSearch,
+    readMore,
+    noBookFound,
+    noBookFoundDetail,
+    prevPage,
+    nextPage,
+    bookTitle,
+  } = phrases as Phrases;
   const [loadingPage, setLoading] = useState<boolean>(true);
   const [books, setBooks] = useState<Book[]>([]);
   const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [booksPerPage] = useState<number>(20); // You can adjust this number
+  const [booksPerPage] = useState<number>(10); // You can adjust this number
   const { state } = useAppContext();
   const { language: lang } = state;
 
@@ -130,11 +151,8 @@ export default function Index() {
     return rangeWithDots;
   };
 
-
   if (loadingPage) {
-    return (
-      <LoadingPage />
-    );
+    return <LoadingPage />;
   }
 
   return (
@@ -143,19 +161,18 @@ export default function Index() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent mb-2">
-            کتابخانه دیجیتال
+            {digitalLibrary[lang]}
           </h1>
-          <p className="text-gray-600 text-lg">مجموعه‌ای از کتاب‌های ارزشمند</p>
         </div>
 
         {/* Search */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-8">
           <TextField
             id="book-search"
-            label="جستجو کتاب‌ها"
+            label={bookSearch[lang]}
             type="search"
             variant="outlined"
-            placeholder="جستجو بر اساس عنوان، نویسنده یا مترجم..."
+            placeholder={bookSearchPlaceholder[lang]}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full"
@@ -198,8 +215,8 @@ export default function Index() {
 
                     {/* Book Info */}
                     <div className="flex-grow flex flex-col">
-                      <h2 className="text-lg font-bold text-gray-800 group-hover:text-blue-700 transition-colors duration-300 mb-2 line-clamp-2">
-                        {book.title}
+                      <h2 className={`${lang !== "en"? "text-xl" : "text-lg"}  font-bold text-gray-800 group-hover:text-blue-700 transition-colors duration-300 mb-2 line-clamp-2`}>
+                       {bookTitle[lang]}: {book.title}
                       </h2>
 
                       <div className="flex items-center text-gray-600 mb-2">
@@ -219,7 +236,9 @@ export default function Index() {
                       {/* Read Button */}
                       <div className="mt-auto pt-3">
                         <div className="flex items-center justify-center text-blue-600 group-hover:text-blue-700 transition-colors">
-                          <span className="font-medium ml-1">مطالعه</span>
+                          <span className="font-medium ml-1">
+                            {readMore[lang]}
+                          </span>
                           <svg
                             className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300"
                             fill="none"
@@ -256,7 +275,9 @@ export default function Index() {
                     }`}
                   >
                     <svg
-                      className="w-4 h-4 ml-2"
+                      className={`w-4 h-4 mr-2 ${
+                        lang !== "en" && "rotate-180"
+                      }`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -268,7 +289,7 @@ export default function Index() {
                         d="M15 19l-7-7 7-7"
                       />
                     </svg>
-                    صفحه قبل
+                    {prevPage[lang]}
                   </button>
 
                   {/* Page Numbers */}
@@ -282,7 +303,7 @@ export default function Index() {
                             onClick={() => goToPage(page as number)}
                             className={`px-3 py-2 rounded-lg font-medium transition-all duration-300 ${
                               currentPage === page
-                                ? "bg-blue-600 text-white shadow-md"
+                                ? "bg-[var(--color-primary)] text-white shadow-md"
                                 : "bg-gray-50 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
                             }`}
                           >
@@ -301,11 +322,13 @@ export default function Index() {
                       currentPage === totalPages
                         ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                         : "bg-blue-50 text-blue-600 hover:bg-blue-100 hover:shadow-md"
-                    }`}
+                    } `}
                   >
-                    صفحه بعد
+                    {nextPage[lang]}
                     <svg
-                      className="w-4 h-4 mr-2"
+                      className={`w-4 h-4 mr-2 ${
+                        lang !== "en" && "rotate-180"
+                      }`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -340,11 +363,10 @@ export default function Index() {
               </svg>
             </div>
             <h3 className="text-2xl font-bold text-gray-700 mb-3">
-              کتابی یافت نشد
+              {noBookFound[lang]}
             </h3>
             <p className="text-gray-600 leading-relaxed">
-              با جستجوی انتخابی شما هیچ کتابی پیدا نشد. لطفاً عبارت جستجو را
-              تغییر دهید.
+              {noBookFoundDetail[lang]}
             </p>
           </div>
         )}

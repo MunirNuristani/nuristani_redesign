@@ -34,10 +34,18 @@ function ListArticles() {
     // articleAuthor,
     // languageTitle,
     // publish,
+    articleList,
     english,
     pashto,
     farsi,
     nuristani,
+    searchArticleTitle,
+    searchArticlePlaceholder,
+    articleLanguage,
+    allLangs,
+    noArticleFound,
+    noArticleFoundDetails,
+    readMore,
   } = phrases;
 
   const router = useRouter();
@@ -126,7 +134,7 @@ function ListArticles() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent mb-2">
-            فهرست مقالات
+            {articleList[lang]}
           </h1>
         </div>
 
@@ -137,10 +145,10 @@ function ListArticles() {
             <div className="md:col-span-4">
               <TextField
                 id="filled-search"
-                label="جستجو مقالات"
+                label={searchArticleTitle[lang]}
                 type="search"
                 variant="outlined"
-                placeholder="جستجو بر اساس عنوان یا نویسنده..."
+                placeholder={searchArticlePlaceholder[lang]}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full"
@@ -150,21 +158,23 @@ function ListArticles() {
 
             {/* Language Filter */}
             <div className="md:col-span-1">
-              <InputLabel id="demo-simple-select-label">زبان مقالات</InputLabel>
+              <InputLabel id="demo-simple-select-label">
+                {articleLanguage[lang]}
+              </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 className="w-full"
                 value={selectedLanguage}
-                label="زبان مقالات"
+                label={articleLanguage[lang]}
                 onChange={(e) => setSelectedLanguage(e.target.value)}
                 size="small"
               >
-                <MenuItem value="all">همه زبان‌ها</MenuItem>
-                <MenuItem value="en">English</MenuItem>
-                <MenuItem value="prs">دری</MenuItem>
-                <MenuItem value="ps">پشتو</MenuItem>
-                <MenuItem value="nr">نورستانی</MenuItem>
+                <MenuItem value="all">{allLangs[lang]}</MenuItem>
+                <MenuItem value="en">{english[lang]}</MenuItem>
+                <MenuItem value="prs">{farsi[lang]}</MenuItem>
+                <MenuItem value="ps">{pashto[lang]}</MenuItem>
+                <MenuItem value="nr">{nuristani[lang]}</MenuItem>
               </Select>
             </div>
           </div>
@@ -203,35 +213,31 @@ function ListArticles() {
                           : article.Author_Name}
                       </span>
 
-                  
-                        <div className="flex items-center text-blue-600 group-hover:text-blue-700 transition-colors">
-                          <span className="text-xl font-medium ml-2">
-                            مطالعه
-                          </span>
-                          <svg
-                            className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M10 6L8 4 2 10l6 6 2-2m-2-4h8m4 0l2-2-2-2"
-                            />
-                          </svg>
-                        </div>
+                      <div className="flex items-center text-blue-600 group-hover:text-blue-700 transition-colors">
+                        <span className={`${lang=== "en" ? "text-md ": "text-xl"} font-medium mx-2`}>{readMore[lang]}</span>
+                        <svg
+                          className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M10 6L8 4 2 10l6 6 2-2m-2-4h8m4 0l2-2-2-2"
+                          />
+                        </svg>
                       </div>
-                    
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-12 text-center">
-            <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center">
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-12 text-center gap-2">
+            <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center ">
               <svg
                 className="w-10 h-10 text-gray-400"
                 fill="none"
@@ -246,12 +252,11 @@ function ListArticles() {
                 />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-gray-700 mb-3">
-              مقاله‌ای یافت نشد
+            <h3 className={`${lang === "en" ? "text-xl" : "text-2xl"} font-bold text-gray-700 mb-3`}>
+              {noArticleFound[lang]}
             </h3>
             <p className="text-gray-600 leading-relaxed">
-              با فلترهای انتخابی شما هیچ مقاله‌ای پیدا نشد. لطفاً فلترها را
-              تغییر دهید یا جستجوی جدیدی انجام دهید.
+              {noArticleFoundDetails[lang]}
             </p>
           </div>
         )}

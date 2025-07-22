@@ -29,7 +29,6 @@ const Page = () => {
       setIsLoading(true);
       const res = await axios.get("/api/alphabet/get");
       setAlphabets(res.data);
-      console.log(res.data);
     } catch (error) {
       console.error("Error fetching alphabet data:", error);
     } finally {
@@ -50,7 +49,7 @@ const Page = () => {
     latin,
     nameOfLetter,
     usage,
-    phoneme,
+    // phoneme,
     rotate,
   } = phrases;
 
@@ -71,11 +70,16 @@ const Page = () => {
             dir={dir}
             className="container my-10 flex flex-col justify-center  p-5 rounded-xl  lg:max-w-[1400px]  md:max-w-[700px] max-w-[300px] mx-2 sm:mt-[20px] min-h-[600px]"
           >
-            <div className="flex  flex-col justify-center items-center md:text-3xl text-xl my-4">
+            {/* <div className="flex  flex-col justify-center items-center md:text-3xl text-xl my-4">
               <h3 className="md:text-5xl text-4xl text-center sm:text-center mt-6 w-full">
                 {" "}
                 {alphabetHeading[lang as keyof typeof alphabetHeading]}{" "}
               </h3>
+            </div> */}
+            <div className="text-center mb-8">
+              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent mb-2">
+                {alphabetHeading[lang as keyof typeof alphabetHeading]}
+              </h1>
             </div>
             <div className="md:hidden xl:hidden lg:hidden flex flex-col justify-center items-center">
               <p className="mt-5 w-full text-center text-2xl">
@@ -103,12 +107,12 @@ const Page = () => {
                 <div className={cells}>
                   {nameOfLetter[lang as keyof typeof nameOfLetter]}
                 </div>
-                <div className="col-span-4 outline text-center flex justify-center items-center">
+                <div className="col-span-5 outline text-center flex justify-center items-center">
                   {usage[lang as keyof typeof usage]}
                 </div>
-                <div className={cells}>
+                {/* <div className={cells}>
                   {phoneme[lang as keyof typeof phoneme]}
-                </div>
+                </div> */}
               </div>
 
               {alphabets.map((el, index) => (
@@ -116,21 +120,19 @@ const Page = () => {
                   <div className={cells}> {el.Letter}</div>
                   <div className={cells}> {el.Latin}</div>
                   <div className={cells}> {el.Name}</div>
-                  <div className="col-span-4 outline text-center flex justify-center items-center">
+                  <div className="col-span-5 outline text-center flex justify-center items-center">
                     {" "}
                     {el.Description}{" "}
                   </div>
-                  <div className={cells}>
+                  {/* <div className={cells}>
                     {el.recording1 &&
                     el.recording1[0] &&
                     el.recording1[0].url ? (
-                   
-                     <></>
-                    
+                      <></>
                     ) : (
                       <span className="text-gray-400 text-sm">No audio</span>
                     )}
-                  </div>
+                  </div> */}
                 </div>
               ))}
             </div>

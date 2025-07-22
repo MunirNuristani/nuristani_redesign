@@ -7,10 +7,12 @@ import LoadingPage from "../loading";
 import { useAppContext } from "@/context/AppContext"; // Adjust path as needed
 import axios from "axios";
 import Image from "next/image";
+import { phrases } from "@/utils/i18n";
 
 function PictureGallery() {
   const { state } = useAppContext();
   const { language: lang } = state;
+  const { landscapeTitle } = phrases;
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [displayUrl, setDisplayUrl] = useState<string[]>([]);
@@ -168,9 +170,8 @@ function PictureGallery() {
     <div className="container mx-auto my-10 px-4 max-w-7xl" dir={dir}>
       <div className="text-center mb-8">
         <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent mb-2">
-        عکس های زیبای نورستان
+          {landscapeTitle[lang]}
         </h1>
-        
       </div>
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
         {/* Main gallery container */}
