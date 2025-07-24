@@ -271,10 +271,10 @@ export const phrases = {
     nr: "تـۉ چېري اوړي باښه چوکاټ که چیتراو",
   },
   msgSentSuccess: {
-    en: "Thank you \n. Your message has been successfully sent.",
-    prs: " تشکر از شما \n پیام شما موفقانه ارسال شد.",
-    ps: "مننه\n . ستاسو پیغام په بریالیتوب سره لیږل شوی.",
-    nr: "بوېݩ تينوش\n تـۉ به آنت ښاچی",
+    en: "Thank you <br>. Your message has been successfully sent.",
+    prs: " تشکر از شما <br> پیام شما موفقانه ارسال شد.",
+    ps: "مننه<br> . ستاسو پیغام په بریالیتوب سره لیږل شوی.",
+    nr: "بوېݩ تينوش<br> تـۉ به آنت ښاچی",
   },
   msgSentFailure: {
     en: "Appologies \n Your message was not sent. Please try again.",
@@ -648,26 +648,26 @@ export const phrases = {
     ps: "د سرلیک، لیکوال، یا ژباړونکي له مخې لټون وکړئ...",
     nr: "د سرلیک، لیکوال، یا ژباړونکي له مخې لټون وکړئ..."
   },
-  noBookFound:{
-    en:"No books found",
-    prs:"کتابی یافت نشد",
-    ps:"کوم کتاب ونه موندل شو",
-    nr:"کوم کتاب ونه موندل شو"
+  noBookFound: {
+    en: "No books found",
+    prs: "کتابی یافت نشد",
+    ps: "کوم کتاب ونه موندل شو",
+    nr: "کوم کتاب ونه موندل شو"
   },
-  noBookFoundDetail:{
+  noBookFoundDetail: {
     en: "No books were found with your selective search. Please change the search phrase.",
     Prs: "با جستجوی انتخابی شما هیچ کتابی پیدا نشد. لطفاً عبارت جستجو را تغییر دهید.",
     ps: "ستاسو په انتخابي لټون کې هیڅ کتاب ونه موندل شو. مهرباني وکړئ د لټون جمله بدله کړئ.",
     nr: "ستاسو په انتخابي لټون کې هیڅ کتاب ونه موندل شو. مهرباني وکړئ د لټون جمله بدله کړئ.",
 
   },
-  prevPage:{
+  prevPage: {
     en: "Previous Page",
     prs: "صفحه قبلی",
     ps: "مخکینۍ پاڼه",
     nr: "نؤشت مؤک"
   },
-  nextPage:{
+  nextPage: {
     en: "Next Page",
     prs: "صفحه بعدی",
     ps: "بل پاڼه",
@@ -678,11 +678,11 @@ export const phrases = {
     prs: "عنوان کتاب",
     ps: "د کتابون نوم",
     nr: "کتاب به نوم"
-  }, 
+  },
   landscapeTitle: {
     en: "Beautiful photos of Nuristan",
     prs: "عکس های زیبای نورستان",
-    ps: "د نورستان ښکلي انځورونه", 
+    ps: "د نورستان ښکلي انځورونه",
     nr: "د نورستان ښکلي انځورونه",
   },
   historicalImages2: {
@@ -691,17 +691,50 @@ export const phrases = {
     ps: "تاریخي انځورونه",
     nr: "نؤشت به چَوېر"
   },
-  historicalImageTitle:{
+  historicalImageTitle: {
     en: "Historical photos of Nuristan",
     prs: "عکس های تاریخی نورستان",
     ps: " د نورستان تاریخي انځورونه",
     nr: "نورستان به نؤشتاری چَوېر  "
   },
-  notFound:{
+  notFound: {
     en: "Not Found",
     prs: "یافت نشد",
     ps: "ونه موندل شو",
     nr: "ونه موندل شو"
-  }
+  },
 
+  sendMessageBody: {
+    en: `
+Thank you for reaching out! We wanted to let you know that We have received your message and I appreciate the time you took to get in touch. Your interest and inquiry are important to us.
+We would like to assure you that we are currently reviewing your message and will provide you with a detailed response as soon as possible. We understand the urgency of your inquiry, and We are committed to addressing your needs promptly.
+If there are any additional details or specific points you would like us to consider in my response, please feel free to let me know.
+Once again, thank you for choosing to connect with us. We'll be in touch with you shortly.
+Best regards,`
+    ,
+    prs: `
+   شکر از تماس شما با ما!<br>
+ما می‌خواهیم به اطلاع شما برسانیم که پیام‌تان را با موفقیت دریافت کرده‌ایم و از زمانی که برای ارتباط با ما اختصاص دادید، صمیمانه سپاسگزاریم.<br>
+ما در حال حاضر در حال بررسی محتوای پیام شما هستیم و تلاش خواهیم کرد تا در اولین فرصت ممکن، پاسخ کامل و دقیقی را در اختیار شما قرار دهیم.<br> فوریت و اهمیت درخواست شما برای ما قابل درک است و متعهد به رسیدگی سریع و دقیق به آن هستیم.
+چنانچه اطلاعات تکمیلی یا نکات خاصی وجود دارد که مایلید در پاسخ ما لحاظ شود، لطفاً ما را مطلع سازید.<br>
+بار دیگر از اعتماد شما برای ارتباط با ما سپاسگزاریم. به زودی با شما در تماس خواهیم بود.<br>
+با احترام،<br>
+<br>
+نهاد فرهنگی میرزا تازه‌گل‌خان`,
+    ps: `
+  ستاسو له اړیکې څخه مننه! <br>
+موږ غواړو تاسو ته دا خبر درکړو چې ستاسو پیغام مو په بریالیتوب ترلاسه کړی دی، او له دې امله چې تاسو زموږ سره د اړیکې لپاره وخت ځانګړی کړی، له تاسو څخه زړه‌داسې مننه کوو.<br>
+موږ دا مهال ستاسو د پیغام منځپانګه څېړو، او هڅه کوو چې ژر تر ژره یو بشپړ او دقیق ځواب درکړو. موږ ستاسو د غوښتنې عاجلتیا او ارزښت درک کوو، او ژمن یو چې په چټکۍ او دقت سره ورسره رسېدنه وکړو.
+که کوم اضافي معلومات یا ځانګړي ټکي وي چې غواړئ موږ یې په خپل ځواب کې په پام کې ونیسو، مهرباني وکړئ موږ ته خبر راکړئ.<br>
+یو ځل بیا له دې امله مننه چې زموږ سره مو اړیکه ونیوله. ډېر ژر به موږ له تاسو سره تماس ونیسو. <br>
+په درنښت،<br><br>
+د میرزا تازه گل خان فرهنگي ټولنه`,
+    nr: `ستاسو له اړیکې څخه مننه!
+موږ غواړو تاسو ته دا خبر درکړو چې ستاسو پیغام مو په بریالیتوب ترلاسه کړی دی، او له دې امله چې تاسو زموږ سره د اړیکې لپاره وخت ځانګړی کړی، له تاسو څخه زړه‌داسې مننه کوو.
+موږ دا مهال ستاسو د پیغام منځپانګه څېړو، او هڅه کوو چې ژر تر ژره یو بشپړ او دقیق ځواب درکړو. موږ ستاسو د غوښتنې عاجلتیا او ارزښت درک کوو، او ژمن یو چې په چټکۍ او دقت سره ورسره رسېدنه وکړو.
+که کوم اضافي معلومات یا ځانګړي ټکي وي چې غواړئ موږ یې په خپل ځواب کې په پام کې ونیسو، مهرباني وکړئ موږ ته خبر راکړئ.
+یو ځل بیا له دې امله مننه چې زموږ سره مو اړیکه ونیوله. ډېر ژر به موږ له تاسو سره تماس ونیسو.
+په درنښت،
+د میرزا تازه گل خان فرهنگي ټولنه`,
+  }
 };
