@@ -19,7 +19,7 @@ import { useAppContext } from "@/context/AppContext";
 // import { messages } from "@/utils/airTable";
 import AlertModal from "../components/Modal/AlertModal";
 import { phrases } from "@/utils/i18n";
-
+import axios from "axios";
 // Type definitions
 interface MessageData {
   Name: string;
@@ -33,7 +33,6 @@ interface ValidationState {
   msg: boolean;
 }
 
-
 const Contacts: React.FC = () => {
   const {
     contactUs,
@@ -45,7 +44,10 @@ const Contacts: React.FC = () => {
     contactMsgClosing,
     send,
     cancel,
+    confirm,
     letterCount,
+    sendMessageBody,
+    msgSentSuccess,
     // msgSentSuccess,
     // msgSentFailure,
     nameValidation,
@@ -70,21 +72,39 @@ const Contacts: React.FC = () => {
     msg: false,
   });
   const [dir, setDir] = useState<"ltr" | "rtl">("ltr");
-
+  const [mailMessage, setMailMessage] = useState<string>("");
+  const [open, setOpen] = useState(false);
+  const toggleAlertModal = () => {
+    setOpen(prev=>!prev);
+  }
   const { state } = useAppContext();
   const { language: lang } = state;
 
+
   useEffect(() => {
     setDir(lang === "en" ? "ltr" : "rtl");
-  }, [lang]);
-
-  const routeHome = (): void => {
-    router.push("/");
-  };
-
+    setMailMessage(sendMessageBody[lang] || "errorOccured");
+  }, [lang, sendMessageBody]);
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
+    try {
+      const response = await axios.post("/api/sendMessage", {
+        Name: msg.Name,
+        Email: msg.Email,
+        Message: mailMessage,
+        lang: lang
+      });
+      const sentTOAdmin = await axios.post("/api/sendMessage/toAdmin", {
+        ...msg,
+      });
+      toggleAlertModal();
+      console.log(sentTOAdmin);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+
     
 
     // try {
@@ -185,8 +205,6 @@ const Contacts: React.FC = () => {
           }}
           dir={dir}
         >
-    
-
           <Box sx={{ mb: 4 }}>
             <Typography
               variant="body1"
@@ -350,7 +368,7 @@ const Contacts: React.FC = () => {
             </Stack>
           </Box>
 
-          <AlertModal routeTo={routeHome} />
+          <AlertModal open={open} toggleAlertModal={toggleAlertModal} buttonText={confirm[lang]} msg={msgSentSuccess[lang]}/>
         </Paper>
       </Container>
     </>
