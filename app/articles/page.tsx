@@ -51,6 +51,7 @@ function ListArticles() {
   const router = useRouter();
 
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getData = async () => {
     setLoading(true);
     try {
@@ -71,7 +72,7 @@ function ListArticles() {
 
   useEffect(() => {
     getData();
-  }, [lang]);
+  }, [getData, lang]);
 
   // Filter articles based on search and language
   useEffect(() => {

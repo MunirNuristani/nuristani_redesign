@@ -1,14 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useAppContext } from "@/context/AppContext";
-import {
-  Book,
-  BookOpen,
-  FileText,
-  Image,
-  Camera,
-  Type,
-} from "lucide-react";
+import { FaBookReader } from "react-icons/fa";
+import { IoBookmarks } from "react-icons/io5";
+import { BsType } from "react-icons/bs";
+import { FiFileText } from "react-icons/fi";
+import { FaRegImage } from "react-icons/fa";
+import { IoCameraOutline } from "react-icons/io5";
 import { phrases } from "@/utils/i18n";
 import { useRouter } from "next/navigation";
 
@@ -41,55 +39,57 @@ const CardContainer = () => {
 
   useEffect(() => {
     setDirection(lang === "en" ? "ltr" : "rtl");
-  }, []);
+  }, [lang]);
 
   const cardData = [
     {
       title: alphabet[lang],
       description: alphabetInfo[lang],
-      icon: <Type className="w-12 h-12" />,
+      icon: <BsType className="w-12 h-12" />,
       route: "/alphabet",
       id: "alphabet",
     },
     {
       title: books[lang],
       description: booksInfo[lang],
-      icon: <Book className="w-12 h-12" />,
+      icon: <FaBookReader className="w-12 h-12" />,
       route: "/books",
       id: "books",
     },
     {
       title: dictionary[lang],
       description: dicInfo[lang],
-      icon: <BookOpen className="w-12 h-12" />,
+      icon: <IoBookmarks className="w-12 h-12" />,
       route: "/dictionary",
       id: "dictionary",
     },
     {
       title: articles[lang],
       description: articleInfo[lang],
-      icon: <FileText className="w-12 h-12" />,
+      icon: <FiFileText className="w-12 h-12" />,
       route: "/articles",
       id: "articles",
     },
     {
       title: landscapeImages[lang],
       description: landscapeImagesInfo[lang],
-      icon: <Image className="w-12 h-12" />,
+      icon: <FaRegImage className="w-12 h-12" />,
       route: "/landscape_images",
       id: "landscape",
     },
     {
       title: historicalImages[lang],
       description: historicalImagesInfo[lang],
-      icon: <Camera className="w-12 h-12" />,
+      icon: <IoCameraOutline className="w-12 h-12" />,
       route: "/historic_images",
       id: "historical",
     },
   ];
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const Card = ({ title, description, icon, route, id }:any) => (
     <div
+      key={id}
       className={`
         flex flex-col items-center justify-start
         p-6 m-4 

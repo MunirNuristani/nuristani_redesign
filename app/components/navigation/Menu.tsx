@@ -104,18 +104,7 @@ const Menu = (props: Props) => {
         link: "/contact",
       },
     ];
-  }, [
-    language,
-    isClient,
-    homePage,
-    alphabet,
-    dictionary,
-    articles,
-    books,
-    pictures,
-    technology,
-    contact,
-  ]);
+  }, [isClient, language, homePage, alphabet, dictionary, articles, books, pictures, historicalImages2, technology, contact]);
 
   const handleClose = () => {
     setIsOpen(false);
