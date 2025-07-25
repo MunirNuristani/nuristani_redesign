@@ -1,7 +1,14 @@
 "use client";
 import Button from "@mui/material/Button";
 import Image from "next/image";
+import { useAppContext } from "@/context/AppContext";
+import { phrases } from "@/utils/i18n";
 export default function Hero() {
+  const { state } = useAppContext();
+  const { language: lang } = state; 
+  const { mainH1, statementTitle } = phrases;
+
+
   return (
     <div>
       <div
@@ -10,21 +17,26 @@ export default function Hero() {
       >
         <div className="absolute top-0 left-0 w-full h-full bg-white opacity-40"></div>
         {/*  */}
-        <HeroSection />
+        <HeroSection
+          lang={lang}
+          mainH1={mainH1}
+          statementTitle={statementTitle}
+        />
       </div>
       <div
         className=" flex md:hidden relative w-full h-[calc(100dvh-150px)] bg-cover bg-center bg-no-repeat  items-center justify-center mt-"
         style={{ backgroundImage: "url('/heroImage01.png')" }}
       >
         <div className="absolute top-0 left-0 w-full h-full bg-white opacity-40"></div>
-        <HeroSection />
+        <HeroSection lang={lang} mainH1={mainH1} statementTitle={statementTitle} />
         {/*  */}
       </div>
     </div>
   );
 }
 
-const HeroSection = () => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const HeroSection = ({ lang, mainH1, statementTitle }: any) => {
   return (
     <div className="bg-white/70 backdrop-blur-md rounded-xl shadow-xl flex flex-col md:flex-row items-center p-6 md:p-10 space-y-6 md:space-y-0 md:space-x-10 max-w-5xl mx-4">
       {/* Left Section */}
@@ -44,20 +56,20 @@ const HeroSection = () => {
         {/* Title */}
         <div className="w-full flex justify-center items-center ">
           <h1 className=" align-middle text-2xl md:text-3xl font-bold text-gray-900">
-            Mirza Taza Gul Khan <br /> Cultural Foundation
+            {mainH1[lang]}
           </h1>
         </div>
         {/* Description */}
         <p className="text-gray-700 text-base md:text-lg">
-          Our objective is to gather and present information about Nuristan’s
-          history, language, and culture.
+          {statementTitle[lang]}
         </p>
         {/* Button */}
         <Button
           variant="outlined"
           endIcon={
             <svg
-              className="ml-2 w-4 h-4"
+              className={`ml-2 w-4 h-4 ${lang === "en" ? "" : "rotate-180"}`}
+              xmlns="http://www.w3.org/2000/svg"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
@@ -76,13 +88,13 @@ const HeroSection = () => {
       </div>
 
       {/* Right Section - Cultural Pattern */}
-      <div className="w-full md:w- hidden md:block">
+      <div className="w-full md:w-1/2 hidden md:block">
         <Image
           src="/heroImage01.png"
           alt="Traditional Nuristani Design"
           className="w-full object-contain"
-          width={1000}
-          height={1000}
+          width={800}
+          height={800}
         />
       </div>
     </div>
