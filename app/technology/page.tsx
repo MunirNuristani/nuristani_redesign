@@ -280,6 +280,7 @@ const Page: React.FC = () => {
     AndroidLangSupportDetail,
   } = phrases as PhrasesType;
 
+  const [isClient, setIsClient] = useState(false);
   const [dir, setDir] = useState<"ltr" | "rtl">("ltr");
   const [tabValue, setTabValue] = useState(0);
   const { state } = useAppContext();
@@ -287,6 +288,7 @@ const Page: React.FC = () => {
   const searchParams = useSearchParams();
   
   useEffect(() => {
+    setIsClient(true);
     setDir(lang === "en" ? "ltr" : "rtl");
   }, [lang]);
 
@@ -361,6 +363,10 @@ const Page: React.FC = () => {
   // if (loadingPage) {
   //   return <LoadingPage />;
   // }
+
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <Container
