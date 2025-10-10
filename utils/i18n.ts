@@ -469,28 +469,28 @@ export const phrases = {
     nr: "د نورستاني ژبې کیبورډ یا د نورستاني ژبې لپاره د کیبورډ ملاتړ لارښود ډاونلوډ کولو لپاره خپل پلیټ فارم غوره کړئ."
   },
   windowsLangSupportDetail: {
-    en: "Full keyboard layout with Nuristani character support",
-    prs: "طرح صفحه کلید کامل با پشتیبانی از الفبای نورستانی",
-    ps: "د نورستاني الفبا ملاتړ سره د کیبورډ بشپړ ترتیب",
-    nr: "د نورستاني الفبا ملاتړ سره د کیبورډ بشپړ ترتیب",
+    en: "Nuristani Alphabet keyboard for Windows system",
+    prs: "صفحه کلید الفبای نورستانی برای سیستم ویندوز",
+    ps: "د وینډوز سیسټم لپاره د نورستاني الفبا کیبورډ",
+    nr: "د وینډوز سیسټم لپاره د نورستاني الفبا کیبورډ",
   },
   macOSLangSupportDetail: {
-    en: "Native macOS keyboard integration for Nuristani typing",
-    prs: " کیبورد سیستم ماک او اس برای نوشتن زبان نورستانی",
-    ps: "د نورستاني لیکلو لپاره د MacOS کیبورډ",
-    nr: "د نورستاني لیکلو لپاره د MacOS کیبورډ",
+    en: "Nuristani Alphabet keyboard for MacOS system",
+    prs: "صفحه کلید الفبای نورستانی برای سیستم عامل مک",
+    ps: "د مک سیسټم لپاره د نورستاني الفبا کیبورډ",
+    nr: "د مک سیسټم لپاره د نورستاني الفبا کیبورډ",
   },
   IOSLangSupportDetail: {
-    en: "Mobile keyboard for iPhone and iPad devices",
-    prs: "کیبورد موبایل برای دستگاه های ایفون و ایپد",
-    ps: "د نورستاني لپاره د ایفون او ایپد کیبورډ",
-    nr: "د نورستاني لپاره د ایفون او ایپد کیبورډ",
+    en: "Nuristani Alphabet keyboard for Iphone and Ipad system",
+    prs: "صفحه کلید الفبای نورستانی برای سیستم آیفون و آیپد",
+    ps: "د آی فون او آی پیډ سیسټم لپاره د نورستاني الفبا کیبورډ",
+    nr: "د آی فون او آی پیډ سیسټم لپاره د نورستاني الفبا کیبورډ",
   },
   AndroidLangSupportDetail: {
-    en: "Android keyboard app with Nuristani language support",
-    prs: "اپلیکیشن صفحه کلید  زبان نورستانی برای اندروید.",
-    ps: "د نورستاني ژبې لپاره د اندروید کیبورډ",
-    nr: "د نورستاني ژبې لپاره د اندروید کیبورډ"
+    en: "Nuristani Alphabet keyboard for Android system",
+    prs: "صفحه کلید الفبای نورستانی برای سیستم عامل اندروید",
+    ps: "د انډرایډ سیسټم لپاره د نورستاني الفبا کیبورډ",
+    nr: "د انډرایډ سیسټم لپاره د نورستاني الفبا کیبورډ"
   },
   underDev: {
     en: "Under Development",
