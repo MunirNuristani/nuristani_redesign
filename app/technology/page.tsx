@@ -355,7 +355,7 @@ const Page: React.FC = () => {
       images: ["/keyboardImages/Android_keyboard.jpg", 
       "/keyboardImages/Android_keyboard_shift.jpg"
       ],
-      downloadUrl: "https://play.google.com/store/apps/details?id=com.nuristani.kalasha",
+      downloadUrl: "https://play.google.com/store/apps/details?id=com.kalasha.keyboard.ala",
       guideUrl: "https://www.youtube.com/watch?v=YOUR_VIDEO_ID",
     },
   ];
