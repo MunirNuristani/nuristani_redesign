@@ -356,7 +356,7 @@ const Page: React.FC = () => {
       "/keyboardImages/Android_keyboard_shift.jpg"
       ],
       downloadUrl: "https://play.google.com/store/apps/details?id=com.kalasha.keyboard.ala",
-      guideUrl: "https://www.youtube.com/watch?v=YOUR_VIDEO_ID",
+      guideUrl: "https://www.youtube.com/shorts/0Q3OJN_qJew",
     },
   ];
 
