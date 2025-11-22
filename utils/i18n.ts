@@ -499,10 +499,10 @@ export const phrases = {
     nr: "د پراختیا لاندې"
   },
   dictionaryTitle: {
-    en: "Dari - Nuristani Dictionary",
-    prs: "قاموس دری – نورستانی",
-    ps: "د دری - نورستاني ژبې قاموس",
-    nr: "دری - نورستانی الا به قاموس",
+    en: "Nuristani Dictionar‌ies",
+    prs: "قاموس های زبان نورستانی",
+    ps: "د نورستاني ژبې قاموسونه",
+    nr: "نورستانی الا به قاموس",
   },
   search: {
     en: "Search",
@@ -533,6 +533,12 @@ export const phrases = {
     prs: "به قاموس دری - نورستانی خوش آمدید",
     ps: "دري - نورستاني قاموس ته ښه راغلاست",
     nr: "دري - نورستاني قاموس ته ښه راغلاست",
+  },
+  secondDicWelcomeText: {
+    en: "Welcome to Nuristani - Pashto/Dari Dictionary",
+    prs: "به فرهنگ نورستانی پشتو/دری خوش آمدید",
+    ps: "دنورستاني -پښتو/دري قاموس ته ښه راغلاست",
+    nr: "دنورستاني -پښتو/دري قاموس ته ښه راغلاست",
   },
   dicDescriptionText: {
     en: "Nuristani Dictionaries is a collection of dictionaries for Dari language. It includes the following dictionaries. Remember to use Dari/Pashto or try our new nuristani keyboard",
@@ -569,6 +575,36 @@ export const phrases = {
     prs: "کلښه الا",
     ps: "کلښه الا",
     nr: "کلښه الا"
+  },
+  selectDictionary: {
+    en: "Select Dictionary",
+    prs: "قاموس را انتخاب کنید",
+    ps: "قاموس غوره کړئ",
+    nr: "قاموس غوره کړئ"
+  },
+  dariToNuristani: {
+    en: "Dari to Nuristani",
+    prs: "دری به نورستانی",
+    ps: "له دري څخه نورستاني ته",
+    nr: "له دري څخه نورستاني ته"
+  },
+  nuristaniToPashtoDari: {
+    en: "Nuristani to Pashto andDari",
+    prs: "نورستانی به پشتو و دری",
+    ps: "له نورستاني څخه پښتو او دري ته",
+    nr: "له نورستاني څخه پښتو او دري ته"
+  },
+  pashtoTranslation: {
+    en: "Pashto Translation",
+    prs: "ترجمه پشتو",
+    ps: "پښتو ژباړه",
+    nr: "پښتو ژباړه"
+  },
+  dariTranslation: {
+    en: "Dari Translation",
+    prs: "ترجمه دری",
+    ps: "دري ژباړه",
+    nr: "دري ژباړه"
   },
   articleList: {
     en: "List of Articles",
@@ -703,6 +739,12 @@ export const phrases = {
     ps: "ونه موندل شو",
     nr: "ونه موندل شو"
   },
+  searching: {
+    en: "Searching...",
+    prs: "در حال جستجو  ..",
+    ps: "لټون.",
+    nr: "تڙۉݩ..."
+  }, 
 
   sendMessageBody: {
     en: `
