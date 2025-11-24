@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { db } from "@/utils/firebase-config";
-import { collection, query, getDocs, orderBy, limit, where, Timestamp } from "firebase/firestore";
+import { collection, query, getDocs, orderBy, limit, where, Timestamp, deleteDoc, doc } from "firebase/firestore";
 import {
   CircularProgress,
   Card,
@@ -12,8 +12,15 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface ErrorLog {
   id: string;
@@ -38,6 +45,9 @@ export default function ErrorsDisplay() {
   const [filterSeverity, setFilterSeverity] = useState<string>("all");
   const [filterType, setFilterType] = useState<string>("all");
   const [timeFilter, setTimeFilter] = useState<"24h" | "7d" | "30d" | "all">("7d");
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [errorToDelete, setErrorToDelete] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     fetchErrors();
@@ -116,6 +126,38 @@ export default function ErrorsDisplay() {
       default:
         return "default";
     }
+  };
+
+  const handleDeleteClick = (errorId: string) => {
+    setErrorToDelete(errorId);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!errorToDelete) return;
+
+    try {
+      setDeleting(true);
+      // Delete from Firestore
+      await deleteDoc(doc(db, "analytics-errors", errorToDelete));
+
+      // Update local state
+      setErrors((prevErrors) => prevErrors.filter((error) => error.id !== errorToDelete));
+
+      // Close dialog
+      setDeleteDialogOpen(false);
+      setErrorToDelete(null);
+    } catch (error) {
+      console.error("Error deleting error log:", error);
+      alert("Failed to delete error. Please try again.");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialogOpen(false);
+    setErrorToDelete(null);
   };
 
   const filteredErrors = errors.filter((error) => {
@@ -261,11 +303,24 @@ export default function ErrorsDisplay() {
                     size="small"
                   />
                   <span className="font-medium flex-1 min-w-0 truncate">
-                    {error.errorMessage}
+                    {error.errorMessage.length > 60
+                      ? `${error.errorMessage.slice(0, 60)}...`
+                      : error.errorMessage}
                   </span>
                   <span className="text-sm text-gray-500">
                     {error.timestamp?.toDate().toLocaleString()}
                   </span>
+                  <IconButton
+                    size="small"
+                    color="error"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteClick(error.id);
+                    }}
+                    aria-label="Delete error"
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
                 </div>
               </AccordionSummary>
               <AccordionDetails>
@@ -360,6 +415,35 @@ export default function ErrorsDisplay() {
           ))
         )}
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={handleDeleteCancel}
+        aria-labelledby="delete-dialog-title"
+      >
+        <DialogTitle id="delete-dialog-title">
+          Confirm Delete
+        </DialogTitle>
+        <DialogContent>
+          <Typography>
+            Are you sure you want to delete this error log? This action cannot be undone.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} disabled={deleting}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleDeleteConfirm}
+            color="error"
+            variant="contained"
+            disabled={deleting}
+          >
+            {deleting ? <CircularProgress size={20} /> : "Delete"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
