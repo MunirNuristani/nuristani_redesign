@@ -393,9 +393,9 @@ export default function Index() {
                 />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-gray-700 mb-3">
+            <h2 className="text-2xl font-bold text-gray-700 mb-3">
               {noBookFound[lang]}
-            </h3>
+            </h2>
             <p className="text-gray-600 leading-relaxed">
               {noBookFoundDetail[lang]}
             </p>

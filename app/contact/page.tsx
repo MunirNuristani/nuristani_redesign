@@ -73,7 +73,7 @@ const Contacts: React.FC = () => {
   });
   const [dir, setDir] = useState<"ltr" | "rtl">("ltr");
   const [mailMessage, setMailMessage] = useState<string>("");
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const toggleAlertModal = () => {
     setOpen(prev=>!prev);
   }

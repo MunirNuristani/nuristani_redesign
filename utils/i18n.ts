@@ -744,7 +744,13 @@ export const phrases = {
     prs: "در حال جستجو  ..",
     ps: "لټون.",
     nr: "تڙۉݩ..."
-  }, 
+  },
+  learnMore:{
+    en: "Learn More",
+    prs: "مطالعه بیشتر",
+    ps: "نور زده کړئ",
+    nr: "وَشَمه مَترۉݩ"
+  },
 
   sendMessageBody: {
     en: `

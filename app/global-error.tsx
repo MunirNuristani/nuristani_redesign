@@ -1,8 +1,27 @@
 'use client'
 
+import { useEffect } from 'react'
 import Image from 'next/image'
+import { trackJavaScriptError } from '@/utils/errorTracking'
 
-export default function GlobalError({ reset }: { reset: () => void }) {
+export default function GlobalError({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  useEffect(() => {
+    // Log error to console
+    console.error('Global Error:', error);
+
+    // Track error in Firestore
+    trackJavaScriptError(error, "critical", {
+      digest: error.digest,
+      page: "global-error",
+      isGlobalError: true,
+    });
+  }, [error]);
   return (
     <html>
       <body>

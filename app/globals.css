@@ -107,3 +107,93 @@ body::before {
 .flip{
   transform: scale(1, -1);
 }
+
+/* ===================================
+   Performance Optimizations for MUI
+   =================================== */
+
+/* Force GPU acceleration for MUI components */
+.MuiPaper-root,
+.MuiDrawer-paper,
+.MuiDialog-paper,
+.MuiPopover-paper,
+.MuiMenu-paper,
+.MuiCard-root,
+.MuiAppBar-root {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimize MUI transitions - use only transform and opacity */
+.MuiInputLabel-root {
+  transition: transform 0.2s cubic-bezier(0.0, 0, 0.2, 1),
+              opacity 0.2s cubic-bezier(0.0, 0, 0.2, 1),
+              color 0.2s cubic-bezier(0.0, 0, 0.2, 1) !important;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* Optimize MUI Select animations */
+.MuiSelect-select {
+  transform: translateZ(0);
+}
+
+.MuiOutlinedInput-notchedOutline {
+  transform: translateZ(0);
+  transition: border-color 0.2s cubic-bezier(0.0, 0, 0.2, 1) !important;
+}
+
+/* Optimize MUI backdrop */
+.MuiBackdrop-root {
+  transform: translateZ(0);
+  will-change: opacity;
+}
+
+/* Optimize MUI modal/drawer animations */
+.MuiModal-root,
+.MuiDrawer-root {
+  transform: translateZ(0);
+}
+
+/* Remove will-change after animations complete to save memory */
+.MuiPaper-root,
+.MuiInputLabel-root,
+.MuiBackdrop-root {
+  transition: transform 0.2s cubic-bezier(0.0, 0, 0.2, 1),
+              opacity 0.2s cubic-bezier(0.0, 0, 0.2, 1);
+}
+
+/* Optimize auto-fill animations */
+input:-webkit-autofill {
+  transition: background-color 5000s ease-in-out 0s !important;
+  -webkit-text-fill-color: inherit !important;
+}
+
+/* Optimize scrolling performance */
+.MuiList-root,
+.MuiMenu-list {
+  transform: translateZ(0);
+  will-change: scroll-position;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Optimize button ripple effect */
+.MuiButtonBase-root {
+  transform: translateZ(0);
+}
+
+.MuiTouchRipple-root {
+  transform: translateZ(0);
+}
+
+/* General performance improvements */
+* {
+  /* Prevent layout shifts from focusing elements */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Optimize images */
+img {
+  content-visibility: auto;
+}

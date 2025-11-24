@@ -11,7 +11,8 @@
       "Bash(npx tsc:*)",
       "Bash(mv:*)",
       "Bash(grep:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "WebFetch(domain:pagespeed.web.dev)"
     ],
     "deny": []
   }

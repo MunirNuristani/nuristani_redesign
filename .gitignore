@@ -50,3 +50,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+#md files: 
+ACCESSIBILITY_FIXES.md
+ANALYTICS_GUIDE.md
+PERFORMANCE_OPTIMIZATION.md
+SEO_GUIDE.md
+STYLE_GUIDE.md
+ADMIN_PANEL_GUIDE.md
+ERROR_TRACKING_GUIDE.md

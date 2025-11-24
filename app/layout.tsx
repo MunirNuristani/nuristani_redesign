@@ -5,8 +5,10 @@ import "./globals.css";
 import Header from "./components/navigation/Header";
 import Footer from "./components/navigation/Footer";
 import { ReducerWrapper } from "@/context/AppContext";
+import { AuthProvider } from "@/context/AuthContext";
 import ClientLayout from "./ClientLayout";
 import ThemeProvider from "@/app/theme/Provider";
+import { WebVitals } from "./web-vitals";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -126,17 +128,43 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {/* Preconnect to external domains */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://v5.airtableusercontent.com" />
+        <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
+
+        {/* Preload LCP image */}
+        <link
+          rel="preload"
+          as="image"
+          href="/bg.jpg"
+          media="(min-width: 768px)"
+          // @ts-ignore
+          fetchpriority="high"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/heroImage01.png"
+          media="(max-width: 767px)"
+          // @ts-ignore
+          fetchpriority="high"
+        />
       </head>
       <body>
-        <ReducerWrapper>
-          <ThemeProvider>
-            <ClientLayout>
-              <Header />
-              <div className="min-h-[calc(100dvh-180px)]">{children}</div>
-              <Footer />
-            </ClientLayout>
-          </ThemeProvider>
-        </ReducerWrapper>
+        <WebVitals />
+        <AuthProvider>
+          <ReducerWrapper>
+            <ThemeProvider>
+              <ClientLayout>
+                <Header />
+                <main className="min-h-[calc(100dvh-180px)]">{children}</main>
+                <Footer />
+              </ClientLayout>
+            </ThemeProvider>
+          </ReducerWrapper>
+        </AuthProvider>
       </body>
     </html>
   );

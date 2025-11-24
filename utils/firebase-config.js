@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { getAuth } from "firebase/auth";
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -19,6 +20,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 const db = getFirestore(app);
+const auth = getAuth(app);
 const storage = getStorage(app);
 const recordingStorage = getStorage(
   app,
@@ -26,7 +28,7 @@ const recordingStorage = getStorage(
 );
 const coverStorage  = getStorage(app, "nuristanidict.appspot.com/bookcovers")
 const landscapeStorage = getStorage(app, "nuristanidict.appspot.com/nuristanPics")
-export { db, storage, coverStorage, recordingStorage, landscapeStorage };
+export { db, auth, storage, coverStorage, recordingStorage, landscapeStorage };
 
 
 

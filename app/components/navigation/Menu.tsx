@@ -116,12 +116,12 @@ const Menu = (props: Props) => {
         <div>
           <Image
             src="/logo_original_noLabel.png"
-            alt="logo"
+            alt="Nuristani Cultural Foundation Logo"
             width={100}
             height={100}
           />
         </div>
-        <h1>{mainH1[lang as keyof typeof mainH1]}</h1>
+        <h2 className="text-center">{mainH1[lang as keyof typeof mainH1]}</h2>
       </div>
       <div className="flex-1 overflow-hidden">
         <div className="mx-8 my-4 gap-2">

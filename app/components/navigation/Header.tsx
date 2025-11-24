@@ -20,38 +20,44 @@ const Header = () => {
   }, [language]);
   return (
     <>
-      {" "}
-      <div className="w-full h-20 bg-[var(--color-secondary)] flex items-center overflow-hidden">
+      <header className="w-full h-20 bg-[var(--color-secondary)] flex items-center overflow-hidden">
         <div className="flex justify-between items-center w-full px-7">
-          <div className="relative h-[60px] w-[60px] ">
+          <a href="/" className="relative h-[60px] w-[60px]" aria-label="Home - Nuristani Cultural Foundation">
             <Image
               src={"/logo_original_noLabel_invert.png"}
-              alt="logo"
+              alt="Nuristani Cultural Foundation Logo"
               width={100}
               height={100}
             />
-          </div>
+          </a>
           <div>
             <h1 className="hidden lg:flex text-2xl font-bold text-white">
               {mainH1[lang as keyof typeof mainH1]}
             </h1>
           </div>
-          <div className="text-2xl font-bold cursor-pointer z-50">
+          <button
+            className="text-2xl font-bold cursor-pointer z-50"
+            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isOpen}
+            aria-controls="main-navigation"
+          >
             <Hamburger
               toggled={isOpen}
               toggle={setIsOpen}
               color={isOpen ? "var(--color-secondary)" : "white"}
             />
-          </div>
+          </button>
         </div>
-      </div>
-      <div
+      </header>
+      <nav
+        id="main-navigation"
+        aria-label="Main navigation"
         className={`fixed overflow-hidden transition-all duration-500 ease top-0 right-0 h-screen flex justify-center items-center menuBG z-40 ${
           isOpen ? "w-full" : "w-0"
         } `}
       >
         <Menu setIsOpen={setIsOpen} />
-      </div>
+      </nav>
     </>
   );
 };

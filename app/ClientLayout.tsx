@@ -1,6 +1,8 @@
 "use client";
 import { useAppContext } from "@/context/AppContext";
 import { useEffect } from "react";
+import { setupGlobalErrorTracking } from "@/utils/errorTracking";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 interface ClientLayoutProps {
   children: React.ReactNode;
@@ -9,6 +11,11 @@ interface ClientLayoutProps {
 export default function ClientLayout({ children }: ClientLayoutProps) {
   const { state } = useAppContext();
   const { language } = state;
+
+  useEffect(() => {
+    // Setup global error tracking (only runs once on mount)
+    setupGlobalErrorTracking();
+  }, []);
 
   useEffect(() => {
     // Update document language attribute based on global state
@@ -83,5 +90,5 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 
   }, [language]);
 
-  return <>{children}</>;
+  return <ErrorBoundary>{children}</ErrorBoundary>;
 }

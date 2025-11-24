@@ -1,7 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import wordslist from "../../WordBank.json";
-import nuristaniDictionary from "../../dictionary_output.json";
 import { phrases } from "../../utils/i18n";
 import { useAppContext } from "@/context/AppContext";
 import { inputBaseClasses } from "@mui/material/InputBase";
@@ -122,8 +120,10 @@ const Page: React.FC = () => {
   // Dictionary selection state
   const [selectedDictionary, setSelectedDictionary] = useState<DictionaryType>("dariToNuristani");
 
-  const dariNuristaniData: WordData[] = wordslist as WordData[];
-  const nuristaniPashtoDariData: NuristaniWordData[] = nuristaniDictionary as NuristaniWordData[];
+  // Dictionary data state
+  const [dariNuristaniData, setDariNuristaniData] = useState<WordData[]>([]);
+  const [nuristaniPashtoDariData, setNuristaniPashtoDariData] = useState<NuristaniWordData[]>([]);
+  const [dictionaryLoading, setDictionaryLoading] = useState<boolean>(true);
 
   const [searchValue, setSearchValue] = useState<string>("");
   const [displayWords, setDisplayWords] = useState<string[]>([]);
@@ -147,6 +147,34 @@ const Page: React.FC = () => {
   useEffect(() => {
     trackSession();
     trackPageVisit("dictionary");
+  }, []);
+
+  // Load dictionary data dynamically
+  useEffect(() => {
+    const loadDictionaries = async () => {
+      setDictionaryLoading(true);
+      try {
+        // Load both dictionaries in parallel
+        const [dariResponse, nuristaniResponse] = await Promise.all([
+          fetch('/api/dictionary/dari-nuristani'),
+          fetch('/api/dictionary/nuristani-pashto-dari'),
+        ]);
+
+        const [dariData, nuristaniData] = await Promise.all([
+          dariResponse.json(),
+          nuristaniResponse.json(),
+        ]);
+
+        setDariNuristaniData(dariData);
+        setNuristaniPashtoDariData(nuristaniData);
+      } catch (error) {
+        console.error('Error loading dictionary data:', error);
+      } finally {
+        setDictionaryLoading(false);
+      }
+    };
+
+    loadDictionaries();
   }, []);
 
   // Close suggestions when clicking outside
@@ -398,6 +426,18 @@ const Page: React.FC = () => {
     }
   };
 
+  // Show loading state while dictionaries are loading
+  if (dictionaryLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-8 px-4 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-xl text-gray-700 font-semibold">{searching[lang]}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       dir={dir}
@@ -414,7 +454,7 @@ const Page: React.FC = () => {
 
         {/* Dictionary Selection - Modern Tabs */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-2 mb-6">
-          <div className="flex gap-2 bg-gray-100 rounded-xl p-1">
+          <div className="flex gap-2 bg-gray-100 rounded-xl p-1" role="tablist" aria-label="Dictionary selection">
             <button
               onClick={() => {
                 const previousDictionary = selectedDictionary;
@@ -427,6 +467,9 @@ const Page: React.FC = () => {
                 setSelectedDictionary("dariToNuristani");
                 clearSearch();
               }}
+              role="tab"
+              aria-selected={selectedDictionary === "dariToNuristani"}
+              aria-label="Switch to Dari to Nuristani dictionary"
               className={`flex-1 px-6 py-4 rounded-lg font-semibold text-base transition-all duration-300 ${
                 selectedDictionary === "dariToNuristani"
                 ? "bg-[var(--color-secondary)] text-white "
@@ -434,7 +477,6 @@ const Page: React.FC = () => {
               }`}
             >
               <div className="flex flex-col items-center gap-1">
-
                 <span>{dariToNuristani[lang]}</span>
               </div>
             </button>
@@ -451,6 +493,9 @@ const Page: React.FC = () => {
                 setSelectedDictionary("nuristaniToPashtoDari");
                 clearSearch();
               }}
+              role="tab"
+              aria-selected={selectedDictionary === "nuristaniToPashtoDari"}
+              aria-label="Switch to Nuristani to Pashto/Dari dictionary"
               className={`flex-1 px-6 py-4 rounded-lg font-semibold text-base transition-all duration-300 ${
                 selectedDictionary === "nuristaniToPashtoDari"
                   ? "bg-[var(--color-secondary)] text-white "
@@ -469,9 +514,9 @@ const Page: React.FC = () => {
           <form onSubmit={handleSearch} className="space-y-6">
             {!hasSearched && (
               <div className="   py-2 text-center mb-8 hidden md:block lg:block">
-                <h3 className="text-2xl font-bold text-gray-700 mb-3">
+                <h2 className="text-2xl font-bold text-gray-700 mb-3">
                   {selectedDictionary === "dariToNuristani" ? dicWelcomeText[lang] : secondDicWelcomeText[lang]}
-                </h3>
+                </h2>
                 <p className="text-gray-600 leading-relaxed">
                   {dicDescriptionText[lang]}
                 </p>
@@ -504,10 +549,8 @@ const Page: React.FC = () => {
                           endAdornment: (
                             <InputAdornment
                               position="end"
-                              onClick={clearSearch}
                               sx={{
                                 opacity: 0,
-
                                 cursor: "pointer",
                                 [`[data-shrink=true] ~ .${inputBaseClasses.root} > &`]:
                                   {
@@ -515,19 +558,27 @@ const Page: React.FC = () => {
                                   },
                               }}
                             >
-                              <svg
-                                className="w-5 h-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
+                              <button
+                                onClick={clearSearch}
+                                type="button"
+                                aria-label="Clear search input"
+                                className="flex items-center justify-center"
                               >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M6 18L18 6M6 6l12 12"
-                                />
-                              </svg>
+                                <svg
+                                  className="w-5 h-5"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                  aria-hidden="true"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                  />
+                                </svg>
+                              </button>
                             </InputAdornment>
                           ),
                         },
@@ -630,7 +681,7 @@ const Page: React.FC = () => {
             {displaySelectedWord.length > 0 && (
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                 <div className=" bg-[var(--color-primary)] px-6 py-4">
-                  <h3 className="text-xl font-bold text-white flex items-center">
+                  <h2 className="text-xl font-bold text-white flex items-center">
                     <svg
                       className="w-6 h-6 ml-2"
                       fill="none"
@@ -645,7 +696,7 @@ const Page: React.FC = () => {
                       />
                     </svg>
                     {exactMatches[lang]}
-                  </h3>
+                  </h2>
                 </div>
                 <div className="p-6 space-y-4">
                   {displaySelectedWord.map(
@@ -720,7 +771,7 @@ const Page: React.FC = () => {
             {displayWords.length > 0 && (
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                 <div className="bg-[var(--color-secondary)] px-6 py-4">
-                  <h3 className="text-xl font-bold text-white flex items-center">
+                  <h2 className="text-xl font-bold text-white flex items-center">
                     <svg
                       className="w-6 h-6 ml-2"
                       fill="none"
@@ -735,7 +786,7 @@ const Page: React.FC = () => {
                       />
                     </svg>
                     {similarMatches[lang]}
-                  </h3>
+                  </h2>
                 </div>
                 <div className="p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -771,9 +822,9 @@ const Page: React.FC = () => {
                     />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-700 mb-3">
+                <h2 className="text-2xl font-bold text-gray-700 mb-3">
                   {noResultFound[lang]}
-                </h3>
+                </h2>
                 <p className="text-gray-600 mb-6 leading-relaxed">
                   {noResultDetail[lang]}
                 </p>

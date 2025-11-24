@@ -211,11 +211,11 @@ function ListArticles() {
                   <div className="flex-grow">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-grow ">
-                        <h3 className="text-2xl font-bold text-gray-800 group-hover:text-blue-700 transition-colors duration-300 mb-1">
+                        <h2 className="text-2xl font-bold text-gray-800 group-hover:text-blue-700 transition-colors duration-300 mb-1">
                           {lang === "en"
                             ? article.Article_Name_en
                             : article.Article_Name}
-                        </h3>
+                        </h2>
                       </div>
                       <span
                         className={`inline-block px-3 py-1  font-semibold rounded-   ml-4`}
@@ -270,9 +270,9 @@ function ListArticles() {
                 />
               </svg>
             </div>
-            <h3 className={`${lang === "en" ? "text-xl" : "text-2xl"} font-bold text-gray-700 mb-3`}>
+            <h2 className={`${lang === "en" ? "text-xl" : "text-2xl"} font-bold text-gray-700 mb-3`}>
               {noArticleFound[lang]}
-            </h3>
+            </h2>
             <p className="text-gray-600 leading-relaxed">
               {noArticleFoundDetails[lang]}
             </p>

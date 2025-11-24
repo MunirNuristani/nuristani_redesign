@@ -75,12 +75,36 @@ export default function LangSelect(props: Props) {
   }
 
   return (
-    <FormControl 
+    <FormControl
       dir={language === "en" ? "ltr" : "rtl"}
-      sx={{ m: 1, minWidth: "100%" }} 
+      sx={{
+        m: 1,
+        minWidth: "100%",
+        // Force GPU acceleration
+        '& .MuiInputLabel-root': {
+          transform: 'translateZ(0)',
+          willChange: 'transform, opacity',
+          transition: 'transform 0.2s cubic-bezier(0.0, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.0, 0, 0.2, 1)',
+        },
+        '& .MuiSelect-select': {
+          transform: 'translateZ(0)',
+        },
+        '& .MuiOutlinedInput-notchedOutline': {
+          transform: 'translateZ(0)',
+        }
+      }}
       size="small"
     >
-      <InputLabel dir={language === "en" ? "ltr" : "rtl"} id="LanguageSelect">الا / لسان / ژبه / Language</InputLabel>
+      <InputLabel
+        dir={language === "en" ? "ltr" : "rtl"}
+        id="LanguageSelect"
+        sx={{
+          // Override MUI's max-width animation with transform
+          maxWidth: '100% !important',
+        }}
+      >
+        الا / لسان / ژبه / Language
+      </InputLabel>
       <Select
         dir={language === "en" ? "ltr" : "rtl"}
         labelId="LanguageSelect"
@@ -88,6 +112,27 @@ export default function LangSelect(props: Props) {
         value={localLanguage}
         label="الا / لسان / ژبه / Language"
         onChange={handleChange}
+        MenuProps={{
+          // Optimize menu animations
+          TransitionProps: {
+            timeout: 200,
+          },
+          PaperProps: {
+            sx: {
+              transform: 'translateZ(0)',
+              willChange: 'transform, opacity',
+            }
+          },
+          // Use GPU-accelerated animations for dropdown
+          sx: {
+            '& .MuiPaper-root': {
+              transform: 'translateZ(0)',
+            },
+            '& .MuiList-root': {
+              transform: 'translateZ(0)',
+            }
+          }
+        }}
       >
         <MenuItem value="nr">نورستانی (کلښه الا)</MenuItem>
         <MenuItem value="prs"> دری </MenuItem>

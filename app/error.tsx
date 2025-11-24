@@ -3,15 +3,25 @@
 import { useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { trackJavaScriptError } from '@/utils/errorTracking'
+
 export default function Error({
   error,
   reset,
 }: {
-  error: unknown;
+  error: Error & { digest?: string };
   reset: () => void;
 }) {
   useEffect(() => {
+    // Log error to console
     console.error(error);
+
+    // Track error in Firestore
+    trackJavaScriptError(error, "critical", {
+      digest: error.digest,
+      page: "error-page",
+      location: typeof window !== 'undefined' ? window.location.pathname : 'unknown',
+    });
   }, [error]);
 
   return (
