@@ -7,6 +7,7 @@ import TextField from "@mui/material/TextField";
 import { InputLabel, MenuItem, Select } from "@mui/material";
 import { useAppContext } from "../../context/AppContext";
 import LoadingPage from "../loading";
+import { trackPageVisit, trackSession, trackButtonClick } from "@/utils/analytics";
 // Type definitions
 interface Article {
   id?: number;
@@ -74,6 +75,12 @@ function ListArticles() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
 
+  // Track page visit and session on mount
+  useEffect(() => {
+    trackSession();
+    trackPageVisit("articles-list");
+  }, []);
+
   // Filter articles based on search and language
   useEffect(() => {
     let filtered = articles;
@@ -103,6 +110,16 @@ function ListArticles() {
   }, [searchTerm, selectedLanguage, articles, lang]);
 
   const handleArticleClick = (article: Article) => {
+    // Track article click
+    trackButtonClick({
+      buttonType: "suggestion-click",
+      buttonLabel: lang === "en" ? article.Article_Name_en : article.Article_Name,
+      additionalData: {
+        articleId: article.id,
+        author: lang === "en" ? article.Author_Name_en : article.Author_Name,
+        language: article.language,
+      },
+    });
     router.push(`/articles/${article.id}`);
   };
 

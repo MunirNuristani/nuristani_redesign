@@ -8,6 +8,7 @@ import TextField from "@mui/material/TextField";
 import axios from "axios";
 import Link from "next/link";
 import LoadingPage from "../loading";
+import { trackPageVisit, trackSession, trackButtonClick } from "@/utils/analytics";
 
 // Type definitions
 interface Book {
@@ -78,6 +79,12 @@ export default function Index() {
     getData();
   }, []);
 
+  // Track page visit and session on mount
+  useEffect(() => {
+    trackSession();
+    trackPageVisit("books-library");
+  }, []);
+
   // Filter books based on search
   useEffect(() => {
     if (searchTerm) {
@@ -104,6 +111,16 @@ export default function Index() {
 
   // Pagination handlers
   const goToPage = (page: number) => {
+    // Track pagination click
+    trackButtonClick({
+      buttonType: "suggestion-click",
+      buttonLabel: `Page ${page}`,
+      additionalData: {
+        fromPage: currentPage,
+        toPage: page,
+        totalPages: totalPages,
+      },
+    });
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -118,6 +135,19 @@ export default function Index() {
     if (currentPage < totalPages) {
       goToPage(currentPage + 1);
     }
+  };
+
+  // Track book click
+  const handleBookClick = (book: Book) => {
+    trackButtonClick({
+      buttonType: "suggestion-click",
+      buttonLabel: book.title,
+      additionalData: {
+        bookId: book.id,
+        author: book.author,
+        translator: book.translator || "N/A",
+      },
+    });
   };
 
   // Generate page numbers for pagination
@@ -200,6 +230,7 @@ export default function Index() {
                     href={book.Book_Links[0].url}
                     target="_blank"
                     className="h-full flex flex-col justify-between"
+                    onClick={() => handleBookClick(book)}
                   >
                     {/* Book Cover */}
                     <div className="relative w-full aspect-[3/4] mb-4 rounded-xl overflow-hidden bg-gray-100">

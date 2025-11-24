@@ -7,6 +7,7 @@ import axios from "axios";
 import LoadingPage from "@/app/loading";
 import { phrases } from "@/utils/i18n";
 import { useAppContext } from "@/context/AppContext";
+import { trackPageVisit, trackSession, trackButtonClick } from "@/utils/analytics";
 // Type definitions
 interface Picture {
   id: string;
@@ -56,7 +57,21 @@ function ArticleDetail() {
     }
   }, [articleId]);
 
+  // Track page visit and session on mount
+  useEffect(() => {
+    trackSession();
+    trackPageVisit(`article-detail-${articleId}`);
+  }, [articleId]);
+
   const handleBackClick = () => {
+    // Track back button click
+    trackButtonClick({
+      buttonType: "new-search",
+      buttonLabel: "Back to Articles List",
+      additionalData: {
+        fromArticle: articleId,
+      },
+    });
     router.back();
   };
 
