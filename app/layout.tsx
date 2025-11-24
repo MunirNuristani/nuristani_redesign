@@ -85,7 +85,7 @@ export const metadata: Metadata = {
   category: "education",
   verification: {
     // Add your verification codes here when you have them
-    // google: "your-google-verification-code",
+    google: "Q9IDFIi1RYNtMURBro0oLbLwQbZ8e3WvMu6PvQnX3Tg",
     // yandex: "your-yandex-verification-code",
     // bing: "your-bing-verification-code",
   },
