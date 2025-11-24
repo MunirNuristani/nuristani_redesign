@@ -32,8 +32,9 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Log error to Firestore
-    trackReactError(error, errorInfo, "critical");
+    // Log error to Firestore (sanitize componentStack to avoid null)
+    const safeErrorInfo = { componentStack: errorInfo.componentStack ?? undefined };
+    trackReactError(error, safeErrorInfo, "critical");
 
     // Call custom error handler if provided
     if (this.props.onError) {
@@ -92,7 +93,7 @@ class ErrorBoundary extends Component<Props, State> {
                 We encountered an unexpected error.
               </p>
               <p className="text-gray-500 text-sm mb-8">
-                The error has been reported and we'll look into it.
+                The error has been reported and we&apos;ll look into it.
               </p>
 
               {/* Error Details (Development Only) */}

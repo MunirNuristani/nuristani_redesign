@@ -1,9 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { db } from "@/utils/firebase-config";
 import { collection, query, getDocs, orderBy, limit, where, Timestamp } from "firebase/firestore";
-import { CircularProgress, Card, CardContent, Typography, Grid } from "@mui/material";
+import { CircularProgress, Card, CardContent, Typography } from "@mui/material";
+
+interface SearchResult {
+  id: string;
+  searchQuery: string;
+  dictionaryType: string;
+  resultsFound: boolean;
+  timestamp: Timestamp;
+}
 
 interface Stats {
   totalSessions: number;
@@ -12,8 +20,8 @@ interface Stats {
   totalButtonClicks: number;
   totalErrors: number;
   totalDictionarySwitches: number;
-  recentSessions: any[];
-  recentSearches: any[];
+  recentSessions: unknown[];
+  recentSearches: SearchResult[];
   popularPages: { page: string; count: number }[];
 }
 
@@ -22,11 +30,9 @@ export default function AnalyticsStats() {
   const [loading, setLoading] = useState(true);
   const [timeFilter, setTimeFilter] = useState<"all" | "24h" | "7d" | "30d">("7d");
 
-  useEffect(() => {
-    fetchStats();
-  }, [timeFilter]);
+ 
 
-  const getTimeFilterDate = () => {
+  const getTimeFilterDate = useCallback(() => {
     const now = new Date();
     switch (timeFilter) {
       case "24h":
@@ -38,9 +44,11 @@ export default function AnalyticsStats() {
       default:
         return new Date(0); // All time
     }
-  };
+  }, [timeFilter]);
 
-  const fetchStats = async () => {
+
+
+  const fetchStats = useCallback(async () => {
     try {
       setLoading(true);
       const filterDate = getTimeFilterDate();
@@ -99,7 +107,7 @@ export default function AnalyticsStats() {
       const recentSearches = recentSearchesSnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
-      }));
+      })) as SearchResult[];
 
       // Fetch button clicks
       const clicksQuery = timeFilter === "all"
@@ -138,8 +146,11 @@ export default function AnalyticsStats() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [timeFilter, getTimeFilterDate]);
 
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats, timeFilter]);
   if (loading) {
     return (
       <div className="flex justify-center items-center py-12">
@@ -156,10 +167,10 @@ export default function AnalyticsStats() {
     <div className="space-y-6">
       {/* Time Filter */}
       <div className="flex gap-2">
-        {["24h", "7d", "30d", "all"].map((filter) => (
+        {(["24h", "7d", "30d", "all"] as const).map((filter) => (
           <button
             key={filter}
-            onClick={() => setTimeFilter(filter as any)}
+            onClick={() => setTimeFilter(filter)}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               timeFilter === filter
                 ? "bg-blue-600 text-white"
@@ -172,85 +183,73 @@ export default function AnalyticsStats() {
       </div>
 
       {/* Summary Cards */}
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={6} md={4}>
-          <Card className="h-full">
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                Total Sessions
-              </Typography>
-              <Typography variant="h4" component="div">
-                {stats.totalSessions.toLocaleString()}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <Card className="h-full">
+          <CardContent>
+            <Typography color="textSecondary" gutterBottom>
+              Total Sessions
+            </Typography>
+            <Typography variant="h4" component="div">
+              {stats.totalSessions.toLocaleString()}
+            </Typography>
+          </CardContent>
+        </Card>
 
-        <Grid item xs={12} sm={6} md={4}>
-          <Card className="h-full">
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                Page Visits
-              </Typography>
-              <Typography variant="h4" component="div">
-                {stats.totalPageVisits.toLocaleString()}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+        <Card className="h-full">
+          <CardContent>
+            <Typography color="textSecondary" gutterBottom>
+              Page Visits
+            </Typography>
+            <Typography variant="h4" component="div">
+              {stats.totalPageVisits.toLocaleString()}
+            </Typography>
+          </CardContent>
+        </Card>
 
-        <Grid item xs={12} sm={6} md={4}>
-          <Card className="h-full">
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                Dictionary Searches
-              </Typography>
-              <Typography variant="h4" component="div">
-                {stats.totalSearches.toLocaleString()}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+        <Card className="h-full">
+          <CardContent>
+            <Typography color="textSecondary" gutterBottom>
+              Dictionary Searches
+            </Typography>
+            <Typography variant="h4" component="div">
+              {stats.totalSearches.toLocaleString()}
+            </Typography>
+          </CardContent>
+        </Card>
 
-        <Grid item xs={12} sm={6} md={4}>
-          <Card className="h-full">
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                Button Clicks
-              </Typography>
-              <Typography variant="h4" component="div">
-                {stats.totalButtonClicks.toLocaleString()}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+        <Card className="h-full">
+          <CardContent>
+            <Typography color="textSecondary" gutterBottom>
+              Button Clicks
+            </Typography>
+            <Typography variant="h4" component="div">
+              {stats.totalButtonClicks.toLocaleString()}
+            </Typography>
+          </CardContent>
+        </Card>
 
-        <Grid item xs={12} sm={6} md={4}>
-          <Card className="h-full">
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                Dictionary Switches
-              </Typography>
-              <Typography variant="h4" component="div">
-                {stats.totalDictionarySwitches.toLocaleString()}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+        <Card className="h-full">
+          <CardContent>
+            <Typography color="textSecondary" gutterBottom>
+              Dictionary Switches
+            </Typography>
+            <Typography variant="h4" component="div">
+              {stats.totalDictionarySwitches.toLocaleString()}
+            </Typography>
+          </CardContent>
+        </Card>
 
-        <Grid item xs={12} sm={6} md={4}>
-          <Card className="h-full">
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                Total Errors
-              </Typography>
-              <Typography variant="h4" component="div" color="error">
-                {stats.totalErrors.toLocaleString()}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+        <Card className="h-full">
+          <CardContent>
+            <Typography color="textSecondary" gutterBottom>
+              Total Errors
+            </Typography>
+            <Typography variant="h4" component="div" color="error">
+              {stats.totalErrors.toLocaleString()}
+            </Typography>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Popular Pages */}
       <Card>
@@ -289,7 +288,7 @@ export default function AnalyticsStats() {
                 </tr>
               </thead>
               <tbody>
-                {stats.recentSearches.map((search: any) => (
+                {stats.recentSearches.map((search) => (
                   <tr key={search.id} className="border-b">
                     <td className="p-2 font-medium">{search.searchQuery}</td>
                     <td className="p-2">{search.dictionaryType}</td>

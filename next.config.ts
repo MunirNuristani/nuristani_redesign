@@ -85,7 +85,6 @@ const nextConfig: NextConfig = {
   // Production optimizations
   poweredByHeader: false,
   reactStrictMode: true,
-  swcMinify: true,
 
   // Enable experimental features
   experimental: {

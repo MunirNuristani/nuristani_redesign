@@ -24,8 +24,14 @@ export default function AdminLogin() {
     try {
       await signIn(email, password);
       router.push("/admin/dashboard");
-    } catch (error: any) {
-      setError(error.message || "Failed to sign in. Please check your credentials.");
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : typeof err === "string"
+          ? err
+          : "Failed to sign in. Please check your credentials.";
+      setError(message);
     } finally {
       setLoading(false);
     }

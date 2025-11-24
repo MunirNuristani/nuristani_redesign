@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       platform: body.platform || 'unknown',
       browserLanguage: body.browserLanguage || 'unknown',
       // Add server-side context
-      ipAddress: request.ip || request.headers.get('x-forwarded-for') || 'unknown',
+      ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
       origin: request.headers.get('origin') || 'unknown',
     });
 

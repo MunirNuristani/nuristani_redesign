@@ -140,7 +140,7 @@ export default function RootLayout({
           as="image"
           href="/bg.jpg"
           media="(min-width: 768px)"
-          // @ts-ignore
+          // @ts-expect-error - fetchpriority is valid HTML but not in React types yet
           fetchpriority="high"
         />
         <link
@@ -148,7 +148,7 @@ export default function RootLayout({
           as="image"
           href="/heroImage01.png"
           media="(max-width: 767px)"
-          // @ts-ignore
+          // @ts-expect-error - fetchpriority is valid HTML but not in React types yet
           fetchpriority="high"
         />
       </head>

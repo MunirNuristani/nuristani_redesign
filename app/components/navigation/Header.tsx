@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/legacy/image";
+import Link from "next/link";
 import Hamburger from "hamburger-react";
 import Menu from "./Menu";
 import { phrases } from "@/utils/i18n";
@@ -22,14 +23,14 @@ const Header = () => {
     <>
       <header className="w-full h-20 bg-[var(--color-secondary)] flex items-center overflow-hidden">
         <div className="flex justify-between items-center w-full px-7">
-          <a href="/" className="relative h-[60px] w-[60px]" aria-label="Home - Nuristani Cultural Foundation">
+          <Link href="/" className="relative h-[60px] w-[60px]" aria-label="Home - Nuristani Cultural Foundation">
             <Image
               src={"/logo_original_noLabel_invert.png"}
               alt="Nuristani Cultural Foundation Logo"
               width={100}
               height={100}
             />
-          </a>
+          </Link>
           <div>
             <h1 className="hidden lg:flex text-2xl font-bold text-white">
               {mainH1[lang as keyof typeof mainH1]}

@@ -9,11 +9,6 @@ import {
   CardContent,
   Typography,
   Chip,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -22,7 +17,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 interface ErrorLog {
   id: string;
-  timestamp: any;
+  timestamp: Timestamp;
   errorType: string;
   errorMessage: string;
   errorStack?: string;
@@ -32,7 +27,7 @@ interface ErrorLog {
   pathname?: string;
   userAgent?: string;
   sessionId?: string;
-  additionalData?: any;
+  additionalData?: Record<string, unknown>;
   statusCode?: number;
   method?: string;
 }
@@ -40,13 +35,13 @@ interface ErrorLog {
 export default function ErrorsDisplay() {
   const [errors, setErrors] = useState<ErrorLog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedError, setSelectedError] = useState<ErrorLog | null>(null);
   const [filterSeverity, setFilterSeverity] = useState<string>("all");
   const [filterType, setFilterType] = useState<string>("all");
   const [timeFilter, setTimeFilter] = useState<"24h" | "7d" | "30d" | "all">("7d");
 
   useEffect(() => {
     fetchErrors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeFilter]);
 
   const getTimeFilterDate = () => {
@@ -91,7 +86,7 @@ export default function ErrorsDisplay() {
     }
   };
 
-  const getSeverityColor = (severity: string) => {
+  const getSeverityColor = (severity: string): "error" | "warning" | "info" | "success" | "default" => {
     switch (severity) {
       case "critical":
         return "error";
@@ -106,7 +101,7 @@ export default function ErrorsDisplay() {
     }
   };
 
-  const getTypeColor = (type: string) => {
+  const getTypeColor = (type: string): "error" | "warning" | "info" | "secondary" | "primary" | "default" => {
     switch (type) {
       case "javascript":
         return "error";
@@ -155,10 +150,10 @@ export default function ErrorsDisplay() {
     <div className="space-y-6">
       {/* Time Filter */}
       <div className="flex gap-2">
-        {["24h", "7d", "30d", "all"].map((filter) => (
+        {(["24h", "7d", "30d", "all"] as const).map((filter) => (
           <button
             key={filter}
-            onClick={() => setTimeFilter(filter as any)}
+            onClick={() => setTimeFilter(filter)}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               timeFilter === filter
                 ? "bg-blue-600 text-white"
@@ -256,12 +251,12 @@ export default function ErrorsDisplay() {
                 <div className="flex items-center gap-3 flex-wrap w-full">
                   <Chip
                     label={error.severity}
-                    color={getSeverityColor(error.severity) as any}
+                    color={getSeverityColor(error.severity)}
                     size="small"
                   />
                   <Chip
                     label={error.errorType}
-                    color={getTypeColor(error.errorType) as any}
+                    color={getTypeColor(error.errorType)}
                     variant="outlined"
                     size="small"
                   />
