@@ -35,8 +35,15 @@ export const phrases = {
   },
 
   pictures: {
-    en: "Pictures",
-    prs: "عکس ها",
+    en: "Landscape Images",
+    prs: "تصاویر مناظر",
+    ps: "د منظرو انځورونه",
+    nr: "چَوېر",
+  },
+
+  images: {
+    en: "Images",
+    prs: "تصاویر",
     ps: "انځورونه",
     nr: "چَوېر",
   },
@@ -733,6 +740,12 @@ export const phrases = {
     ps: " د نورستان تاریخي انځورونه",
     nr: "نورستان به نؤشتاری چَوېر  "
   },
+  historicalFiguresTitle: {
+    en: "Historical and Elite Figures of Nuristan",
+    prs: "شخصیت های تاریخی و نخبه نورستان",
+    ps: "د نورستان تاریخي او غوره شخصیتونه",
+    nr: "نورستان به نؤشتاری مجبيݩ"
+  },
   notFound: {
     en: "Not Found",
     prs: "یافت نشد",
@@ -751,6 +764,18 @@ export const phrases = {
     ps: "نور زده کړئ",
     nr: "وَشَمه مَترۉݩ"
   },
+  mr:{
+    "en": "Mr.",
+    "prs": "محترم",
+    "ps": "محترم",
+    "nr": "محترم"
+  },
+  mrs:{
+    "en": "Mrs.",
+    "prs": "محترمه",
+    "ps": "محترمه",
+    "nr": "محترمه"
+  }, 
 
   sendMessageBody: {
     en: `
@@ -784,5 +809,7 @@ Best regards,`
 یو ځل بیا له دې امله مننه چې زموږ سره مو اړیکه ونیوله. ډېر ژر به موږ له تاسو سره تماس ونیسو.
 په درنښت،
 د میرزا تازه گل خان فرهنگي ټولنه`,
-  }
+  }, 
+  
 };
+

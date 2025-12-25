@@ -8,6 +8,9 @@ import Image from "next/image";
 import { Tabs, Tab, Button, Box } from "@mui/material";
 import AnalyticsStats from "@/app/components/admin/AnalyticsStats";
 import ErrorsDisplay from "@/app/components/admin/ErrorsDisplay";
+import HistoricalFiguresManager from "@/app/components/admin/HistoricalFiguresManager";
+import LandscapeImagesManager from "@/app/components/admin/LandscapeImagesManager";
+import HistoricImagesManager from "@/app/components/admin/HistoricImagesManager";
 
 function DashboardContent() {
   const { user, signOut } = useAuth();
@@ -61,9 +64,12 @@ function DashboardContent() {
 
           {/* Tabs */}
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <Tabs value={activeTab} onChange={handleTabChange}>
+            <Tabs value={activeTab} onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
               <Tab label="Analytics Stats" />
               <Tab label="Error Logs" />
+              <Tab label="Historical Figures" />
+              <Tab label="Landscape Images" />
+              <Tab label="Historic Images" />
             </Tabs>
           </Box>
         </div>
@@ -73,6 +79,9 @@ function DashboardContent() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeTab === 0 && <AnalyticsStats />}
         {activeTab === 1 && <ErrorsDisplay />}
+        {activeTab === 2 && <HistoricalFiguresManager />}
+        {activeTab === 3 && <LandscapeImagesManager />}
+        {activeTab === 4 && <HistoricImagesManager />}
       </div>
     </div>
   );

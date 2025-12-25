@@ -193,7 +193,7 @@ const Page: React.FC = () => {
 
   // Debounced autocomplete with smart matching
   useEffect(() => {
-    if (searchValue.trim().length === 0) {
+    if (searchValue?.trim().length === 0) {
       setSuggestions([]);
       setShowSuggestions(false);
       return;
@@ -204,12 +204,12 @@ const Page: React.FC = () => {
         ? dariNuristaniData
         : nuristaniPashtoDariData;
 
-      const searchTerm = searchValue.trim();
+      const searchTerm = searchValue?.trim();
       const wordMatches: WordMatch[] = [];
 
       // Score all words
       for (let i = 0; i < data.length; i++) {
-        const word = data[i].Word.trim();
+        const word = data[i].Word?.trim();
         const score = calculateSimilarity(searchTerm, word);
 
         if (score > 0) {
@@ -241,7 +241,7 @@ const Page: React.FC = () => {
 
     // Simulate loading for better UX
     setTimeout(() => {
-      if (wd.trim().length > 0) {
+      if (wd?.trim().length > 0) {
         const exactMatchesResults: (WordData | NuristaniWordData)[] = [];
         const wordMatches: WordMatch[] = [];
 
@@ -250,12 +250,12 @@ const Page: React.FC = () => {
           ? dariNuristaniData
           : nuristaniPashtoDariData;
 
-        const searchTerm = wd.trim();
+        const searchTerm = wd?.trim();
 
         // Score all words using smart matching
         for (let i = 0; i < data.length; i++) {
           const wordData = data[i];
-          const word = wordData.Word.trim();
+          const word = wordData.Word?.trim();
           const score = calculateSimilarity(searchTerm, word);
 
           // Exact match (score = 1.0)

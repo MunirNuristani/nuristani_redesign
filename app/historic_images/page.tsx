@@ -1,25 +1,29 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getDownloadURL, ref } from "firebase/storage";
-import { storage } from "@/utils/firebase-config"; // Adjust path as needed
+import { storage } from "@/utils/firebase-config";
 import LoadingPage from "../loading";
-import { useAppContext } from "@/context/AppContext"; // Adjust path as needed
+import { useAppContext } from "@/context/AppContext";
 import axios from "axios";
 import Image from "next/image";
 import { phrases } from "@/utils/i18n";
-function PictureGallery() {
+
+function HistoricImagesGallery() {
   const { state } = useAppContext();
   const { language: lang } = state;
   const { historicalImageTitle, notFound } = phrases;
+
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [displayUrl, setDisplayUrl] = useState<string[]>([]);
-  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [dir, setDir] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
-  // Ref for thumbnail container
-  const thumbnailContainerRef = useRef<HTMLDivElement>(null);
+  // Pagination for slow internet connections
+  const [displayCount, setDisplayCount] = useState<number>(24);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
 
   useEffect(() => {
     if (lang !== null) {
@@ -30,20 +34,18 @@ function PictureGallery() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
+        setError(null);
         const imageList = await axios.get("/api/getHistoricalImages");
-
-        const imageUrls = imageList.data.map(
-          (item: { url: string }) => item.url
-        );
+        const imageUrls = imageList.data.map((item: { url: string }) => item.url);
         setImageUrls(imageUrls);
 
-        // If no images are returned, set loading to false immediately
         if (imageUrls.length === 0) {
           setLoading(false);
         }
       } catch (error) {
         console.error("Error fetching images:", error);
-        setLoading(false); // Also set loading to false on error
+        setError("Failed to load images. Please try again later.");
+        setLoading(false);
       }
     };
 
@@ -68,6 +70,7 @@ function PictureGallery() {
         setDisplayUrl(validUrls);
       } catch (error) {
         console.error("Error fetching images:", error);
+        setError("Failed to load images. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -78,88 +81,87 @@ function PictureGallery() {
     }
   }, [imageUrls]);
 
-  // Function to scroll thumbnail into view
-  const scrollThumbnailIntoView = useCallback((index: number) => {
-    if (!thumbnailContainerRef.current) return;
+  const openModal = (imageUrl: string) => {
+    setSelectedImage(imageUrl);
+    document.body.style.overflow = "hidden";
+  };
 
-    const container = thumbnailContainerRef.current;
-    const thumbnail = container.children[index] as HTMLElement;
+  const closeModal = () => {
+    setSelectedImage(null);
+    document.body.style.overflow = "auto";
+  };
 
-    if (!thumbnail) return;
-
-    const containerRect = container.getBoundingClientRect();
-    const thumbnailRect = thumbnail.getBoundingClientRect();
-
-    const containerCenter = containerRect.width / 2;
-    const thumbnailCenter =
-      thumbnailRect.left - containerRect.left + thumbnailRect.width / 2;
-
-    const scrollOffset = thumbnailCenter - containerCenter;
-
-    container.scrollBy({
-      left: scrollOffset,
-      behavior: "smooth",
-    });
-  }, []);
-
-  // Update current image index and scroll thumbnail
-  const updateCurrentImage = useCallback(
-    (newIndex: number) => {
-      setCurrentImageIndex(newIndex);
-      // Use setTimeout to ensure state is updated before scrolling
-      setTimeout(() => {
-        scrollThumbnailIntoView(newIndex);
-      }, 0);
-    },
-    [scrollThumbnailIntoView]
-  );
-
-  const goToNext = useCallback(() => {
-    const newIndex =
-      currentImageIndex === displayUrl.length - 1 ? 0 : currentImageIndex + 1;
-    updateCurrentImage(newIndex);
-  }, [currentImageIndex, displayUrl.length, updateCurrentImage]);
-
-  const goToPrevious = useCallback(() => {
-    const newIndex =
-      currentImageIndex === 0 ? displayUrl.length - 1 : currentImageIndex - 1;
-    updateCurrentImage(newIndex);
-  }, [currentImageIndex, displayUrl.length, updateCurrentImage]);
-
-  const goToImage = useCallback(
-    (index: number) => {
-      updateCurrentImage(index);
-    },
-    [updateCurrentImage]
-  );
-
-  // Keyboard navigation
+  // Close modal on Escape key press
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "ArrowLeft") {
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        lang === "en" ? goToPrevious() : goToNext();
-      } else if (event.key === "ArrowRight") {
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        lang === "en" ? goToNext() : goToPrevious();
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && selectedImage) {
+        closeModal();
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [goToNext, goToPrevious, lang]);
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [selectedImage]);
 
-  // Scroll to current thumbnail on mount and when displayUrl changes
+  // Infinite scroll - load more images automatically
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    if (displayUrl.length > 0) {
-      setTimeout(() => {
-        scrollThumbnailIntoView(currentImageIndex);
-      }, 100);
-    }
-  }, [displayUrl.length, currentImageIndex, scrollThumbnailIntoView]);
+    const currentRef = loadMoreRef.current;
+    if (!currentRef) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && displayCount < displayUrl.length) {
+          setLoadingMore(true);
+          setTimeout(() => {
+            setDisplayCount((prev) => prev + 24);
+            setLoadingMore(false);
+          }, 300);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(currentRef);
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [displayCount, displayUrl.length]);
+
+  const displayedImages = displayUrl.slice(0, displayCount);
+  const hasMore = displayCount < displayUrl.length;
 
   if (loading) {
     return <LoadingPage />;
+  }
+
+  // Show error message if there's an error
+  if (error) {
+    return (
+      <div className="container flex justify-center items-center flex-col mx-auto py-20 text-center px-4">
+        <svg
+          width="200px"
+          height="200px"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          className="text-red-500 mb-4"
+        >
+          <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        </svg>
+        <h2 className="text-2xl font-bold text-red-600 mb-2">Error Loading Content</h2>
+        <p className="text-lg text-gray-600">{error}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Try Again
+        </button>
+      </div>
+    );
   }
 
   if (displayUrl.length === 0) {
@@ -181,121 +183,128 @@ function PictureGallery() {
 
   return (
     <div className="container mx-auto my-10 px-4 max-w-7xl" dir={dir}>
-      <div className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent mb-2">
+      {/* Header */}
+      <div className="text-center mb-16">
+        <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent pb-8">
           {historicalImageTitle[lang]}
         </h1>
       </div>
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-        {/* Main gallery container */}
-        <div className="relative">
-          {/* Main image display */}
-          <div className="relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden bg-gray-100">
-            <Image
-              src={displayUrl[currentImageIndex]}
-              alt={`Image ${currentImageIndex + 1}`}
-              fill
-              className="object-contain"
-              loading="lazy"
-              unoptimized={true}
-            />
 
-            {/* Navigation arrows */}
-            {displayUrl.length > 1 && (
-              <>
-                <button
-                  onClick={lang === "en" ? goToPrevious : goToNext}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-200 backdrop-blur-sm"
-                  aria-label="Previous image"
-                >
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                </button>
+      {/* Masonry Grid with Horizontal Flow - Wabi-Sabi Style */}
+      <div
+        className="grid gap-6"
+        style={{
+          gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+          gridAutoRows: '20px',
+          gridAutoFlow: 'dense'
+        }}
+      >
+        {displayedImages.map((imageUrl, index) => {
+          // Create variety in heights - wabi-sabi aesthetic (capped for better UX)
+          const heights = [8, 9, 10, 11, 12, 14];
+          const rowSpan = heights[Math.floor(Math.random() * heights.length)];
 
-                <button
-                  onClick={lang === "en" ? goToNext : goToPrevious}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-200 backdrop-blur-sm"
-                  aria-label="Next image"
-                >
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
-              </>
-            )}
-
-            {/* Image counter */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-full backdrop-blur-sm">
-              <span className="text-sm font-medium">
-                {currentImageIndex + 1} / {displayUrl.length}
-              </span>
-            </div>
-          </div>
-
-          {/* Thumbnail strip */}
-          {displayUrl.length > 1 && (
-            <div className="p-6 bg-gray-50">
-              <div
-                ref={thumbnailContainerRef}
-                className="flex gap-4 overflow-x-auto pb-4 px-2 
-                h-28  md:min-h-42 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 "
-                style={{ scrollbarWidth: "thin" }}
-              >
-                {displayUrl.map((url, index) => (
-                  <button
-                    key={index}
-                    onClick={() => goToImage(index)}
-                    className="flex-shrink-0 relative transition-all duration-200"
-                  >
-                    <div
-                      className={`relative w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden transition-all duration-200 ${
-                        index === currentImageIndex
-                          ? "ring-4 ring-blue-500 ring-offset-2 ring-offset-gray-50"
-                          : "hover:ring-2 hover:ring-blue-300 hover:ring-offset-1 hover:ring-offset-gray-50"
-                      }`}
-                    >
-                      <Image
-                        src={url}
-                        alt={`Thumbnail ${index + 1}`}
-                        fill
-                        className="object-cover"
-                        loading="lazy"
-                        unoptimized={true}
-                      />
-                      {index === currentImageIndex && (
-                        <div className="absolute inset-0 bg-blue-500/20 rounded-lg"></div>
-                      )}
-                    </div>
-                  </button>
-                ))}
+          return (
+            <div
+              key={index}
+              className="group cursor-pointer"
+              style={{ gridRowEnd: `span ${rowSpan}` }}
+              onClick={() => openModal(imageUrl)}
+            >
+              <div className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-300 bg-white h-full">
+                {/* Image with natural aspect ratio */}
+                <div className="relative w-full h-full">
+                  <Image
+                    src={imageUrl}
+                    alt={`Historic image ${index + 1}`}
+                    fill
+                    className="object-cover"
+                    loading="lazy"
+                    quality={75}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                    onError={(e) => {
+                      console.error(`Failed to load image ${index}`);
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                  {/* Overlay on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
               </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Infinite Scroll Trigger */}
+      {hasMore && (
+        <div ref={loadMoreRef} className="flex justify-center mt-12 py-8">
+          {loadingMore && (
+            <div className="flex items-center gap-3 text-gray-600">
+              <div className="w-6 h-6 border-3 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              <span className="text-lg font-medium">Loading more...</span>
             </div>
           )}
         </div>
-      </div>
+      )}
+
+      {/* Modal / Lightbox */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
+          onClick={closeModal}
+        >
+          {/* Modal Content */}
+          <div
+            className="relative max-w-6xl max-h-[90vh] w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={closeModal}
+              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10"
+              aria-label="Close modal"
+            >
+              <svg
+                className="w-10 h-10"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+
+            {/* Image Container */}
+            <div className="relative w-full h-full flex items-center justify-center">
+              <div className="relative w-full max-h-[80vh] rounded-lg shadow-2xl">
+                <Image
+                  src={selectedImage}
+                  alt="Historic image view"
+                  width={1200}
+                  height={800}
+                  className="object-contain max-h-[80vh] w-auto mx-auto"
+                  quality={85}
+                  sizes="(max-width: 1200px) 100vw, 1200px"
+                  priority
+                  onError={() => {
+                    console.error(`Failed to load modal image`);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-export default PictureGallery;
+export default HistoricImagesGallery;

@@ -10,14 +10,14 @@ import ClientLayout from "./ClientLayout";
 import ThemeProvider from "@/app/theme/Provider";
 import { WebVitals } from "./web-vitals";
 
-export const viewport: Viewport = {
+ const viewport = (): Viewport => ({
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
   themeColor: "#3b82f6",
-};
+});
 
-export const metadata: Metadata = {
+ const metadata: Metadata = {
   metadataBase: new URL("https://nuristani.info"),
   title: {
     default: "Mirza Taza Gul Khan Cultural Foundation | Nuristani Language & Culture",
@@ -92,7 +92,7 @@ export const metadata: Metadata = {
     // bing: "your-bing-verification-code",
   },
 };
-
+export { metadata, viewport };
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -140,16 +140,14 @@ export default function RootLayout({
           as="image"
           href="/bg.jpg"
           media="(min-width: 768px)"
-          // @ts-expect-error - fetchpriority is valid HTML but not in React types yet
-          fetchpriority="high"
+          fetchPriority="high"
         />
         <link
           rel="preload"
           as="image"
           href="/heroImage01.png"
           media="(max-width: 767px)"
-          // @ts-expect-error - fetchpriority is valid HTML but not in React types yet
-          fetchpriority="high"
+          fetchPriority="high"
         />
       </head>
       <body>
