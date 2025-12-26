@@ -12,7 +12,23 @@
       "Bash(mv:*)",
       "Bash(grep:*)",
       "Bash(npm run build:*)",
-      "WebFetch(domain:pagespeed.web.dev)"
+      "WebFetch(domain:pagespeed.web.dev)",
+      "Bash(git add:*)",
+      "WebSearch",
+      "Bash(npm ls:*)",
+      "Bash(npx next build)",
+      "Bash(for file in /Users/mnuristani/Desktop/Projects/nuristani_redesign/app/components/ui/*.tsx)",
+      "Bash(do head -1 \"$file\")",
+      "Bash(done)",
+      "Bash(tee:*)",
+      "Bash(if grep -q \"^\"\"use client\"\"\" app/page.tsx)",
+      "Bash(then mv app/page.tsx app/PageClient.tsx)",
+      "Bash(echo:*)",
+      "Bash(else echo \"Home page is not a client component\")",
+      "Bash(fi)",
+      "mcp__ide__getDiagnostics",
+      "Bash(npm run dev:*)",
+      "Bash(kill:*)"
     ],
     "deny": []
   }

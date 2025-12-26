@@ -1,18 +1,7 @@
+"use client";
 import * as React from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import Modal from "@mui/material/Modal";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "min(90vw, 500px)",
-  maxHeight: "90vh",
-  outline: "none",
-};
+import Button from "@/app/components/ui/Button";
 
 interface Props {
   open: boolean;
@@ -31,25 +20,24 @@ export default function BasicModal({
     toggleAlertModal();
   };
 
+  if (!open) return null;
+
   return (
-    <Modal
-      className="backdrop-blur-sm"
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-      sx={{
-        "& .MuiBackdrop-root": {
-          backgroundColor: "rgba(0, 0, 0, 0.7)",
-        },
-      }}
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm"
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}
+      onClick={handleClose}
     >
-      <Box sx={style}>
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(90vw,500px)] max-h-[90vh] outline-none"
+        style={{
+          animation: "modalSlideIn 0.3s ease-out",
+        }}
+      >
         <div
-          className="relative w-full bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all animate-in"
+          className="relative w-full bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all"
           onClick={(e) => e.stopPropagation()}
           style={{
-            animation: "modalSlideIn 0.3s ease-out",
             background: "linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)",
             border: "1px solid rgba(148, 163, 184, 0.1)",
           }}
@@ -126,28 +114,10 @@ export default function BasicModal({
               <Button
                 variant="contained"
                 type="button"
-                fullWidth
                 onClick={handleClose}
-                autoFocus
-                sx={{
-                  fontWeight: 600,
-                  fontSize: "16px",
-                  height: "48px",
-                  borderRadius: "12px",
-                  textTransform: "none",
-                  background:
-                    "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)",
-                  boxShadow: "0 4px 12px rgba(59, 130, 246, 0.3)",
-                  "&:hover": {
-                    background:
-                      "linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)",
-                    boxShadow: "0 6px 16px rgba(59, 130, 246, 0.4)",
-                    
-                  },
-                  "&:active": {
-                    transform: "translateY(0px)",
-                  },
-                  transition: "all 0.2s ease-in-out",
+                className="w-full font-semibold text-base h-12 rounded-xl shadow-lg hover:shadow-xl transition-all"
+                style={{
+                  background: "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)",
                 }}
               >
                 {buttonText}
@@ -171,7 +141,7 @@ export default function BasicModal({
             }
           }
         `}</style>
-      </Box>
-    </Modal>
+      </div>
+    </div>
   );
 }

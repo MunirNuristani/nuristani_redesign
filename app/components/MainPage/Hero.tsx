@@ -1,8 +1,8 @@
 "use client";
-import Button from "@mui/material/Button";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
 import { phrases } from "@/utils/i18n";
+import Button from "@/app/components/ui/Button";
 export default function Hero() {
   const { state } = useAppContext();
   const { language: lang } = state; 
@@ -114,11 +114,7 @@ const HeroSection = ({ lang, mainH1, statementTitle, learnMore }: any) => {
         <div className="w-full flex justify-center md:justify-start pt-2">
           <Button
             variant="outlined"
-            sx={{
-              fontSize: { xs: '0.875rem', md: '1rem', lg: '1.125rem' },
-              padding: { xs: '8px 16px', md: '10px 20px', lg: '12px 24px' },
-              minWidth: '140px',
-            }}
+            className="text-sm md:text-base lg:text-lg px-4 md:px-5 lg:px-6 py-2 md:py-2.5 lg:py-3 min-w-[140px]"
             endIcon={
               <svg
                 className={`ml-2 w-4 h-4 lg:w-5 lg:h-5 ${lang === "en" ? "" : "rotate-180"}`}

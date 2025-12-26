@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic';
+
 export default function NotFound() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -29,7 +31,7 @@ export default function NotFound() {
             Return Home
           </Link>
           <div className="text-sm">
-            <Link href="/Contact" className="font-medium text-amber-600 hover:text-amber-500">
+            <Link href="/contact" className="font-medium text-amber-600 hover:text-amber-500">
               Contact us for help
             </Link>
           </div>

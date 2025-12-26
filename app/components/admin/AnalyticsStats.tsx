@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { db } from "@/utils/firebase-config";
 import { collection, query, getDocs, orderBy, limit, where, Timestamp } from "firebase/firestore";
-import { CircularProgress, Card, CardContent, Typography } from "@mui/material";
 
 interface SearchResult {
   id: string;
@@ -154,7 +153,10 @@ export default function AnalyticsStats() {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-12">
-        <CircularProgress />
+        <svg className="animate-spin h-12 w-12 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
       </div>
     );
   }
@@ -184,131 +186,115 @@ export default function AnalyticsStats() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <Card className="h-full">
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Total Sessions
-            </Typography>
-            <Typography variant="h4" component="div">
-              {stats.totalSessions.toLocaleString()}
-            </Typography>
-          </CardContent>
-        </Card>
+        <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 h-full">
+          <div className="text-gray-600 text-sm mb-2">
+            Total Sessions
+          </div>
+          <div className="text-3xl font-bold text-gray-900">
+            {stats.totalSessions.toLocaleString()}
+          </div>
+        </div>
 
-        <Card className="h-full">
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Page Visits
-            </Typography>
-            <Typography variant="h4" component="div">
-              {stats.totalPageVisits.toLocaleString()}
-            </Typography>
-          </CardContent>
-        </Card>
+        <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 h-full">
+          <div className="text-gray-600 text-sm mb-2">
+            Page Visits
+          </div>
+          <div className="text-3xl font-bold text-gray-900">
+            {stats.totalPageVisits.toLocaleString()}
+          </div>
+        </div>
 
-        <Card className="h-full">
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Dictionary Searches
-            </Typography>
-            <Typography variant="h4" component="div">
-              {stats.totalSearches.toLocaleString()}
-            </Typography>
-          </CardContent>
-        </Card>
+        <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 h-full">
+          <div className="text-gray-600 text-sm mb-2">
+            Dictionary Searches
+          </div>
+          <div className="text-3xl font-bold text-gray-900">
+            {stats.totalSearches.toLocaleString()}
+          </div>
+        </div>
 
-        <Card className="h-full">
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Button Clicks
-            </Typography>
-            <Typography variant="h4" component="div">
-              {stats.totalButtonClicks.toLocaleString()}
-            </Typography>
-          </CardContent>
-        </Card>
+        <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 h-full">
+          <div className="text-gray-600 text-sm mb-2">
+            Button Clicks
+          </div>
+          <div className="text-3xl font-bold text-gray-900">
+            {stats.totalButtonClicks.toLocaleString()}
+          </div>
+        </div>
 
-        <Card className="h-full">
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Dictionary Switches
-            </Typography>
-            <Typography variant="h4" component="div">
-              {stats.totalDictionarySwitches.toLocaleString()}
-            </Typography>
-          </CardContent>
-        </Card>
+        <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 h-full">
+          <div className="text-gray-600 text-sm mb-2">
+            Dictionary Switches
+          </div>
+          <div className="text-3xl font-bold text-gray-900">
+            {stats.totalDictionarySwitches.toLocaleString()}
+          </div>
+        </div>
 
-        <Card className="h-full">
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Total Errors
-            </Typography>
-            <Typography variant="h4" component="div" color="error">
-              {stats.totalErrors.toLocaleString()}
-            </Typography>
-          </CardContent>
-        </Card>
+        <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 h-full">
+          <div className="text-gray-600 text-sm mb-2">
+            Total Errors
+          </div>
+          <div className="text-3xl font-bold text-red-600">
+            {stats.totalErrors.toLocaleString()}
+          </div>
+        </div>
       </div>
 
       {/* Popular Pages */}
-      <Card>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Popular Pages
-          </Typography>
-          <div className="space-y-2 mt-4">
-            {stats.popularPages.map((page, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
-              >
-                <span className="font-medium">{page.page}</span>
-                <span className="text-gray-600">{page.count} visits</span>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          Popular Pages
+        </h2>
+        <div className="space-y-2 mt-4">
+          {stats.popularPages.map((page, index) => (
+            <div
+              key={index}
+              className="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
+            >
+              <span className="font-medium">{page.page}</span>
+              <span className="text-gray-600">{page.count} visits</span>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Recent Searches */}
-      <Card>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Recent Dictionary Searches
-          </Typography>
-          <div className="overflow-x-auto mt-4">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left p-2">Query</th>
-                  <th className="text-left p-2">Dictionary</th>
-                  <th className="text-left p-2">Results</th>
-                  <th className="text-left p-2">Time</th>
+      <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          Recent Dictionary Searches
+        </h2>
+        <div className="overflow-x-auto mt-4">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b">
+                <th className="text-left p-2">Query</th>
+                <th className="text-left p-2">Dictionary</th>
+                <th className="text-left p-2">Results</th>
+                <th className="text-left p-2">Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {stats.recentSearches.map((search) => (
+                <tr key={search.id} className="border-b">
+                  <td className="p-2 font-medium">{search.searchQuery}</td>
+                  <td className="p-2">{search.dictionaryType}</td>
+                  <td className="p-2">
+                    {search.resultsFound ? (
+                      <span className="text-green-600">✓ Found</span>
+                    ) : (
+                      <span className="text-red-600">✗ None</span>
+                    )}
+                  </td>
+                  <td className="p-2 text-sm text-gray-600">
+                    {search.timestamp?.toDate().toLocaleString()}
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {stats.recentSearches.map((search) => (
-                  <tr key={search.id} className="border-b">
-                    <td className="p-2 font-medium">{search.searchQuery}</td>
-                    <td className="p-2">{search.dictionaryType}</td>
-                    <td className="p-2">
-                      {search.resultsFound ? (
-                        <span className="text-green-600">✓ Found</span>
-                      ) : (
-                        <span className="text-red-600">✗ None</span>
-                      )}
-                    </td>
-                    <td className="p-2 text-sm text-gray-600">
-                      {search.timestamp?.toDate().toLocaleString()}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

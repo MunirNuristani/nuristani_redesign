@@ -1,9 +1,6 @@
 "use client";
 import * as React from "react";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@/app/components/ui/Select";
 import { useAppContext } from "@/context/AppContext";
 import { Language } from "@/context/Reducer";
 
@@ -25,7 +22,6 @@ export default function LangSelect(props: Props) {
     dispatch: () => {},
   };
   const { language } = state;
-   
 
   // Handle hydration
   React.useEffect(() => {
@@ -41,7 +37,7 @@ export default function LangSelect(props: Props) {
     setDir(language === "en" ? "ltr" : "rtl");
   }, [language]);
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newValue: Language = event.target.value as Language;
     setLocalLanguage(newValue);
     setIsOpen(false);
@@ -49,98 +45,39 @@ export default function LangSelect(props: Props) {
     if (dispatch) {
       dispatch({ type: "LANGUAGE", payload: newValue });
     }
-
   };
-
 
   // Don't render the actual select until client-side to avoid hydration mismatch
   if (!isClient) {
     return (
-      <FormControl dir={dir} sx={{ m: 1, minWidth: "100%" }} size="small">
-        <InputLabel dir={dir} id="LanguageSelect">
-          الا / لسان / ژبه / Language
-        </InputLabel>
+      <div className="w-full p-2" dir={dir}>
         <Select
-          dir={dir}
-          labelId="LanguageSelect"
-          id="LanguageSelect"
-          value=""
           label="الا / لسان / ژبه / Language"
+          value=""
+          onChange={() => {}}
+          fullWidth
           disabled
-        >
-          <MenuItem value="">Select One/ یکی را انتخاب کنید</MenuItem>
-        </Select>
-      </FormControl>
+          options={[{ value: "", label: "Select One/ یکی را انتخاب کنید" }]}
+        />
+      </div>
     );
   }
 
   return (
-    <FormControl
-      dir={language === "en" ? "ltr" : "rtl"}
-      sx={{
-        m: 1,
-        minWidth: "100%",
-        // Force GPU acceleration
-        '& .MuiInputLabel-root': {
-          transform: 'translateZ(0)',
-          willChange: 'transform, opacity',
-          transition: 'transform 0.2s cubic-bezier(0.0, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.0, 0, 0.2, 1)',
-        },
-        '& .MuiSelect-select': {
-          transform: 'translateZ(0)',
-        },
-        '& .MuiOutlinedInput-notchedOutline': {
-          transform: 'translateZ(0)',
-        }
-      }}
-      size="small"
-    >
-      <InputLabel
-        dir={language === "en" ? "ltr" : "rtl"}
-        id="LanguageSelect"
-        sx={{
-          // Override MUI's max-width animation with transform
-          maxWidth: '100% !important',
-        }}
-      >
-        الا / لسان / ژبه / Language
-      </InputLabel>
+    <div className="w-full p-2" dir={language === "en" ? "ltr" : "rtl"}>
       <Select
-        dir={language === "en" ? "ltr" : "rtl"}
-        labelId="LanguageSelect"
         id="LanguageSelect"
-        value={localLanguage}
         label="الا / لسان / ژبه / Language"
+        value={localLanguage}
         onChange={handleChange}
-        MenuProps={{
-          // Optimize menu animations
-          TransitionProps: {
-            timeout: 200,
-          },
-          PaperProps: {
-            sx: {
-              transform: 'translateZ(0)',
-              willChange: 'transform, opacity',
-            }
-          },
-          // Use GPU-accelerated animations for dropdown
-          sx: {
-            '& .MuiPaper-root': {
-              transform: 'translateZ(0)',
-            },
-            '& .MuiList-root': {
-              transform: 'translateZ(0)',
-            }
-          }
-        }}
-      >
-        <MenuItem value="nr">نورستانی (کلښه الا)</MenuItem>
-        <MenuItem value="prs"> دری </MenuItem>
-        <MenuItem value="ps"> پښتو </MenuItem>
-        <MenuItem value="en" dir="ltr">
-          English
-        </MenuItem>
-      </Select>
-    </FormControl>
+        fullWidth
+        options={[
+          { value: "nr", label: "نورستانی (کلښه الا)" },
+          { value: "prs", label: "دری" },
+          { value: "ps", label: "پښتو" },
+          { value: "en", label: "English" },
+        ]}
+      />
+    </div>
   );
 }
