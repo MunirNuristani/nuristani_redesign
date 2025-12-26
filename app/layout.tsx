@@ -7,17 +7,16 @@ import Footer from "./components/navigation/Footer";
 import { ReducerWrapper } from "@/context/AppContext";
 import { AuthProvider } from "@/context/AuthContext";
 import ClientLayout from "./ClientLayout";
-import ThemeProvider from "@/app/theme/Provider";
 import { WebVitals } from "./web-vitals";
 
- const viewport = (): Viewport => ({
+export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
   themeColor: "#3b82f6",
-});
+};
 
- const metadata: Metadata = {
+export const metadata: Metadata = {
   metadataBase: new URL("https://nuristani.info"),
   title: {
     default: "Mirza Taza Gul Khan Cultural Foundation | Nuristani Language & Culture",
@@ -92,7 +91,7 @@ import { WebVitals } from "./web-vitals";
     // bing: "your-bing-verification-code",
   },
 };
-export { metadata, viewport };
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -154,13 +153,11 @@ export default function RootLayout({
         <WebVitals />
         <AuthProvider>
           <ReducerWrapper>
-            <ThemeProvider>
-              <ClientLayout>
-                <Header />
-                <main className="min-h-[calc(100dvh-180px)]">{children}</main>
-                <Footer />
-              </ClientLayout>
-            </ThemeProvider>
+            <ClientLayout>
+              <Header />
+              <main className="min-h-[calc(100dvh-180px)]">{children}</main>
+              <Footer />
+            </ClientLayout>
           </ReducerWrapper>
         </AuthProvider>
       </body>

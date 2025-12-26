@@ -1,26 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Button,
-  TextField,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
-  CircularProgress,
-  Alert,
-  Card,
-  CardContent,
-  CardActions,
-  IconButton,
-  Chip,
-} from "@mui/material";
-import { Delete, Edit, Add } from "@mui/icons-material";
 import Image from "next/image";
 import { storage, db } from "@/utils/firebase-config";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
@@ -262,27 +242,36 @@ export default function HistoricalFiguresManager() {
         <h2 className="text-2xl font-bold text-gray-900">
           Historical Figures Management
         </h2>
-        <Button
-          variant="contained"
-          startIcon={<Add />}
+        <button
           onClick={handleAddNew}
-          sx={{ textTransform: "none" }}
+          className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
         >
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
           Add New Figure
-        </Button>
+        </button>
       </div>
 
       {/* Success Alert (page level) */}
       {success && (
-        <Alert severity="success" onClose={() => setSuccess(null)} sx={{ mb: 2 }}>
-          {success}
-        </Alert>
+        <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg text-green-800 flex justify-between items-center">
+          <span>{success}</span>
+          <button onClick={() => setSuccess(null)} className="text-green-600 hover:text-green-800">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
       )}
 
       {/* Loading */}
       {loading && (
         <div className="flex justify-center py-12">
-          <CircularProgress />
+          <svg className="animate-spin h-12 w-12 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
         </div>
       )}
 
@@ -290,7 +279,7 @@ export default function HistoricalFiguresManager() {
       {!loading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {figures.map((figure) => (
-            <Card key={figure.id}>
+            <div key={figure.id} className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
               <div className="relative h-64">
                 <Image
                   src={figure.imageUrl}
@@ -300,144 +289,187 @@ export default function HistoricalFiguresManager() {
                   unoptimized
                 />
               </div>
-              <CardContent>
-                <Chip label={figure.era} size="small" color="primary" sx={{ mb: 1 }} />
+              <div className="p-4">
+                <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full mb-2">
+                  {figure.era}
+                </span>
                 <p className="text-sm font-semibold mb-1">{figure.caption.en}</p>
                 <p className="text-xs text-gray-600 line-clamp-2">{figure.caption.prs}</p>
-              </CardContent>
-              <CardActions>
-                <IconButton
-                  size="small"
-                  color="primary"
+              </div>
+              <div className="p-2 flex justify-start gap-2 border-t border-gray-200">
+                <button
                   onClick={() => handleEdit(figure)}
+                  className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  title="Edit figure"
                 >
-                  <Edit fontSize="small" />
-                </IconButton>
-                <IconButton
-                  size="small"
-                  color="error"
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                </button>
+                <button
                   onClick={() => handleDelete(figure)}
+                  className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                  title="Delete figure"
                 >
-                  <Delete fontSize="small" />
-                </IconButton>
-              </CardActions>
-            </Card>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              </div>
+            </div>
           ))}
         </div>
       )}
 
       {/* Add/Edit Dialog */}
-      <Dialog
-        open={dialogOpen}
-        onClose={() => !uploading && resetForm()}
-        maxWidth="md"
-        fullWidth
-      >
-        <DialogTitle>
-          {editingFigure ? "Edit Historical Figure" : "Add New Historical Figure"}
-        </DialogTitle>
-        <DialogContent>
-          {/* Error Alert (modal level) */}
-          {error && (
-            <Alert severity="error" onClose={() => setError(null)} sx={{ mb: 2, mt: 2 }}>
-              {error}
-            </Alert>
-          )}
+      {dialogOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200">
+              <h3 className="text-xl font-semibold text-gray-900">
+                {editingFigure ? "Edit Historical Figure" : "Add New Historical Figure"}
+              </h3>
+            </div>
+            <div className="p-6">
+              {/* Error Alert (modal level) */}
+              {error && (
+                <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800 flex justify-between items-center">
+                  <span>{error}</span>
+                  <button onClick={() => setError(null)} className="text-red-600 hover:text-red-800">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              )}
 
           <div className="space-y-4 pt-4 gap-4">
-            {/* Image Upload */}
-            <div>
-              <input
-                accept="image/*"
-                type="file"
-                onChange={handleImageChange}
-                style={{ display: "none" }}
-                id="image-upload"
-              />
-              <label htmlFor="image-upload">
-                <Button
-                  variant="outlined"
-                  component="span"
-                  fullWidth
-                  disabled={uploading}
+              {/* Image Upload */}
+              <div>
+                <input
+                  accept="image/*"
+                  type="file"
+                  onChange={handleImageChange}
+                  className="hidden"
+                  id="image-upload"
+                />
+                <label
+                  htmlFor="image-upload"
+                  className={`w-full inline-flex items-center justify-center px-4 py-3 border border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors cursor-pointer ${
+                    uploading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 >
                   {imageFile ? `Change Image (${imageFile.name})` : editingFigure ? "Change Image" : "Upload Image"}
-                </Button>
-              </label>
-              {imagePreview && (
-                <div className="mt-4 w-full bg-gray-100 p-4 rounded">
-                  <p className="text-sm font-semibold mb-2 text-gray-700">Preview:</p>
-                  <Image
-                    src={imagePreview}
-                    alt="Preview"
-                    layout="fill"
-                    className="w-full max-h-64 object-contain border-2 border-blue-500 rounded bg-white"
+                </label>
+                {imagePreview && (
+                  <div className="mt-4 w-full bg-gray-100 p-4 rounded">
+                    <p className="text-sm font-semibold mb-2 text-gray-700">Preview:</p>
+                    <div className="relative w-full h-64">
+                      <Image
+                        src={imagePreview}
+                        alt="Preview"
+                        fill
+                        style={{ objectFit: "contain" }}
+                        className="border-2 border-blue-500 rounded bg-white"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Captions */}
+              <div className="my-2">
+                <label htmlFor="caption-en" className="block text-sm font-medium text-gray-700 mb-2">
+                  Caption (English)
+                </label>
+                <textarea
+                  id="caption-en"
+                  rows={2}
+                  value={captionEn}
+                  onChange={(e) => setCaptionEn(e.target.value)}
+                  disabled={uploading}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition-all"
+                />
+              </div>
+              <div className="my-2">
+                <label htmlFor="caption-prs" className="block text-sm font-medium text-gray-700 mb-2">
+                  Caption (دری / Dari)
+                </label>
+                <textarea
+                  id="caption-prs"
+                  rows={2}
+                  value={captionPrs}
+                  onChange={(e) => setCaptionPrs(e.target.value)}
+                  disabled={uploading}
+                  dir="rtl"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition-all"
+                />
+              </div>      
+              {/* Era Selection */}
+              <div className="my-2">
+                <label htmlFor="era" className="block text-sm font-medium text-gray-700 mb-2">
+                  Era
+                </label>
+                <select
+                  id="era"
+                  value={era}
+                  onChange={(e) => setEra(e.target.value)}
+                  disabled={uploading}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition-all"
+                >
+                  <option value="">Select an era</option>
+                  {ERA_OPTIONS.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Custom Era Input */}
+              {era === "Custom" && (
+                <div className="my-2">
+                  <label htmlFor="custom-era" className="block text-sm font-medium text-gray-700 mb-2">
+                    Custom Era
+                  </label>
+                  <input
+                    id="custom-era"
+                    type="text"
+                    value={customEra}
+                    onChange={(e) => setCustomEra(e.target.value)}
+                    disabled={uploading}
+                    placeholder="e.g., Medieval Period, Ancient Times"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition-all"
                   />
                 </div>
               )}
             </div>
-
-            {/* Captions */}
-            
-              <div className="my-2">        <TextField
-              label="Caption (English)"
-              fullWidth
-              rows={2}
-              value={captionEn}
-              onChange={(e) => setCaptionEn(e.target.value)}
-              disabled={uploading}
-            />
-              </div>
-            <div className="my-2"> 
-            <TextField
-              label="Caption (دری / Dari)"
-              fullWidth
-              rows={2}
-              value={captionPrs}
-              onChange={(e) => setCaptionPrs(e.target.value)}
-              disabled={uploading}
-              dir="rtl"
-            />
-              </div>      
-            {/* Era Selection */}
-            <FormControl fullWidth disabled={uploading}>
-              <InputLabel>Era</InputLabel>
-              <Select value={era} onChange={(e) => setEra(e.target.value)} label="Era">
-                {ERA_OPTIONS.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            {/* Custom Era Input */}
-            {era === "Custom" && (
-              <TextField
-                label="Custom Era"
-                fullWidth
-                value={customEra}
-                onChange={(e) => setCustomEra(e.target.value)}
+            </div>
+            <div className="p-6 border-t border-gray-200 flex justify-end gap-3">
+              <button
+                onClick={resetForm}
                 disabled={uploading}
-                placeholder="e.g., Medieval Period, Ancient Times"
-              />
-            )}
+                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={uploading}
+                className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                {uploading && (
+                  <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                )}
+                {uploading ? "Saving..." : "Save"}
+              </button>
+            </div>
           </div>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={resetForm} disabled={uploading}>
-            Cancel
-          </Button>
-          <Button
-            onClick={handleSave}
-            variant="contained"
-            disabled={uploading}
-            startIcon={uploading && <CircularProgress size={20} />}
-          >
-            {uploading ? "Saving..." : "Save"}
-          </Button>
-        </DialogActions>
-      </Dialog>
+        </div>
+      )}
     </div>
   );
 }

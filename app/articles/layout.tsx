@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 
+
 export const metadata: Metadata = {
   title: "Nuristani Articles - Cultural Stories and Educational Content",
   description:

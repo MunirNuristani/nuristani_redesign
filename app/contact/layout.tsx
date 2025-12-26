@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 
+
+
 export const metadata: Metadata = {
   title: "Contact Us - Nuristani Cultural Foundation",
   description:

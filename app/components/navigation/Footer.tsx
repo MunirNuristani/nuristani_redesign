@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import Links from "./Links"
 import Link from "next/link";
 
@@ -15,8 +15,8 @@ const Footer = () => {
           <Image
             src={"/logo_original_noLabel.png"}
             alt="Nuristani Cultural Foundation Logo"
-            objectFit="fill"
-            layout="fill"
+            fill
+            style={{ objectFit: "fill" }}
           />
         </Link>
         <div className="text-2xl font-bold cursor-pointer z-50">

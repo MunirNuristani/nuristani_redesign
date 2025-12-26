@@ -85,13 +85,13 @@ export const trackError = async (data: BaseErrorData) => {
     });
 
     // Also log to console in development
-    if (process.env.NODE_ENV === "development") {
-      console.error("🔴 Error Tracked:", {
-        type: data.errorType,
-        message: data.errorMessage,
-        severity: data.severity,
-      });
-    }
+    // if (process.env.NODE_ENV === "development") {
+    //   console.error("🔴 Error Tracked:", {
+    //     type: data.errorType,
+    //     message: data.errorMessage,
+    //     severity: data.severity,
+    //   });
+    // }
   } catch (error) {
     // Fallback: log to console if error tracking fails
     console.error("Failed to track error:", error);

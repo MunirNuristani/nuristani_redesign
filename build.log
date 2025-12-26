@@ -1,0 +1,34 @@
+
+> nuristani_redesign@0.1.0 build
+> next build
+
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/mnuristani/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /Users/mnuristani/Desktop/Projects/nuristani_redesign/package-lock.json
+
+▲ Next.js 16.1.1 (Turbopack)
+- Environments: .env.local
+- Experiments (use with caution):
+  · optimizePackageImports
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 10.4s
+  Running TypeScript ...
+  Collecting page data using 9 workers ...
+  Generating static pages using 9 workers (0/34) ...
+Error occurred prerendering page "/articles". Read more: https://nextjs.org/docs/messages/prerender-error
+TypeError: Cannot read properties of undefined (reading '$$typeof')
+    at bg (.next/server/chunks/ssr/5cf4e_next_dist_fea6bea2._.js:1:109917)
+    at <unknown> (.next/server/chunks/ssr/5cf4e_next_dist_fea6bea2._.js:4:3432)
+    at bA (.next/server/chunks/ssr/5cf4e_next_dist_fea6bea2._.js:4:3501)
+    at <unknown> (.next/server/chunks/ssr/5cf4e_next_dist_fea6bea2._.js:4:6398)
+    at bC (.next/server/chunks/ssr/5cf4e_next_dist_fea6bea2._.js:4:6418)
+    at bE (.next/server/chunks/ssr/5cf4e_next_dist_fea6bea2._.js:4:7053)
+    at async bW (.next/server/chunks/ssr/5cf4e_next_dist_fea6bea2._.js:4:20550) {
+  digest: '2321193563'
+}
+Export encountered an error on /articles/page: /articles, exiting the build.
+⨯ Next.js build worker exited with code: 1 and signal: null

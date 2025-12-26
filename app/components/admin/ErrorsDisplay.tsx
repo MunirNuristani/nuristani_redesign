@@ -3,24 +3,6 @@
 import { useState, useEffect } from "react";
 import { db } from "@/utils/firebase-config";
 import { collection, query, getDocs, orderBy, limit, where, Timestamp, deleteDoc, doc } from "firebase/firestore";
-import {
-  CircularProgress,
-  Card,
-  CardContent,
-  Typography,
-  Chip,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-} from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 interface ErrorLog {
   id: string;
@@ -96,35 +78,35 @@ export default function ErrorsDisplay() {
     }
   };
 
-  const getSeverityColor = (severity: string): "error" | "warning" | "info" | "success" | "default" => {
+  const getSeverityColor = (severity: string): string => {
     switch (severity) {
       case "critical":
-        return "error";
+        return "bg-red-100 text-red-800 border-red-200";
       case "high":
-        return "warning";
+        return "bg-orange-100 text-orange-800 border-orange-200";
       case "medium":
-        return "info";
+        return "bg-blue-100 text-blue-800 border-blue-200";
       case "low":
-        return "success";
+        return "bg-green-100 text-green-800 border-green-200";
       default:
-        return "default";
+        return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
 
-  const getTypeColor = (type: string): "error" | "warning" | "info" | "secondary" | "primary" | "default" => {
+  const getTypeColor = (type: string): string => {
     switch (type) {
       case "javascript":
-        return "error";
+        return "bg-red-50 text-red-700 border-red-300";
       case "react":
-        return "warning";
+        return "bg-orange-50 text-orange-700 border-orange-300";
       case "api":
-        return "info";
+        return "bg-blue-50 text-blue-700 border-blue-300";
       case "network":
-        return "secondary";
+        return "bg-purple-50 text-purple-700 border-purple-300";
       case "custom":
-        return "primary";
+        return "bg-indigo-50 text-indigo-700 border-indigo-300";
       default:
-        return "default";
+        return "bg-gray-50 text-gray-700 border-gray-300";
     }
   };
 
@@ -183,7 +165,10 @@ export default function ErrorsDisplay() {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-12">
-        <CircularProgress />
+        <svg className="animate-spin h-12 w-12 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
       </div>
     );
   }
@@ -208,31 +193,29 @@ export default function ErrorsDisplay() {
       </div>
 
       {/* Error Statistics */}
-      <Card>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Error Summary
-          </Typography>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-            <div className="p-4 bg-red-50 rounded-lg">
-              <div className="text-3xl font-bold text-red-600">{errorStats.critical}</div>
-              <div className="text-sm text-gray-600">Critical</div>
-            </div>
-            <div className="p-4 bg-orange-50 rounded-lg">
-              <div className="text-3xl font-bold text-orange-600">{errorStats.high}</div>
-              <div className="text-sm text-gray-600">High</div>
-            </div>
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <div className="text-3xl font-bold text-blue-600">{errorStats.medium}</div>
-              <div className="text-sm text-gray-600">Medium</div>
-            </div>
-            <div className="p-4 bg-green-50 rounded-lg">
-              <div className="text-3xl font-bold text-green-600">{errorStats.low}</div>
-              <div className="text-sm text-gray-600">Low</div>
-            </div>
+      <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          Error Summary
+        </h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+          <div className="p-4 bg-red-50 rounded-lg">
+            <div className="text-3xl font-bold text-red-600">{errorStats.critical}</div>
+            <div className="text-sm text-gray-600">Critical</div>
           </div>
-        </CardContent>
-      </Card>
+          <div className="p-4 bg-orange-50 rounded-lg">
+            <div className="text-3xl font-bold text-orange-600">{errorStats.high}</div>
+            <div className="text-sm text-gray-600">High</div>
+          </div>
+          <div className="p-4 bg-blue-50 rounded-lg">
+            <div className="text-3xl font-bold text-blue-600">{errorStats.medium}</div>
+            <div className="text-sm text-gray-600">Medium</div>
+          </div>
+          <div className="p-4 bg-green-50 rounded-lg">
+            <div className="text-3xl font-bold text-green-600">{errorStats.low}</div>
+            <div className="text-sm text-gray-600">Low</div>
+          </div>
+        </div>
+      </div>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-4">
@@ -274,34 +257,30 @@ export default function ErrorsDisplay() {
 
       {/* Errors List */}
       <div className="space-y-3">
-        <Typography variant="h6">
+        <h2 className="text-xl font-semibold text-gray-900">
           Showing {filteredErrors.length} of {errors.length} errors
-        </Typography>
+        </h2>
 
         {filteredErrors.length === 0 ? (
-          <Card>
-            <CardContent className="text-center py-8">
-              <Typography color="textSecondary">
-                No errors found with the selected filters
-              </Typography>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-lg shadow-md border border-gray-200 p-8 text-center">
+            <p className="text-gray-600">
+              No errors found with the selected filters
+            </p>
+          </div>
         ) : (
           filteredErrors.map((error) => (
-            <Accordion key={error.id}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <details key={error.id} className="bg-white rounded-lg shadow-md border border-gray-200 group">
+              <summary className="p-4 cursor-pointer hover:bg-gray-50 transition-colors list-none">
                 <div className="flex items-center gap-3 flex-wrap w-full">
-                  <Chip
-                    label={error.severity}
-                    color={getSeverityColor(error.severity)}
-                    size="small"
-                  />
-                  <Chip
-                    label={error.errorType}
-                    color={getTypeColor(error.errorType)}
-                    variant="outlined"
-                    size="small"
-                  />
+                  <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getSeverityColor(error.severity)}`}>
+                    {error.severity}
+                  </span>
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getTypeColor(error.errorType)}`}>
+                    {error.errorType}
+                  </span>
                   <span className="font-medium flex-1 min-w-0 truncate">
                     {error.errorMessage.length > 60
                       ? `${error.errorMessage.slice(0, 60)}...`
@@ -310,78 +289,80 @@ export default function ErrorsDisplay() {
                   <span className="text-sm text-gray-500">
                     {error.timestamp?.toDate().toLocaleString()}
                   </span>
-                  <IconButton
-                    size="small"
-                    color="error"
+                  <button
                     onClick={(e) => {
                       e.stopPropagation();
+                      e.preventDefault();
                       handleDeleteClick(error.id);
                     }}
+                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                     aria-label="Delete error"
                   >
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
                 </div>
-              </AccordionSummary>
-              <AccordionDetails>
+              </summary>
+              <div className="p-6 border-t border-gray-200">
                 <div className="space-y-3">
                   <div>
-                    <Typography variant="subtitle2" color="textSecondary">
+                    <p className="text-sm font-medium text-gray-600 mb-1">
                       Error Name
-                    </Typography>
-                    <Typography>{error.errorName}</Typography>
+                    </p>
+                    <p className="text-gray-900">{error.errorName}</p>
                   </div>
 
                   <div>
-                    <Typography variant="subtitle2" color="textSecondary">
+                    <p className="text-sm font-medium text-gray-600 mb-1">
                       URL
-                    </Typography>
-                    <Typography className="break-all">{error.url}</Typography>
+                    </p>
+                    <p className="text-gray-900 break-all">{error.url}</p>
                   </div>
 
                   {error.pathname && (
                     <div>
-                      <Typography variant="subtitle2" color="textSecondary">
+                      <p className="text-sm font-medium text-gray-600 mb-1">
                         Pathname
-                      </Typography>
-                      <Typography>{error.pathname}</Typography>
+                      </p>
+                      <p className="text-gray-900">{error.pathname}</p>
                     </div>
                   )}
 
                   {error.statusCode && (
                     <div>
-                      <Typography variant="subtitle2" color="textSecondary">
+                      <p className="text-sm font-medium text-gray-600 mb-1">
                         Status Code
-                      </Typography>
-                      <Typography>{error.statusCode}</Typography>
+                      </p>
+                      <p className="text-gray-900">{error.statusCode}</p>
                     </div>
                   )}
 
                   {error.method && (
                     <div>
-                      <Typography variant="subtitle2" color="textSecondary">
+                      <p className="text-sm font-medium text-gray-600 mb-1">
                         Method
-                      </Typography>
-                      <Typography>{error.method}</Typography>
+                      </p>
+                      <p className="text-gray-900">{error.method}</p>
                     </div>
                   )}
 
                   {error.sessionId && (
                     <div>
-                      <Typography variant="subtitle2" color="textSecondary">
+                      <p className="text-sm font-medium text-gray-600 mb-1">
                         Session ID
-                      </Typography>
-                      <Typography className="font-mono text-sm">
+                      </p>
+                      <p className="text-gray-900 font-mono text-sm">
                         {error.sessionId}
-                      </Typography>
+                      </p>
                     </div>
                   )}
 
                   {error.errorStack && (
                     <div>
-                      <Typography variant="subtitle2" color="textSecondary">
+                      <p className="text-sm font-medium text-gray-600 mb-1">
                         Stack Trace
-                      </Typography>
+                      </p>
                       <pre className="bg-gray-100 p-3 rounded text-xs overflow-x-auto">
                         {error.errorStack}
                       </pre>
@@ -390,9 +371,9 @@ export default function ErrorsDisplay() {
 
                   {error.additionalData && Object.keys(error.additionalData).length > 0 && (
                     <div>
-                      <Typography variant="subtitle2" color="textSecondary">
+                      <p className="text-sm font-medium text-gray-600 mb-1">
                         Additional Data
-                      </Typography>
+                      </p>
                       <pre className="bg-gray-100 p-3 rounded text-xs overflow-x-auto">
                         {JSON.stringify(error.additionalData, null, 2)}
                       </pre>
@@ -401,49 +382,61 @@ export default function ErrorsDisplay() {
 
                   {error.userAgent && (
                     <div>
-                      <Typography variant="subtitle2" color="textSecondary">
+                      <p className="text-sm font-medium text-gray-600 mb-1">
                         User Agent
-                      </Typography>
-                      <Typography className="text-xs break-all">
+                      </p>
+                      <p className="text-gray-900 text-xs break-all">
                         {error.userAgent}
-                      </Typography>
+                      </p>
                     </div>
                   )}
                 </div>
-              </AccordionDetails>
-            </Accordion>
+              </div>
+            </details>
           ))
         )}
       </div>
 
       {/* Delete Confirmation Dialog */}
-      <Dialog
-        open={deleteDialogOpen}
-        onClose={handleDeleteCancel}
-        aria-labelledby="delete-dialog-title"
-      >
-        <DialogTitle id="delete-dialog-title">
-          Confirm Delete
-        </DialogTitle>
-        <DialogContent>
-          <Typography>
-            Are you sure you want to delete this error log? This action cannot be undone.
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDeleteCancel} disabled={deleting}>
-            Cancel
-          </Button>
-          <Button
-            onClick={handleDeleteConfirm}
-            color="error"
-            variant="contained"
-            disabled={deleting}
-          >
-            {deleting ? <CircularProgress size={20} /> : "Delete"}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {deleteDialogOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div className="p-6 border-b border-gray-200">
+              <h3 className="text-xl font-semibold text-gray-900">
+                Confirm Delete
+              </h3>
+            </div>
+            <div className="p-6">
+              <p className="text-gray-700">
+                Are you sure you want to delete this error log? This action cannot be undone.
+              </p>
+            </div>
+            <div className="p-6 border-t border-gray-200 flex justify-end gap-3">
+              <button
+                onClick={handleDeleteCancel}
+                disabled={deleting}
+                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteConfirm}
+                disabled={deleting}
+                className="flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                {deleting ? (
+                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                ) : (
+                  "Delete"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
