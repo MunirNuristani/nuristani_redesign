@@ -28,7 +28,9 @@
       "Bash(fi)",
       "mcp__ide__getDiagnostics",
       "Bash(npm run dev:*)",
-      "Bash(kill:*)"
+      "Bash(kill:*)",
+      "Bash(git checkout:*)",
+      "Bash(rm -rf app/api/dictionary/mark-used app/api/dictionary/random-word app/api/dictionary/reset-used app/components/admin/RandomWordManager.tsx utils/usedWords.ts)"
     ],
     "deny": []
   }

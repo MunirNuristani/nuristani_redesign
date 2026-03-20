@@ -39,7 +39,7 @@ const Menu = (props: Props) => {
     mainH1,
     historicalImages2,
     historicalFiguresTitle,
-
+    calendar,
   } = phrases;
 
   // Handle hydration
@@ -70,8 +70,9 @@ const Menu = (props: Props) => {
             { key: 63, label: "Historical Figures", link: "/historical-figures" },
           ]
         },
-        { key: 7, label: "Technology", link: "/Technology" },
-        { key: 8, label: "Contact", link: "/Contact" },
+        { key: 7, label: "Calendar", link: "/calendar" },
+        { key: 8, label: "Technology", link: "/Technology" },
+        { key: 9, label: "Contact", link: "/Contact" },
       ];
     }
 
@@ -124,16 +125,21 @@ const Menu = (props: Props) => {
       },
       {
         key: 7,
+        label: calendar[language] || "Calendar",
+        link: "/calendar",
+      },
+      {
+        key: 8,
         label: technology[language] || "Technology",
         link: "/technology",
       },
       {
-        key: 8,
+        key: 9,
         label: contact[language] || "Contact",
         link: "/contact",
       },
     ];
-  }, [isClient, language, homePage, alphabet, dictionary, articles, books, pictures, images, historicalImages2, historicalFiguresTitle, technology, contact]);
+  }, [isClient, language, homePage, alphabet, dictionary, articles, books, pictures, images, historicalImages2, historicalFiguresTitle, calendar, technology, contact]);
 
   const handleClose = () => {
     setIsOpen(false);

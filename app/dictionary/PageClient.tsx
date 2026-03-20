@@ -429,7 +429,7 @@ const Page: React.FC = () => {
   // Show loading state while dictionaries are loading
   if (dictionaryLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-8 px-4 flex items-center justify-center">
+      <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50 py-8 px-4 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-xl text-gray-700 font-semibold">{searching[lang]}</p>
@@ -441,12 +441,12 @@ const Page: React.FC = () => {
   return (
     <div
       dir={dir}
-      className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-8 px-4"
+      className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50 py-8 px-4"
     >
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent mb-2">
+          <h1 className="text-4xl md:text-5xl font-bold bg-linear-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent mb-2">
             {dictionaryTitle[lang]}
           </h1>
           <p className="text-lg text-gray-600 font-medium">{`( ${kalashaAla[lang]} )`}</p>
@@ -470,9 +470,9 @@ const Page: React.FC = () => {
               role="tab"
               aria-selected={selectedDictionary === "dariToNuristani"}
               aria-label="Switch to Dari to Nuristani dictionary"
-              className={`flex-1 px-6 py-4 rounded-lg font-semibold text-base transition-all duration-300 ${
+              className={`flex-1 px-6 py-4 rounded-lg font-semibold text-xl transition-all duration-300 ${
                 selectedDictionary === "dariToNuristani"
-                ? "bg-[var(--color-secondary)] text-white "
+                ? "bg-(--color-secondary) text-white "
                   : "text-gray-600 hover:text-gray-800 hover:bg-gray-200"
               }`}
             >
@@ -496,9 +496,9 @@ const Page: React.FC = () => {
               role="tab"
               aria-selected={selectedDictionary === "nuristaniToPashtoDari"}
               aria-label="Switch to Nuristani to Pashto/Dari dictionary"
-              className={`flex-1 px-6 py-4 rounded-lg font-semibold text-base transition-all duration-300 ${
+              className={`flex-1 px-6 py-4 rounded-lg font-semibold text-xl transition-all duration-300 ${
                 selectedDictionary === "nuristaniToPashtoDari"
-                  ? "bg-[var(--color-secondary)] text-white "
+                  ? "bg-(--color-secondary) text-white "
                   : "text-gray-600 hover:text-gray-800 hover:bg-gray-200"
               }`}
             >
@@ -517,7 +517,7 @@ const Page: React.FC = () => {
                 <h2 className="text-2xl font-bold text-gray-700 mb-3">
                   {selectedDictionary === "dariToNuristani" ? dicWelcomeText[lang] : secondDicWelcomeText[lang]}
                 </h2>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed text-lg">
                   {dicDescriptionText[lang]}
                 </p>
               </div>
@@ -525,7 +525,7 @@ const Page: React.FC = () => {
 
             <div className="relative">
               <Input
-                className="w-full mb-4"
+                className="w-full mb-4 label:text-lg"
                 id="outlined-suffix-shrink"
                 label={wordSearch[lang]}
                 value={searchValue}
@@ -609,7 +609,7 @@ const Page: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="px-8 py-3 bg-[var(--color-primary)] text-white font-semibold rounded-xl hover:bg-[var(--color-secondary-hover)] focus:ring-4 focus:ring-[var(--color-secondary-ring)] transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                className="px-8 py-3 bg-(--color-primary) text-white font-semibold rounded-xl hover:bg-(--color-secondary-hover) focus:ring-4 focus:ring-(--color-secondary-ring) transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 {loading ? (
                   <div className="flex items-center space-x-2">
@@ -662,7 +662,7 @@ const Page: React.FC = () => {
             {/* Exact Matches */}
             {displaySelectedWord.length > 0 && (
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                <div className=" bg-[var(--color-primary)] px-6 py-4">
+                <div className=" bg-(--color-primary) px-6 py-4">
                   <h2 className="text-xl font-bold text-white flex items-center">
                     <svg
                       className="w-6 h-6 ml-2"
@@ -685,7 +685,7 @@ const Page: React.FC = () => {
                     (wordData: WordData | NuristaniWordData, index: number) => (
                       <div
                         key={index}
-                        className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-xl border border-green-200"
+                        className="bg-linear-to-r from-blue-50 to-blue-100 p-6 rounded-xl border border-green-200"
                       >
                         <div className=" space-y-2 ">
                           <div className="flex items-center justify-start space-x-reverse space-x-2">
@@ -752,7 +752,7 @@ const Page: React.FC = () => {
             {/* Similar Words */}
             {displayWords.length > 0 && (
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                <div className="bg-[var(--color-secondary)] px-6 py-4">
+                <div className="bg-(--color-secondary) px-6 py-4">
                   <h2 className="text-xl font-bold text-white flex items-center">
                     <svg
                       className="w-6 h-6 ml-2"
@@ -776,7 +776,7 @@ const Page: React.FC = () => {
                       <button
                         key={index}
                         onClick={(e) => setWord(e, word)}
-                        className="p-4 text-lg bg-gradient-to-br from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 border border-blue-200 rounded-xl transition-all duration-300 hover:shadow-md hover:scale-105 text-right font-medium text-gray-700 hover:text-blue-700"
+                        className="p-4 text-lg bg-linear-to-br from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 border border-blue-200 rounded-xl transition-all duration-300 hover:shadow-md hover:scale-105 text-right font-medium text-gray-700 hover:text-blue-700"
                       >
                         {word}
                       </button>
@@ -789,7 +789,7 @@ const Page: React.FC = () => {
             {/* No Results */}
             {showNoResults && (
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 text-center">
-                <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center">
+                <div className="w-20 h-20 mx-auto mb-6 bg-linear-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center">
                   <svg
                     className="w-10 h-10 text-gray-400"
                     fill="none"
@@ -812,7 +812,7 @@ const Page: React.FC = () => {
                 </p>
                 <button
                   onClick={clearSearch}
-                  className="px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white font-semibold text-xl rounded-xl hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-md hover:shadow-lg"
+                  className="px-6 py-3 bg-linear-to-r from-gray-500 to-gray-600 text-white font-semibold text-xl rounded-xl hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-md hover:shadow-lg"
                 >
                   {newSearch[lang]}
                 </button>
