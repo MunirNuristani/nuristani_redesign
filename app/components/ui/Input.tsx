@@ -39,7 +39,7 @@ export default function Input({
       {label && (
         <label
           htmlFor={inputId}
-          className={`block text-sm font-medium mb-1 ${error ? 'text-red-600' : 'text-gray-700'}`}
+          className={`block text-lg font-medium mb-1 ${error ? 'text-red-600' : 'text-gray-700'}`}
         >
           {label}
         </label>
