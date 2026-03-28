@@ -136,7 +136,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={`${lateef.variable} ${notoSans.variable}`}>
+    <html lang="fa-AF" dir="rtl" className={`${lateef.variable} ${notoSans.variable}`} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"

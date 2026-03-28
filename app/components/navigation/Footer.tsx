@@ -17,6 +17,7 @@ const Footer = () => {
             src={"/logo_original_noLabel.png"}
             alt="Nuristani Cultural Foundation Logo"
             fill
+            sizes="(max-width: 1024px) 40px, 60px"
             style={{ objectFit: "fill" }}
           />
         </Link>

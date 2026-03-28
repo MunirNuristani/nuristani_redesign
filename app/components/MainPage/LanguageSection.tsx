@@ -8,13 +8,12 @@ import { FiFileText } from "react-icons/fi";
 import { FaRegImage } from "react-icons/fa";
 import { IoCameraOutline } from "react-icons/io5";
 import { phrases } from "@/utils/i18n";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const CardContainer = () => {
   const { state } = useAppContext();
   const { language: lang } = state;
   const [direction, setDirection] = useState("ltr");
-  const router = useRouter();
   const {
     alphabet,
     alphabetInfo,
@@ -31,12 +30,6 @@ const CardContainer = () => {
   } = phrases;
 
  
-  const handleRouting = (route: string) => {
-    console.log(`Navigating to: ${route}`);
-    router.push(route);
-    // dispatch({ type: "LOADINGPAGE", payload: true });
-  };
-
   useEffect(() => {
     setDirection(lang === "en" ? "ltr" : "rtl");
   }, [lang]);
@@ -88,11 +81,12 @@ const CardContainer = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const Card = ({ title, description, icon, route, id }: any) => (
-    <div
+    <Link
       key={id}
+      href={route}
       className={`
         flex flex-col items-center justify-start
-        p-6 m-4 
+        p-6 m-4
         min-h-[250px]
         bg-gradient-to-br from-white to-gray-50
         border-2 border-gray-200
@@ -103,11 +97,10 @@ const CardContainer = () => {
         hover:scale-105
         hover:border-blue-300
       `}
-      onClick={() => handleRouting(route)}
     >
-      <div className="text-blue-600 mb-4">{icon}</div>
+      <div className="text-blue-600 mb-4" aria-hidden="true">{icon}</div>
 
-      <h3
+      <h2
         className={`
         font-bold mb-3 text-center
         ${lang === "en" ? "text-xl" : "text-2xl"}
@@ -115,7 +108,7 @@ const CardContainer = () => {
       `}
       >
         {title}
-      </h3>
+      </h2>
 
       <p
         className={`
@@ -125,7 +118,7 @@ const CardContainer = () => {
       >
         {description}
       </p>
-    </div>
+    </Link>
   );
 
   return (

@@ -18,7 +18,7 @@ export default function Hero() {
           alt="Nuristani cultural background"
           fill
           priority
-          quality={85}
+          quality={75}
           sizes="100vw"
           style={{ objectFit: 'cover', objectPosition: 'center' }}
           placeholder="blur"
@@ -36,7 +36,7 @@ export default function Hero() {
       </div>
 
       {/* Mobile Hero */}
-      <div className="flex md:hidden relative w-full h-[calc(100dvh-150px)] items-center justify-center overflow-hidden">
+      <div className="flex md:hidden relative w-full h-[calc(100dvh-150px)] overflow-hidden">
         <Image
           src="/heroImage01.png"
           alt="Nuristani cultural design"
@@ -47,7 +47,7 @@ export default function Hero() {
           style={{ objectFit: 'cover', objectPosition: 'center' }}
         />
         <div className="absolute inset-0 bg-white/40 z-10"></div>
-        <div className="relative z-20">
+        <div className="absolute inset-x-0 top-[10%] z-20 flex justify-center px-2">
           <HeroSection lang={lang} mainH1={mainH1} statementTitle={statementTitle} learnMore={learnMore} />
         </div>
       </div>
@@ -62,7 +62,7 @@ const HeroSection = ({ lang, mainH1, statementTitle, learnMore }: any) => {
   return (
     <div
       className="bg-white/70 backdrop-blur-md rounded-xl shadow-xl flex flex-col md:flex-row items-center p-6 md:p-8 lg:p-10 space-y-6 md:space-y-0 md:space-x-8 lg:space-x-10 w-[95%] min-w-5xl lg:max-w-6xl mx-auto"
-      style={{ minHeight: '400px' }}
+      style={{ minHeight: '480px' }}
     >
       {/* Left Section - Text Content */}
       <div className="flex flex-col items-start space-y-4 gap-4 md:w-1/2 min-w-">
@@ -80,7 +80,7 @@ const HeroSection = ({ lang, mainH1, statementTitle, learnMore }: any) => {
           </div>
         </div>
         {/* Title */}
-        <div className="w-full flex justify-center items-center" style={{ minHeight: '80px' }}>
+        <div className="w-full flex justify-center items-center" style={{ minHeight: '120px' }}>
           <h1
             className={`font-bold text-gray-900  leading-tight w-full ${
               isRTL
@@ -96,7 +96,7 @@ const HeroSection = ({ lang, mainH1, statementTitle, learnMore }: any) => {
           </h1>
         </div>
         {/* Description */}
-        <div className="w-full" style={{ minHeight: '100px' }}>
+        <div className="w-full" style={{ minHeight: '140px' }}>
           <p
             className={`text-gray-700  ${
               isRTL
@@ -144,7 +144,8 @@ const HeroSection = ({ lang, mainH1, statementTitle, learnMore }: any) => {
           src="/heroImage01.png"
           alt="Traditional Nuristani cultural design pattern"
           fill
-          sizes="(min-width: 1024px) 400px, (min-width: 768px) 300px, 100vw"
+          quality={65}
+          sizes="(min-width: 1024px) 400px, 300px"
           className="object-contain"
           loading="eager"
         />
