@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Hamburger from "hamburger-react";
-import Menu from "./Menu";
+import dynamic from "next/dynamic";
+const Menu = dynamic(() => import("./Menu"), { ssr: false });
 import { phrases } from "@/utils/i18n";
 import { useAppContext } from "@/context/AppContext";
 import { Language } from "@/context/Reducer";
@@ -46,6 +47,7 @@ const Header = () => {
               toggled={isOpen}
               toggle={setIsOpen}
               color={isOpen ? "var(--color-secondary)" : "white"}
+              label={isOpen ? "Close navigation menu" : "Open navigation menu"}
             />
           </button>
         </div>
