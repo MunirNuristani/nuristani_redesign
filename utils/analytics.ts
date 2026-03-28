@@ -1,6 +1,3 @@
-import { db } from "./firebase-config";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-
 // Generate a session ID for tracking user sessions
 const getSessionId = (): string => {
   if (typeof window === "undefined") return "";
@@ -19,11 +16,20 @@ const getUserLanguage = (): string => {
   return localStorage.getItem("nuristani-language") || "prs";
 };
 
+// Lazy-load Firebase — only imported on first tracking call, not on page load
+const getFirebase = async () => {
+  const [{ db }, { collection, addDoc, serverTimestamp }] = await Promise.all([
+    import("./firebase-config"),
+    import("firebase/firestore"),
+  ]);
+  return { db, collection, addDoc, serverTimestamp };
+};
+
 // Track page visits
 export const trackPageVisit = async (pageName: string) => {
   try {
     if (typeof window === "undefined") return;
-
+    const { db, collection, addDoc, serverTimestamp } = await getFirebase();
     await addDoc(collection(db, "analytics-page-visits"), {
       timestamp: serverTimestamp(),
       page: pageName,
@@ -54,7 +60,7 @@ interface SearchTrackingData {
 export const trackDictionarySearch = async (data: SearchTrackingData) => {
   try {
     if (typeof window === "undefined") return;
-
+    const { db, collection, addDoc, serverTimestamp } = await getFirebase();
     await addDoc(collection(db, "analytics-dictionary-searches"), {
       timestamp: serverTimestamp(),
       searchQuery: data.searchQuery,
@@ -81,13 +87,14 @@ interface ButtonClickData {
     | "new-search";
   buttonLabel?: string;
   dictionaryType?: "dariToNuristani" | "nuristaniToPashtoDari";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   additionalData?: Record<string, any>;
 }
 
 export const trackButtonClick = async (data: ButtonClickData) => {
   try {
     if (typeof window === "undefined") return;
-
+    const { db, collection, addDoc, serverTimestamp } = await getFirebase();
     await addDoc(collection(db, "analytics-button-clicks"), {
       timestamp: serverTimestamp(),
       buttonType: data.buttonType,
@@ -107,14 +114,14 @@ export const trackButtonClick = async (data: ButtonClickData) => {
 interface AutocompleteTrackingData {
   searchQuery: string;
   suggestionSelected: string;
-  suggestionPosition: number; // 0-4 (which suggestion was clicked)
+  suggestionPosition: number;
   dictionaryType: "dariToNuristani" | "nuristaniToPashtoDari";
 }
 
 export const trackAutocompleteSelection = async (data: AutocompleteTrackingData) => {
   try {
     if (typeof window === "undefined") return;
-
+    const { db, collection, addDoc, serverTimestamp } = await getFirebase();
     await addDoc(collection(db, "analytics-autocomplete"), {
       timestamp: serverTimestamp(),
       searchQuery: data.searchQuery,
@@ -138,6 +145,7 @@ export const trackSession = async () => {
     const existingSession = sessionStorage.getItem(`session-tracked-${sessionId}`);
 
     if (!existingSession) {
+      const { db, collection, addDoc, serverTimestamp } = await getFirebase();
       await addDoc(collection(db, "analytics-sessions"), {
         timestamp: serverTimestamp(),
         sessionId: sessionId,
@@ -150,7 +158,6 @@ export const trackSession = async () => {
           height: window.innerHeight,
         },
       });
-
       sessionStorage.setItem(`session-tracked-${sessionId}`, "true");
     }
   } catch (error) {
@@ -167,7 +174,7 @@ interface TabSwitchData {
 export const trackDictionaryTabSwitch = async (data: TabSwitchData) => {
   try {
     if (typeof window === "undefined") return;
-
+    const { db, collection, addDoc, serverTimestamp } = await getFirebase();
     await addDoc(collection(db, "analytics-dictionary-switches"), {
       timestamp: serverTimestamp(),
       fromDictionary: data.fromDictionary,

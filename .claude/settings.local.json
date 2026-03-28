@@ -30,7 +30,13 @@
       "Bash(npm run dev:*)",
       "Bash(kill:*)",
       "Bash(git checkout:*)",
-      "Bash(rm -rf app/api/dictionary/mark-used app/api/dictionary/random-word app/api/dictionary/reset-used app/components/admin/RandomWordManager.tsx utils/usedWords.ts)"
+      "Bash(rm -rf app/api/dictionary/mark-used app/api/dictionary/random-word app/api/dictionary/reset-used app/components/admin/RandomWordManager.tsx utils/usedWords.ts)",
+      "Bash(npm list:*)",
+      "Bash(npm info:*)",
+      "Bash(node -e \"const v=require\\(''''fs''''\\).readFileSync\\(''''/dev/stdin'''',''''utf8''''\\); const arr=JSON.parse\\(v\\); console.log\\(arr.slice\\(-5\\).join\\(''''\\\\n''''\\)\\)\")",
+      "Bash(node --trace-deprecation -e \"require\\(''''/Users/mnuristani/Desktop/Projects/nuristani_redesign/node_modules/airtable''''\\)\")",
+      "Bash(node -e \"const d=require\\(''''fs''''\\).readFileSync\\(''''/dev/stdin'''',''''utf8''''\\); const p=JSON.parse\\(d\\); console.log\\(JSON.stringify\\({dependencies: p.dependencies, peerDependencies: p.peerDependencies}, null, 2\\)\\)\")",
+      "Bash(head -10 grep -rn \"from.*analytics\\\\|import.*analytics\" /Users/mnuristani/Desktop/Projects/nuristani_redesign/app --include=\"*.ts\" --include=\"*.tsx\")"
     ],
     "deny": []
   }

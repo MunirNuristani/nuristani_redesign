@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { phrases } from "@/utils/i18n";
 import Input from "@/app/components/ui/Input";
 import Select from "@/app/components/ui/Select";
@@ -46,8 +46,6 @@ export default function ArticlesClient() {
     readMore,
   } = phrases;
 
-  const router = useRouter();
-
   const getData = async () => {
     setLoading(true);
     try {
@@ -68,7 +66,7 @@ export default function ArticlesClient() {
 
   useEffect(() => {
     getData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
 
   // Track page visit and session on mount
@@ -116,7 +114,6 @@ export default function ArticlesClient() {
         language: article.language,
       },
     });
-    router.push(`/articles/${article.id}`);
   };
 
   const getLanguage = (writeLang: string) => {
@@ -139,11 +136,11 @@ export default function ArticlesClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-8 px-4">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50 py-8 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent mb-2">
+          <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent mb-2">
             {articleList[lang]}
           </h1>
         </div>
@@ -188,15 +185,16 @@ export default function ArticlesClient() {
         {filteredArticles.length > 0 ? (
           <div className="space-y-4">
             {filteredArticles.map((article, index) => (
-              <div
+              <Link
                 key={index}
+                href={`/articles/${article.id}`}
                 onClick={() => handleArticleClick(article)}
-                className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl hover:border-blue-200 transition-all duration-300 cursor-pointer group"
+                className="block bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl hover:border-blue-200 transition-all duration-300 cursor-pointer group"
               >
                 <div className="flex flex-col md:flex-row justify-between items-start gap-4">
-                  <div className="flex-grow">
+                  <div className="grow">
                     <div className="flex items-start justify-between mb-3">
-                      <div className="flex-grow ">
+                      <div className="grow ">
                         <h2 className="text-2xl font-bold text-gray-800 group-hover:text-blue-700 transition-colors duration-300 mb-1">
                           {lang === "en"
                             ? article.Article_Name_en
@@ -218,7 +216,7 @@ export default function ArticlesClient() {
                       </span>
 
                       <div className="flex items-center text-blue-600 group-hover:text-blue-700 transition-colors">
-                        <span className={`${lang=== "en" ? "text-md ": "text-xl"} font-medium mx-2`}>{readMore[lang]}</span>
+                        <span className={`${lang === "en" ? "text-md " : "text-xl"} font-medium mx-2`}>{readMore[lang]}</span>
                         <svg
                           className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300"
                           fill="none"
@@ -236,12 +234,12 @@ export default function ArticlesClient() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         ) : (
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-12 text-center gap-2">
-            <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center ">
+            <div className="w-20 h-20 mx-auto mb-6 bg-linear-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center ">
               <svg
                 className="w-10 h-10 text-gray-400"
                 fill="none"

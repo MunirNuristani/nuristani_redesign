@@ -3,14 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
+    "dev": "NODE_OPTIONS='--disable-warning=DEP0169' next dev --turbopack",
+    "build": "NODE_OPTIONS='--disable-warning=DEP0169' next build",
+    "start": "NODE_OPTIONS='--disable-warning=DEP0169' next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@react-icons/all-files": "^4.1.0",
-    "@react-spring/web": "^10.0.1",
     "@sendgrid/mail": "^8.1.5",
     "@tailwindcss/postcss": "^4.1.3",
     "airtable": "^0.12.2",
@@ -32,6 +31,7 @@
   ],
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@next/bundle-analyzer": "^16.2.1",
     "@types/jalaali-js": "^1.2.0",
     "@types/node": "^20",
     "@types/react": "^19.2.7",

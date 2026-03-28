@@ -157,6 +157,7 @@ const KeyboardComponent: React.FC<KeyboardComponentProps> = ({
                 {platform === "android" ? (
                   <button
                     onClick={handleDownload}
+                    aria-label="Download Kalasha Ala Keyboard from Google Play"
                     className="border-none bg-transparent cursor-pointer p-0 h-14 min-w-40 flex items-center justify-center hover:opacity-80 transition-opacity"
                   >
                     <Image
@@ -164,7 +165,7 @@ const KeyboardComponent: React.FC<KeyboardComponentProps> = ({
                         ? "/buttons/GetItOnGooglePlay_Badge_Web_color_English.svg"
                         : "/buttons/GetItOnGooglePlay_Badge_Web_color_Persian.svg"
                       }
-                      alt="Get it on Google Play"
+                      alt=""
                       width={200}
                       height={56}
                       style={{ width: "auto", height: "56px" }}
