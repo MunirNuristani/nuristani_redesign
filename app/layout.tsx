@@ -1,7 +1,22 @@
 
 import type { Metadata, Viewport } from "next";
+import { Lateef, Noto_Sans } from "next/font/google";
 
 import "./globals.css";
+
+const lateef = Lateef({
+  weight: "400",
+  subsets: ["arabic"],
+  display: "swap",
+  variable: "--font-lateef",
+});
+
+const notoSans = Noto_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-noto",
+});
+
 import Header from "./components/navigation/Header";
 import Footer from "./components/navigation/Footer";
 import { ReducerWrapper } from "@/context/AppContext";
@@ -121,15 +136,13 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${lateef.variable} ${notoSans.variable}`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {/* Preconnect to external domains */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* DNS prefetch for data sources */}
         <link rel="dns-prefetch" href="https://v5.airtableusercontent.com" />
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
 

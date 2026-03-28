@@ -10,10 +10,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/dictionary', priority: 0.9, changeFrequency: 'weekly' as const },
     { path: '/articles', priority: 0.8, changeFrequency: 'weekly' as const },
     { path: '/books', priority: 0.7, changeFrequency: 'monthly' as const },
-    { path: '/landscape_images', priority: 0.6, changeFrequency: 'monthly' as const },
     { path: '/historic_images', priority: 0.7, changeFrequency: 'monthly' as const },
+    { path: '/landscape_images', priority: 0.6, changeFrequency: 'monthly' as const },
+    { path: '/historical-figures', priority: 0.7, changeFrequency: 'monthly' as const },
     { path: '/technology', priority: 0.6, changeFrequency: 'monthly' as const },
-    { path: '/contact', priority: 0.5, changeFrequency: 'yearly' as const }
+    { path: '/technology/privacy', priority: 0.3, changeFrequency: 'yearly' as const },
+    { path: '/calendar', priority: 0.5, changeFrequency: 'yearly' as const },
+    { path: '/contact', priority: 0.5, changeFrequency: 'yearly' as const },
   ];
 
   const routes = staticPages.map((page) => ({

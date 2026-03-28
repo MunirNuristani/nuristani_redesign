@@ -4,9 +4,10 @@ import Image from "next/image";
 import Links from "./Links"
 import Link from "next/link";
 
+const YEAR = new Date().getFullYear();
+
 const Footer = () => {
-  const date = new Date();
-  const year = date.getFullYear();
+  const year = YEAR;
 
   return (
     <footer className="w-full h-20 lg:h-24 bg-[var(--primary)] flex items-center bottom-0 flex-col justify-between">

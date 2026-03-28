@@ -1,4 +1,24 @@
+import { Metadata } from 'next';
+
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy - Kalasha Ala Keyboard',
+  description: 'Privacy policy for the Kalasha Ala Keyboard app. We do not collect, store, or transmit your typing data. Your keystrokes remain completely private on your device.',
+  openGraph: {
+    title: 'Privacy Policy - Kalasha Ala Keyboard',
+    description: 'Privacy policy for the Kalasha Ala Keyboard — your typing data stays private on your device',
+    url: 'https://nuristani.info/technology/privacy',
+    type: 'website',
+  },
+  alternates: {
+    canonical: 'https://nuristani.info/technology/privacy',
+  },
+  robots: {
+    index: true,
+    follow: false,
+  },
+};
 
 import React from 'react'
 

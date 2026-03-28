@@ -42,7 +42,7 @@ export default function Hero() {
           alt="Nuristani cultural design"
           fill
           priority
-          quality={85}
+          quality={75}
           sizes="100vw"
           style={{ objectFit: 'cover', objectPosition: 'center' }}
         />
@@ -74,6 +74,7 @@ const HeroSection = ({ lang, mainH1, statementTitle, learnMore }: any) => {
               alt="Mirza Taza Gul Khan Cultural Foundation Logo"
               width={96}
               height={96}
+              sizes="(max-width: 1024px) 80px, 96px"
               className="object-contain w-full h-full"
             />
           </div>

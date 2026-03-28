@@ -224,10 +224,10 @@ function HistoricalFigures() {
           gridAutoFlow: 'dense'
         }}
       >
-        {displayedFigures.map((figure) => {
+        {displayedFigures.map((figure, index) => {
           // Create variety in heights - wabi-sabi aesthetic (capped for better UX)
           const heights = [8, 9, 10, 11, 12, 14];
-          const rowSpan = heights[Math.floor(Math.random() * heights.length)];
+          const rowSpan = heights[(index * 3 + 2) % heights.length];
 
           return (
             <div
