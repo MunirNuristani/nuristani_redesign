@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useAppContext } from "@/context/AppContext";
 import { BookOpen, Bookmark, Type, FileText, ImageIcon, Camera } from "lucide-react";
 import { phrases } from "@/utils/i18n";
-import Link from "next/link";
+import Link from "@/app/components/LocaleLink";
 
 const CardContainer = () => {
   const { state } = useAppContext();

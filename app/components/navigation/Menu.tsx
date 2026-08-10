@@ -4,7 +4,7 @@ import LangSelect from "./LangSelect";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
 import { phrases } from "@/utils/i18n";
-import Link from "next/link";
+import Link from "@/app/components/LocaleLink";
 
 interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;

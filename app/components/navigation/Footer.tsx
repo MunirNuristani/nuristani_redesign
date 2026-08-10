@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import Links from "./Links"
-import Link from "next/link";
+import Link from "@/app/components/LocaleLink";
 
 const YEAR = new Date().getFullYear();
 

@@ -1,8 +1,10 @@
 "use client";
 import * as React from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Select from "@/app/components/ui/Select";
 import { useAppContext } from "@/context/AppContext";
 import { Language } from "@/context/Reducer";
+import { isLocale } from "@/utils/locales";
 
 interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,47 +12,42 @@ interface Props {
 
 export default function LangSelect(props: Props) {
   const { setIsOpen } = props;
+  const router = useRouter();
+  const pathname = usePathname();
 
   const [isClient, setIsClient] = React.useState(false);
-  const [dir, setDir] = React.useState("ltr");
-  const [localLanguage, setLocalLanguage] = React.useState("");
 
   // Get context safely
   const context = useAppContext();
-  const { state, dispatch } = context || {
+  const { state } = context || {
     state: { language: "", isClient: false },
-    dispatch: () => {},
   };
   const { language } = state;
 
   // Handle hydration
   React.useEffect(() => {
     setIsClient(true);
-    // Set initial value from context once client-side
-    if (language !== undefined) {
-      setLocalLanguage(language);
-    }
-    // Update document direction based on language
-    document.documentElement.setAttribute("dir", language === "en" ? "ltr" : "rtl");
-    document.body.style.fontFamily =
-      language === "en" ? "Noto Sans, sans-serif" : "Lateef, sans-serif";
-    setDir(language === "en" ? "ltr" : "rtl");
-  }, [language]);
+  }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newValue: Language = event.target.value as Language;
-    setLocalLanguage(newValue);
+    const newLocale: Language = event.target.value as Language;
     setIsOpen(false);
 
-    if (dispatch) {
-      dispatch({ type: "LANGUAGE", payload: newValue });
+    // Swap the locale segment of the current path and navigate there —
+    // the server then re-renders with the correct lang/dir/content.
+    const segments = pathname.split("/");
+    if (isLocale(segments[1])) {
+      segments[1] = newLocale;
+    } else {
+      segments.splice(1, 0, newLocale);
     }
+    router.push(segments.join("/") || "/");
   };
 
   // Don't render the actual select until client-side to avoid hydration mismatch
   if (!isClient) {
     return (
-      <div className="w-full p-2" dir={dir}>
+      <div className="w-full p-2" dir={language === "en" ? "ltr" : "rtl"}>
         <Select
           label="الا / لسان / ژبه / Language"
           value=""
@@ -68,7 +65,7 @@ export default function LangSelect(props: Props) {
       <Select
         id="LanguageSelect"
         label="الا / لسان / ژبه / Language"
-        value={localLanguage}
+        value={language}
         onChange={handleChange}
         fullWidth
         options={[

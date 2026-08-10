@@ -16,9 +16,7 @@ export async function POST(request: NextRequest) {
       html: emailTemplete(body),
     }
     
-    sgMail.send(msg).then(() => {
-      console.log('Email sent')
-    }).catch((error) => {
+    sgMail.send(msg).catch((error) => {
       console.error("error",error.response.body)
     })
     return new Response(JSON.stringify("email sent"), {
