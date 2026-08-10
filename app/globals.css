@@ -40,6 +40,11 @@ body {
   background-attachment: fixed;
   background-size: 100% 100%;
   background-repeat: no-repeat;
+  font-family: var(--font-noto);
+}
+
+html[dir="rtl"] body {
+  font-family: var(--font-lateef);
 }
 
 /* Alternative gradient options (commented out) */

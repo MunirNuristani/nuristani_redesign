@@ -24,52 +24,43 @@ export type AppAction =
   | { type: 'MULTIPLE_ASSIGNMENT'; payload: Partial<AppState> }
   | { type: 'RESET_STATE' };
 
-// Get initial language from localStorage or default to 'prs'
-const getInitialLanguage = (): Language => {
-  if (typeof window !== 'undefined') {
-    const saved = localStorage.getItem('nuristani-language');
-    if (saved && ['en', 'prs', 'ps', 'nr'].includes(saved)) {
-      return saved as Language;
-    }
-  }
-  return 'prs';
-};
+// The language always mirrors the current [locale] URL segment — it is
+// seeded here from the server (see ReducerWrapper's initialLocale prop),
+// not read back from client storage, so the rendered UI never diverges
+// from what the server already sent down.
+export function createInitialState(language: Language): AppState {
+  return {
+    language,
+    isClient: false,
+    showAlertModal: false,
+    alertModalMessage: "",
+    alertButton: "",
+    isMenuOpen: false,
+    currentPage: "/",
+  };
+}
 
-export const initialState: AppState = {
-  // Language and localization
-  language: getInitialLanguage(),
-  isClient: false,
-  
-  // Modal states
-  showAlertModal: false,
-  alertModalMessage: "",
-  alertButton: "",
-  
-  // UI states
-  isMenuOpen: false,
-  currentPage: "/",
-};
+export const initialState: AppState = createInitialState('prs');
 
 export const AppReducer = (state: AppState, action: AppAction): AppState => {
   switch (action.type) {
     // Language actions
     case "LANGUAGE": {
-      // Save to localStorage when language changes
+      // Persist as a cookie (not localStorage) so the server-side
+      // middleware can read it to pick a locale for future unprefixed URLs.
       if (typeof window !== 'undefined') {
-        localStorage.setItem('nuristani-language', action.payload);
+        document.cookie = `nuristani-language=${action.payload}; path=/; max-age=31536000`;
       }
       return {
         ...state,
         language: action.payload,
       };
     }
-    
+
     case "SET_CLIENT": {
       return {
         ...state,
         isClient: true,
-        // Re-check localStorage on client initialization
-        language: getInitialLanguage(),
       };
     }
 

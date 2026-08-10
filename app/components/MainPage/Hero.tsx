@@ -38,7 +38,7 @@ export default function Hero() {
       {/* Mobile Hero */}
       <div className="flex md:hidden relative w-full h-[calc(100dvh-150px)] overflow-hidden">
         <Image
-          src="/heroImage01.png"
+          src="/heroImage01.webp"
           alt="Nuristani cultural design"
           fill
           priority
@@ -141,7 +141,7 @@ const HeroSection = ({ lang, mainH1, statementTitle, learnMore }: any) => {
       {/* Right Section - Cultural Pattern Image */}
       <div className="w-full md:w-1/2 hidden md:flex relative aspect-square max-w-[300px] lg:max-w-[400px] flex-shrink-0">
         <Image
-          src="/heroImage01.png"
+          src="/heroImage01-pattern.webp"
           alt="Traditional Nuristani cultural design pattern"
           fill
           quality={65}

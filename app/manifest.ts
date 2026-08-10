@@ -1,9 +1,11 @@
+import { defaultLocale } from '@/utils/locales';
+
 export default function manifest() {
   return {
     name: 'Mirza Taza Gul Khan Cultural Foundation',
     short_name: 'Nuristani.info',
     description: 'A cultural foundation preserving language, heritage and traditions of Nuristan, Afghanistan',
-    start_url: '/',
+    start_url: `/${defaultLocale}`,
     display: 'standalone',
     background_color: '#ffffff',
     theme_color: '#92400e',
@@ -12,15 +14,16 @@ export default function manifest() {
     lang: 'en',
     icons: [
       {
-        src: '/logo_original.png',
-        sizes: 'any',
+        src: '/icon-192.png',
+        sizes: '192x192',
         type: 'image/png',
-        purpose: 'maskable'
+        purpose: 'any'
       },
       {
-        src: '/logo_original_noLabel.png', 
-        sizes: 'any',
-        type: 'image/png'
+        src: '/icon-512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any'
       }
     ]
   }
