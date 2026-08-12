@@ -4,8 +4,8 @@ import axios from "axios";
 import { useAppContext } from "@/context/AppContext";
 import { phrases } from "@/utils/i18n";
 import Image from "next/image";
-import rotateImage from "../../../public/rotatePhone.svg";
-import LoadingPage from "../loading";
+import rotateImage from "../../../../public/rotatePhone.svg";
+import LoadingPage from "../../loading";
 
 type LanguageCode = "en" | "prs" | "ps" | "nr";
 interface Alphabet {

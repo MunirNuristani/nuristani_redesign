@@ -16,8 +16,6 @@ const notoSans = Noto_Sans({
   variable: "--font-noto",
 });
 
-import Header from "../components/navigation/Header";
-import Footer from "../components/navigation/Footer";
 import { ReducerWrapper } from "@/context/AppContext";
 import ClientLayout from "./ClientLayout";
 import { WebVitals } from "../web-vitals";
@@ -184,12 +182,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
       </head>
       <body>
         <WebVitals />
-        <ReducerWrapper initialLocale={locale}>
-          <ClientLayout>
-            <Header />
-            <main className="min-h-[calc(100dvh-180px)]">{children}</main>
-            <Footer />
-          </ClientLayout>
+        <ReducerWrapper key={locale} initialLocale={locale}>
+          <ClientLayout>{children}</ClientLayout>
         </ReducerWrapper>
       </body>
     </html>

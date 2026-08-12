@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import axios from "axios";
-import LoadingPage from "../../loading";
+import LoadingPage from "../../../loading";
 import { phrases } from "@/utils/i18n";
 import { useAppContext } from "@/context/AppContext";
 import { trackPageVisit, trackSession, trackButtonClick } from "@/utils/analytics";
