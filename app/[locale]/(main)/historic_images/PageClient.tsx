@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import LoadingPage from "../loading";
+import LoadingPage from "../../loading";
 import { useAppContext } from "@/context/AppContext";
 import axios from "axios";
 import Image from "next/image";
