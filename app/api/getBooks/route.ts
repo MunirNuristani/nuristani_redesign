@@ -1,19 +1,18 @@
-import { base } from "@/utils/airTable";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { db } from "@/utils/firebase-config";
 
+export const dynamic = "force-dynamic";
 
 export async function GET() {
-  // For example, fetch data from your DB here
   try {
-
-    const data = await base("Books").select({
-      sort: [{ field: "No", direction: "asc" }]
-    }).all();
-    const Books = data.map(item => ({ id: item.id, ...item.fields }));
-    return new Response(JSON.stringify(Books), {
+    const snapshot = await getDocs(query(collection(db, "books"), orderBy("order", "asc")));
+    const books = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    return new Response(JSON.stringify(books), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
   } catch (err) {
+    console.error("Error fetching books:", err);
     return new Response(JSON.stringify(err), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }

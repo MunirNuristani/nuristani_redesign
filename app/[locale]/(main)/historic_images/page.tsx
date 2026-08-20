@@ -1,46 +1,62 @@
-import { Metadata } from 'next';
-import PageClient from './PageClient';
-import { Locale, localeUrl, buildLanguageAlternates } from "@/utils/locales";
+"use client";
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
-  const { locale } = (await params) as { locale: Locale };
-  return {
-    title: 'Historic Images of Nuristan - Historical Photography Archive',
-    description: 'Browse rare and historic photographs of Nuristan, Afghanistan. A visual archive preserving the cultural heritage, people, and landscapes of the Nuristani region throughout history.',
-    keywords: [
-      'Nuristan historic photos',
-      'Afghanistan historical images',
-      'Nuristani photography',
-      'Nuristan history',
-      'historic Afghanistan',
-      'نورستان تاریخی',
-    ],
-    openGraph: {
-      title: 'Historic Images of Nuristan - Historical Photography Archive',
-      description: 'Rare and historic photographs preserving the cultural heritage of Nuristan, Afghanistan',
-      url: localeUrl(locale, 'historic_images'),
-      type: 'website',
-      images: [
-        {
-          url: '/logo_original_noLabel.png',
-          width: 1200,
-          height: 630,
-          alt: 'Historic Images of Nuristan',
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: 'Historic Images of Nuristan',
-      description: 'Rare historical photographs of Nuristan, Afghanistan',
-    },
-    alternates: {
-      canonical: localeUrl(locale, 'historic_images'),
-      languages: buildLanguageAlternates('historic_images'),
-    },
-  };
-}
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { useAppContext } from "@/context/AppContext";
+import { phrases } from "@/utils/i18n";
 
-export default function Page() {
-  return <PageClient />;
+export default function NewHistoricImagesPage() {
+  const { state } = useAppContext();
+  const { language: lang } = state;
+  const [urls, setUrls] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/getHistoricalImages")
+      .then((r) => r.json())
+      .then((data) => setUrls(data.map((item: { url: string }) => item.url)))
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    if (!selected) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setSelected(null);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selected]);
+
+  return (
+    <>
+      <section className="page-hero">
+        <div className="hero-bg" />
+        <div className="wrap">
+      
+          <h1>{phrases.historicalImageTitle[lang]}</h1>
+        </div>
+      </section>
+
+      <div className="dict-results" style={{ maxWidth: 1120 }}>
+        {loading && <p className="gallery-loading">{phrases.searching[lang]}</p>}
+        {!loading && urls.length === 0 && <p className="list-empty">{phrases.notFound[lang]}</p>}
+        <div className="gallery-grid">
+          {urls.map((url, i) => (
+            <div className="gallery-item" key={i} onClick={() => setSelected(url)}>
+              <div className="gallery-media">
+                <Image src={url} alt={`Historic image ${i + 1}`} fill sizes="220px" unoptimized style={{ objectFit: "cover" }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {selected && (
+        <div className="gallery-lightbox" onClick={() => setSelected(null)}>
+          <button className="close-btn" aria-label="close" onClick={() => setSelected(null)}>✕</button>
+          <Image src={selected} alt="" width={1200} height={900} unoptimized style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "85vh" }} onClick={(e) => e.stopPropagation()} />
+        </div>
+      )}
+    </>
+  );
 }

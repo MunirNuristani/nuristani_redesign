@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/admin/', '/*/new'],
+        disallow: ['/api/', '/admin/'],
       },
     ],
     sitemap: 'https://nuristani.info/sitemap.xml',

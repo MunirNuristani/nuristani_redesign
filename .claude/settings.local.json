@@ -37,7 +37,19 @@
       "Bash(node --trace-deprecation -e \"require\\(''''/Users/mnuristani/Desktop/Projects/nuristani_redesign/node_modules/airtable''''\\)\")",
       "Bash(node -e \"const d=require\\(''''fs''''\\).readFileSync\\(''''/dev/stdin'''',''''utf8''''\\); const p=JSON.parse\\(d\\); console.log\\(JSON.stringify\\({dependencies: p.dependencies, peerDependencies: p.peerDependencies}, null, 2\\)\\)\")",
       "Bash(head -10 grep -rn \"from.*analytics\\\\|import.*analytics\" /Users/mnuristani/Desktop/Projects/nuristani_redesign/app --include=\"*.ts\" --include=\"*.tsx\")",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(lsof -i :3002 -sTCP:LISTEN)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/en)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-time 15 http://localhost:3000/en/new)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/en/alphabet)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/en/dictionary)",
+      "Bash(ps -p 41663 -o pid,etime,command)",
+      "Bash(lsof -i :3000 -sTCP:LISTEN -t)",
+      "Bash(npx eslint *)",
+      "Bash(curl -sI http://localhost:3000/en/new/alphabet)",
+      "Bash(curl -s http://localhost:3000/en/new/calendar)",
+      "Bash(jobs -l)"
     ],
     "deny": []
   }

@@ -10,6 +10,9 @@ import ErrorsDisplay from "@/app/components/admin/ErrorsDisplay";
 import HistoricalFiguresManager from "@/app/components/admin/HistoricalFiguresManager";
 import LandscapeImagesManager from "@/app/components/admin/LandscapeImagesManager";
 import HistoricImagesManager from "@/app/components/admin/HistoricImagesManager";
+import AlphabetManager from "@/app/components/admin/AlphabetManager";
+import BooksManager from "@/app/components/admin/BooksManager";
+import ArticlesManager from "@/app/components/admin/ArticlesManager";
 
 function DashboardContent() {
   const { user, signOut } = useAuth();
@@ -23,10 +26,6 @@ function DashboardContent() {
     } catch (error) {
       console.error("Sign out error:", error);
     }
-  };
-
-  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
   };
 
   return (
@@ -112,6 +111,36 @@ function DashboardContent() {
               >
                 Historic Images
               </button>
+              <button
+                onClick={() => setActiveTab(5)}
+                className={`px-4 py-3 font-medium text-sm whitespace-nowrap border-b-2 transition-colors ${
+                  activeTab === 5
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300"
+                }`}
+              >
+                Alphabet
+              </button>
+              <button
+                onClick={() => setActiveTab(6)}
+                className={`px-4 py-3 font-medium text-sm whitespace-nowrap border-b-2 transition-colors ${
+                  activeTab === 6
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300"
+                }`}
+              >
+                Books
+              </button>
+              <button
+                onClick={() => setActiveTab(7)}
+                className={`px-4 py-3 font-medium text-sm whitespace-nowrap border-b-2 transition-colors ${
+                  activeTab === 7
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300"
+                }`}
+              >
+                Articles
+              </button>
             </nav>
           </div>
         </div>
@@ -124,6 +153,9 @@ function DashboardContent() {
         {activeTab === 2 && <HistoricalFiguresManager />}
         {activeTab === 3 && <LandscapeImagesManager />}
         {activeTab === 4 && <HistoricImagesManager />}
+        {activeTab === 5 && <AlphabetManager />}
+        {activeTab === 6 && <BooksManager />}
+        {activeTab === 7 && <ArticlesManager />}
       </div>
     </div>
   );

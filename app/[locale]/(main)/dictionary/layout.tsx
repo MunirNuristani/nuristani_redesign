@@ -18,18 +18,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     ],
     openGraph: {
       title: "Nuristani Dictionary - Language Translation Tool",
-      description:
-        "Search the comprehensive Nuristani dictionary with Dari and Pashto translations",
+      description: "Search the comprehensive Nuristani dictionary with Dari and Pashto translations",
       url: localeUrl(locale, "dictionary"),
       type: "website",
-      images: [
-        {
-          url: "/logo_original_noLabel.png",
-          width: 1200,
-          height: 630,
-          alt: "Nuristani Dictionary",
-        },
-      ],
+      images: [{ url: "/logo_original_noLabel.png", width: 1200, height: 630, alt: "Nuristani Dictionary" }],
     },
     twitter: {
       card: "summary_large_image",
@@ -43,10 +35,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 }
 
-export default function DictionaryLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DictionaryLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }

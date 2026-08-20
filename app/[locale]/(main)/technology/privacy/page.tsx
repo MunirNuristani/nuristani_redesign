@@ -23,12 +23,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 }
 
-import React from 'react'
-
-
-const page = () => {
+export default function PrivacyPolicyPage() {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 bg-white " dir="ltr">
+    <div className="max-w-4xl mx-auto px-6 py-12 bg-white" dir="ltr" style={{ fontFamily: "var(--font-latin)" }}>
       <header className="mb-12 text-center">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
           Privacy Policy for Kalasha Ala Keyboard
@@ -56,7 +53,7 @@ const page = () => {
 
         <section className="mb-10">
           <h2 className="text-2xl font-semibold text-gray-900 mb-4">3. Information We Collect</h2>
-          
+
           <div className="mb-6">
             <h3 className="text-xl font-medium text-gray-900 mb-3">3.1 Information We DO NOT Collect</h3>
             <ul className="space-y-2 text-gray-700">
@@ -200,7 +197,5 @@ const page = () => {
         </div>
       </main>
     </div>
-  )
+  );
 }
-
-export default page

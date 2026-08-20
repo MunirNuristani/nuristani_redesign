@@ -7,12 +7,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: "Contact Us - Nuristani Cultural Foundation",
     description:
       "Get in touch with the Mirza Taza Gul Khan Cultural Foundation. Contact us for questions, feedback, or contributions to preserving Nuristani culture.",
-    keywords: [
-      "contact Nuristani",
-      "Nuristani foundation contact",
-      "get in touch",
-      "تماس با ما",
-    ],
+    keywords: ["contact Nuristani", "Nuristani foundation contact", "get in touch", "تماس با ما"],
     openGraph: {
       title: "Contact - Nuristani Cultural Foundation",
       description: "Get in touch with us about Nuristani culture preservation",
@@ -26,10 +21,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 }
 
-export default function ContactLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function ContactLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }

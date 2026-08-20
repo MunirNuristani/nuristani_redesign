@@ -1,8 +1,10 @@
 import { MetadataRoute } from 'next';
-import { base } from '@/utils/airTable';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/utils/firebase-config';
 import { locales, localeUrl, buildLanguageAlternates } from '@/utils/locales';
 
-export const revalidate = 3600;
+// Firestore web SDK keeps a persistent stream that doesn't survive the one-shot `next build` step.
+export const dynamic = 'force-dynamic';
 
 const staticPaths = [
   { path: '', priority: 1.0, changeFrequency: 'weekly' as const },
@@ -38,9 +40,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   );
 
   try {
-    const articleRecords = await base('Articles').select({ fields: [] }).all();
-    for (const record of articleRecords) {
-      routes.push(...entriesFor(`articles/${record.id}`, 0.6, 'monthly'));
+    const snapshot = await getDocs(collection(db, 'articles'));
+    for (const doc of snapshot.docs) {
+      routes.push(...entriesFor(`articles/${doc.id}`, 0.6, 'monthly'));
     }
   } catch (error) {
     console.error('Error fetching articles for sitemap:', error);

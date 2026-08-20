@@ -1,24 +1,67 @@
-import ArticlesClient, { Article } from './ArticlesClient';
-import { base } from '@/utils/airTable';
+import { Metadata } from "next";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { db } from "@/utils/firebase-config";
+import { Locale, localeUrl, buildLanguageAlternates } from "@/utils/locales";
+import ArticlesListClient, { Article } from "./ArticlesListClient";
 
-export const revalidate = 3600;
+// Firestore web SDK keeps a persistent stream that doesn't survive the one-shot `next build` step.
+export const dynamic = "force-dynamic";
 
-async function getArticles(): Promise<Article[]> {
-  const data = await base('Articles')
-    .select({
-      sort: [{ field: 'No', direction: 'asc' }],
-      // The list view only needs these fields — Article_body (the full
-      // article HTML) is fetched separately on the detail page.
-      fields: ['No', 'Article_Name', 'Article_Name_en', 'Author_Name', 'Author_Name_en', 'Status', 'language'],
-    })
-    .all();
-
-  const articles = data.map((item) => ({ id: item.id, ...item.fields })) as unknown as Article[];
-
-  return articles.sort((a, b) => a.Article_Name.localeCompare(b.Article_Name));
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = (await params) as { locale: Locale };
+  return {
+    title: "Nuristani Articles - Cultural Stories and Educational Content",
+    description:
+      "Read articles about Nuristani culture, history, language, and traditions. Educational content in multiple languages including English, Dari, Pashto, and Nuristani.",
+    keywords: [
+      "Nuristani articles",
+      "Nuristan culture",
+      "Afghanistan articles",
+      "Nuristani language articles",
+      "Nuristan history",
+      "مقالات نورستانی",
+      "نورستان",
+    ],
+    openGraph: {
+      title: "Nuristani Articles - Cultural & Educational Content",
+      description: "Explore articles about Nuristani culture, history, and language",
+      url: localeUrl(locale, "articles"),
+      type: "website",
+      images: [{ url: "/logo_original_noLabel.png", width: 1200, height: 630, alt: "Nuristani Articles" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Nuristani Articles",
+      description: "Cultural stories and educational content about Nuristan",
+    },
+    alternates: {
+      canonical: localeUrl(locale, "articles"),
+      languages: buildLanguageAlternates("articles"),
+    },
+  };
 }
 
-export default async function ArticlesPage() {
+async function getArticles(): Promise<Article[]> {
+  try {
+    const snapshot = await getDocs(query(collection(db, "articles"), orderBy("order", "asc")));
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        name: data.name || "",
+        nameEn: data.nameEn || "",
+        author: data.author || "",
+        authorEn: data.authorEn || "",
+        language: data.language || "prs",
+      };
+    });
+  } catch (error) {
+    console.error("Error fetching articles:", error);
+    return [];
+  }
+}
+
+export default async function NewArticlesPage() {
   const articles = await getArticles();
-  return <ArticlesClient initialArticles={articles} />;
+  return <ArticlesListClient articles={articles} />;
 }

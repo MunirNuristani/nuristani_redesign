@@ -161,8 +161,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         {/* DNS prefetch for data sources */}
-        <link rel="dns-prefetch" href="https://v5.airtableusercontent.com" />
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
+        <link rel="dns-prefetch" href="https://storage.googleapis.com" />
 
         {/* Preload LCP image */}
         <link
