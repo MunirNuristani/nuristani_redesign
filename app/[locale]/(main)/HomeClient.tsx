@@ -138,7 +138,7 @@ export default function HomeClient({ articles, books }: { articles: Article[]; b
           alt="Nuristani cultural landscape"
           fill
           priority
-          quality={80}
+          quality={85}
           sizes="100vw"
           className="z-0 hidden min-[861px]:block"
           style={{ objectFit: "cover", objectPosition: "center" }}
@@ -184,7 +184,7 @@ export default function HomeClient({ articles, books }: { articles: Article[]; b
                 src="/heroImage01-pattern.webp"
                 alt="Traditional Nuristani cultural design pattern"
                 fill
-                quality={70}
+                quality={75}
                 sizes="(min-width: 1200px) 400px, (min-width: 861px) 340px, 0px"
                 style={{ objectFit: "contain" }}
               />
