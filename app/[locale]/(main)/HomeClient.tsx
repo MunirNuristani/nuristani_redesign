@@ -145,77 +145,92 @@ export default function HomeClient({ articles, books }: { articles: Article[]; b
 
   return (
     <>
-      <section className="relative overflow-hidden min-h-160 max-[640px]:min-h-130 flex items-center py-15 max-[640px]:py-10">
-        <Image
-          src="/bg.jpg"
-          alt="Nuristani cultural landscape"
-          fill
-          priority
-          quality={85}
-          sizes="100vw"
-          className="z-0 motion-safe:animate-[heroKenBurns_22s_ease-in-out_infinite_alternate]"
-          style={{ objectFit: "cover", objectPosition: "center" }}
-          placeholder="blur"
-          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+      <section
+        onMouseMove={handleHeroMouseMove}
+        onMouseLeave={handleHeroMouseLeave}
+        className="relative isolate overflow-hidden min-h-175 max-[640px]:min-h-140 flex items-end pb-20 max-[640px]:pb-12"
+      >
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            transform: `translate(${heroTilt.y * 0.6}px, ${heroTilt.x * -0.6}px)`,
+            transition: "transform 0.3s ease-out",
+          }}
+        >
+          <Image
+            src="/bg.jpg"
+            alt="Nuristani cultural landscape"
+            fill
+            priority
+            quality={85}
+            sizes="100vw"
+            className="motion-safe:animate-[heroKenBurns_24s_ease-in-out_infinite_alternate]"
+            style={{ objectFit: "cover", objectPosition: "center" }}
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+          />
+        </div>
+        {/* bottom-heavy scrim for text legibility */}
+        <div className="absolute inset-0 z-1 bg-linear-to-t from-[rgba(10,18,12,0.94)] via-[rgba(15,25,17,0.45)] to-[rgba(15,25,17,0.1)]" aria-hidden="true" />
+        {/* branded duotone glow */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 z-1 opacity-80 [background:radial-gradient(circle_at_12%_92%,rgba(166,58,44,0.4),transparent_45%),radial-gradient(circle_at_88%_8%,rgba(46,111,92,0.45),transparent_45%)]"
         />
-        <div className="absolute inset-0 z-1 bg-linear-to-b from-[rgba(15,22,16,0.4)] via-[rgba(15,22,16,0.22)] to-[rgba(15,22,16,0.6)]" />
-        <div className="wrap relative z-2 flex justify-center">
-          <div
-            onMouseMove={handleHeroMouseMove}
-            onMouseLeave={handleHeroMouseLeave}
-            className="relative w-full max-w-155 min-[861px]:max-w-175 motion-safe:animate-[heroCardIn_0.9s_ease-out]"
-          >
-            <div
-              aria-hidden="true"
-              className="absolute -end-4 -bottom-4 z-10 w-16 h-16 min-[861px]:-end-6 min-[861px]:-bottom-6 min-[861px]:w-24 min-[861px]:h-24 max-[480px]:hidden opacity-90 pointer-events-none drop-shadow-[0_8px_20px_rgba(0,0,0,0.28)] motion-safe:animate-[patternSpin_50s_linear_infinite]"
-            >
-              <Image
-                src="/heroImage01-pattern.webp"
-                alt=""
-                fill
-                quality={75}
-                sizes="(min-width: 861px) 96px, 64px"
-                style={{ objectFit: "contain" }}
-              />
-            </div>
+        {/* faint diagonal texture, tying back to the pattern motif */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 z-1 opacity-[0.07] pointer-events-none bg-[repeating-linear-gradient(45deg,#fff_0_1px,transparent_1px_46px),repeating-linear-gradient(-45deg,#fff_0_1px,transparent_1px_46px)]"
+        />
 
-            <div
-              style={{
-                transform: `perspective(1000px) rotateX(${heroTilt.x}deg) rotateY(${heroTilt.y}deg)`,
-                transition: "transform 0.2s ease-out",
-              }}
-              className="flex flex-col items-center text-center bg-[rgba(255,255,255,0.92)] backdrop-blur-lg rounded-2xl py-11.5 px-10 max-[640px]:py-8 max-[640px]:px-6 min-[861px]:py-14 min-[861px]:px-14 shadow-[0_30px_70px_-30px_rgba(8,14,9,0.55)]"
-            >
-              <div className="relative mb-5">
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 -z-10 scale-150 rounded-full bg-(--accent-soft) opacity-60 blur-2xl motion-safe:animate-[logoGlow_3.5s_ease-in-out_infinite]"
-                />
+        <div className="wrap relative z-2 w-full">
+          <div className="max-w-190">
+            <div className="relative w-20 h-20 max-[640px]:w-16 max-[640px]:h-16 min-[861px]:w-26 min-[861px]:h-26 mb-7 motion-safe:animate-[heroFadeUp_0.7s_ease-out_backwards]">
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 rounded-full overflow-hidden opacity-90 shadow-[0_10px_28px_-10px_rgba(0,0,0,0.55)] motion-safe:animate-[patternSpin_60s_linear_infinite]"
+              >
+                <Image src="/heroImage01-pattern.webp" alt="" fill quality={75} sizes="104px" style={{ objectFit: "cover" }} />
+              </div>
+              <div className="absolute inset-1.75 rounded-full bg-(--surface) flex items-center justify-center">
                 <Image
                   src="/logo_original_noLabel.png"
                   alt=""
-                  width={64}
-                  height={64}
+                  width={40}
+                  height={40}
                   priority
-                  className="block transition-transform duration-300 hover:scale-110 hover:rotate-3"
+                  className="w-[52%] h-[52%] transition-transform duration-300 hover:scale-110 hover:rotate-6"
                 />
               </div>
-              <h1 className="text-[clamp(1.55rem,1.2rem+1.5vw,2.2rem)] font-semibold leading-[1.35] mb-4 text-(--ink)">
-                {phrases.mainH1[lang]}
-              </h1>
-              <p className="text-base leading-[1.85] text-(--ink-muted) max-w-[46ch] mx-auto mb-7">
-                {phrases.statementTitle[lang]}
-              </p>
-              <div className="cta-row justify-center!">
-                <Link className="group cta solid" href={`${base}/dictionary`}>
-                  {phrases.learnMore[lang]}{" "}
-                  <span className="inline-block transition-transform duration-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
-                    {isRTL ? "←" : "→"}
-                  </span>
-                </Link>
-              </div>
+            </div>
+
+            <h1 className="text-white font-semibold leading-[1.15] text-balance text-[clamp(2.1rem,1.3rem+3.4vw,3.9rem)] drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)] mb-5 motion-safe:animate-[heroFadeUp_0.8s_ease-out_0.12s_backwards]">
+              {phrases.mainH1[lang]}
+            </h1>
+            <p className="text-white/85 text-[1.05rem] leading-[1.85] max-w-[54ch] mb-9 motion-safe:animate-[heroFadeUp_0.8s_ease-out_0.24s_backwards]">
+              {phrases.statementTitle[lang]}
+            </p>
+            <div className="cta-row motion-safe:animate-[heroFadeUp_0.8s_ease-out_0.36s_backwards]">
+              <Link
+                className="group inline-flex items-center gap-2.5 bg-white text-(--accent) font-semibold rounded-full px-8 py-4 text-[0.98rem] no-underline shadow-[0_16px_34px_-14px_rgba(0,0,0,0.55)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_40px_-14px_rgba(0,0,0,0.6)]"
+                href={`${base}/dictionary`}
+              >
+                {phrases.learnMore[lang]}
+                <span className="inline-block transition-transform duration-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
+                  {isRTL ? "←" : "→"}
+                </span>
+              </Link>
             </div>
           </div>
+        </div>
+
+        <div
+          aria-hidden="true"
+          className="absolute bottom-6 inset-inline-0 z-2 hidden min-[640px]:flex justify-center motion-safe:animate-[scrollCueBounce_2s_ease-in-out_infinite]"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
       </section>
 
