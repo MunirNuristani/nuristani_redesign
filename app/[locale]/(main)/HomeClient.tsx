@@ -144,16 +144,19 @@ export default function HomeClient({ articles, books }: { articles: Article[]; b
           style={{
             objectFit: "cover",
             objectPosition: "center",
-            filter: "saturate(0.45) contrast(0.94) brightness(0.9)",
+            filter: "saturate(0.92) contrast(1.02) brightness(0.99)",
           }}
           placeholder="blur"
           blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
         />
-        {/* quiet ink wash + soft vignette — the photo reads as a calm backdrop, not the focal point */}
-        <div className="absolute inset-0 z-1 bg-(--ink)/55" aria-hidden="true" />
+        {/* directional scrim — just enough contrast behind the text, most of the photo left clear */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 z-1 [background:radial-gradient(ellipse_at_center,transparent_35%,rgba(10,15,11,0.55)_100%)]"
+          className="absolute inset-0 z-1 bg-linear-to-r rtl:bg-linear-to-l from-[rgba(10,15,11,0.72)] via-[rgba(10,15,11,0.3)] via-45% to-transparent"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 z-1 [background:radial-gradient(ellipse_at_center,transparent_55%,rgba(10,15,11,0.28)_100%)]"
         />
 
         <div className="wrap relative z-2">
@@ -179,7 +182,7 @@ export default function HomeClient({ articles, books }: { articles: Article[]; b
               {phrases.statementTitle[lang]}
             </p>
             <Link
-              className="group inline-flex items-center gap-2 text-white text-[0.95rem] no-underline pb-1 border-b border-white/40 transition-colors duration-300 hover:border-white"
+              className="group inline-flex items-center gap-2.5 bg-white text-(--accent) font-semibold rounded-[9px] px-7 py-3.5 text-[0.95rem] no-underline shadow-[0_10px_26px_-12px_rgba(0,0,0,0.45)] transition-colors duration-300 hover:bg-white/90"
               href={`${base}/dictionary`}
             >
               {phrases.learnMore[lang]}
