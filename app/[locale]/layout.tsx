@@ -163,22 +163,6 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
         {/* DNS prefetch for data sources */}
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
         <link rel="dns-prefetch" href="https://storage.googleapis.com" />
-
-        {/* Preload LCP image */}
-        <link
-          rel="preload"
-          as="image"
-          href="/bg.jpg"
-          media="(min-width: 768px)"
-          fetchPriority="high"
-        />
-        <link
-          rel="preload"
-          as="image"
-          href="/heroImage01.webp"
-          media="(max-width: 767px)"
-          fetchPriority="high"
-        />
       </head>
       <body>
         <WebVitals />

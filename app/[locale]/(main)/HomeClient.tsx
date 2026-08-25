@@ -152,7 +152,7 @@ export default function HomeClient({ articles, books }: { articles: Article[]; b
           priority
           quality={75}
           sizes="100vw"
-          className="z-0 block min-[861px]:hidden"
+          className="z-0 hidden max-[860px]:block"
           style={{ objectFit: "cover", objectPosition: "center" }}
         />
         <div className="absolute inset-0 z-1 bg-linear-to-b from-[rgba(15,22,16,0.32)] to-[rgba(15,22,16,0.5)]" />
