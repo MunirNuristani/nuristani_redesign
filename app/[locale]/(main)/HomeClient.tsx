@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -68,14 +68,27 @@ export default function HomeClient({ articles, books }: { articles: Article[]; b
   const [heroIdx, setHeroIdx] = useState(0);
   const heroWords = FEATURED_WORDS.slice(0, 4);
   const reducedMotionRef = useRef(false);
+  const pointerFineRef = useRef(false);
 
   useEffect(() => {
     reducedMotionRef.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    pointerFineRef.current = window.matchMedia("(pointer: fine)").matches;
     if (reducedMotionRef.current) return;
     const id = setInterval(() => setHeroIdx((i) => (i + 1) % heroWords.length), 4200);
     return () => clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  /* hero card mouse-tilt */
+  const [heroTilt, setHeroTilt] = useState({ x: 0, y: 0 });
+  const handleHeroMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (reducedMotionRef.current || !pointerFineRef.current) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    setHeroTilt({ x: py * -6, y: px * 6 });
+  };
+  const handleHeroMouseLeave = () => setHeroTilt({ x: 0, y: 0 });
 
   /* word grid open/close */
   const [openWord, setOpenWord] = useState<string | null>(null);
@@ -140,54 +153,67 @@ export default function HomeClient({ articles, books }: { articles: Article[]; b
           priority
           quality={85}
           sizes="100vw"
-          className="z-0 hidden min-[861px]:block"
+          className="z-0 motion-safe:animate-[heroKenBurns_22s_ease-in-out_infinite_alternate]"
           style={{ objectFit: "cover", objectPosition: "center" }}
           placeholder="blur"
           blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
         />
-        <Image
-          src="/heroImage01.webp"
-          alt="Nuristani cultural design"
-          fill
-          priority
-          quality={75}
-          sizes="100vw"
-          className="z-0 hidden max-[860px]:block"
-          style={{ objectFit: "cover", objectPosition: "center" }}
-        />
-        <div className="absolute inset-0 z-1 bg-linear-to-b from-[rgba(15,22,16,0.32)] to-[rgba(15,22,16,0.5)]" />
-        <div className="wrap relative z-2">
-          <div className="flex flex-col items-center max-w-155 mx-auto bg-[rgba(255,255,255,0.9)] backdrop-blur-[14px] rounded-2xl py-11.5 px-10 max-[640px]:py-8 max-[640px]:px-6 shadow-[0_30px_70px_-30px_rgba(8,14,9,0.55)] min-[861px]:max-w-260 min-[861px]:flex-row min-[861px]:items-center min-[861px]:gap-12.5 min-[861px]:py-14 min-[861px]:px-15">
-            <div className="flex flex-col items-center w-full text-center min-[861px]:items-start min-[861px]:text-start min-[861px]:flex-1">
+        <div className="absolute inset-0 z-1 bg-linear-to-b from-[rgba(15,22,16,0.4)] via-[rgba(15,22,16,0.22)] to-[rgba(15,22,16,0.6)]" />
+        <div className="wrap relative z-2 flex justify-center">
+          <div
+            onMouseMove={handleHeroMouseMove}
+            onMouseLeave={handleHeroMouseLeave}
+            className="relative w-full max-w-155 min-[861px]:max-w-175 motion-safe:animate-[heroCardIn_0.9s_ease-out]"
+          >
+            <div
+              aria-hidden="true"
+              className="absolute -end-4 -bottom-4 z-10 w-16 h-16 min-[861px]:-end-6 min-[861px]:-bottom-6 min-[861px]:w-24 min-[861px]:h-24 max-[480px]:hidden opacity-90 pointer-events-none drop-shadow-[0_8px_20px_rgba(0,0,0,0.28)] motion-safe:animate-[patternSpin_50s_linear_infinite]"
+            >
               <Image
-                src="/logo_original_noLabel.png"
+                src="/heroImage01-pattern.webp"
                 alt=""
-                width={64}
-                height={64}
-                priority
-                className="block mx-auto mb-5 min-[861px]:mx-0"
+                fill
+                quality={75}
+                sizes="(min-width: 861px) 96px, 64px"
+                style={{ objectFit: "contain" }}
               />
+            </div>
+
+            <div
+              style={{
+                transform: `perspective(1000px) rotateX(${heroTilt.x}deg) rotateY(${heroTilt.y}deg)`,
+                transition: "transform 0.2s ease-out",
+              }}
+              className="flex flex-col items-center text-center bg-[rgba(255,255,255,0.92)] backdrop-blur-lg rounded-2xl py-11.5 px-10 max-[640px]:py-8 max-[640px]:px-6 min-[861px]:py-14 min-[861px]:px-14 shadow-[0_30px_70px_-30px_rgba(8,14,9,0.55)]"
+            >
+              <div className="relative mb-5">
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 -z-10 scale-150 rounded-full bg-(--accent-soft) opacity-60 blur-2xl motion-safe:animate-[logoGlow_3.5s_ease-in-out_infinite]"
+                />
+                <Image
+                  src="/logo_original_noLabel.png"
+                  alt=""
+                  width={64}
+                  height={64}
+                  priority
+                  className="block transition-transform duration-300 hover:scale-110 hover:rotate-3"
+                />
+              </div>
               <h1 className="text-[clamp(1.55rem,1.2rem+1.5vw,2.2rem)] font-semibold leading-[1.35] mb-4 text-(--ink)">
                 {phrases.mainH1[lang]}
               </h1>
-              <p className="text-base leading-[1.85] text-(--ink-muted) max-w-[46ch] mx-auto mb-7 min-[861px]:mx-0">
+              <p className="text-base leading-[1.85] text-(--ink-muted) max-w-[46ch] mx-auto mb-7">
                 {phrases.statementTitle[lang]}
               </p>
-              <div className="cta-row justify-center! min-[861px]:justify-start!">
-                <Link className="cta solid" href={`${base}/dictionary`}>
-                  {phrases.learnMore[lang]} {isRTL ? "←" : "→"}
+              <div className="cta-row justify-center!">
+                <Link className="group cta solid" href={`${base}/dictionary`}>
+                  {phrases.learnMore[lang]}{" "}
+                  <span className="inline-block transition-transform duration-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
+                    {isRTL ? "←" : "→"}
+                  </span>
                 </Link>
               </div>
-            </div>
-            <div className="hidden min-[861px]:block min-[861px]:relative min-[861px]:shrink-0 min-[861px]:w-85 min-[861px]:h-85 min-[1200px]:w-100 min-[1200px]:h-100">
-              <Image
-                src="/heroImage01-pattern.webp"
-                alt="Traditional Nuristani cultural design pattern"
-                fill
-                quality={75}
-                sizes="(min-width: 1200px) 400px, (min-width: 861px) 340px, 0px"
-                style={{ objectFit: "contain" }}
-              />
             </div>
           </div>
         </div>

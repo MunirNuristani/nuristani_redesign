@@ -43,6 +43,22 @@
   50% { transform: translateX(140%); }
   100% { transform: translateX(140%); }
 }
+@keyframes heroKenBurns {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+@keyframes heroCardIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes patternSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes logoGlow {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.15); }
+}
 
 /* ---------------- section scaffolding ---------------- */
 .new-theme section { position: relative; }
