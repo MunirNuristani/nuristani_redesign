@@ -1,4 +1,4 @@
-import { IBM_Plex_Sans, IBM_Plex_Sans_Arabic, IBM_Plex_Mono } from "next/font/google";
+import { IBM_Plex_Sans, IBM_Plex_Sans_Arabic, IBM_Plex_Mono, Newsreader } from "next/font/google";
 import "./new-theme.css";
 import Header from "./_components/Header";
 import Footer from "./_components/Footer";
@@ -25,6 +25,14 @@ const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
 });
 
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
+  display: "swap",
+  variable: "--font-serif",
+});
+
 export default function NewDesignLayout({
   children,
 }: {
@@ -32,7 +40,7 @@ export default function NewDesignLayout({
 }) {
   return (
     <div
-      className={`new-theme ${plexSans.variable} ${plexSansArabic.variable} ${plexMono.variable}`}
+      className={`new-theme ${plexSans.variable} ${plexSansArabic.variable} ${plexMono.variable} ${newsreader.variable}`}
     >
       <RouteTransition />
       <Header />
