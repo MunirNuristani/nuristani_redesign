@@ -3,6 +3,13 @@
 import { useEffect, useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import { phrases } from "@/utils/i18n";
+import {
+  trackSession,
+  trackPageVisit,
+  trackDictionarySearch,
+  trackDictionaryTabSwitch,
+  trackButtonClick,
+} from "@/utils/analytics";
 
 type DictionaryType = "dariToNuristani" | "nuristaniToPashtoDari";
 
@@ -39,12 +46,26 @@ export default function NewDictionaryPage() {
     fetch(`/api/dictionary/search?dict=${dict}&q=${encodeURIComponent(q)}&mode=search`)
       .then((r) => r.json())
       .then((data) => {
-        setExactMatches(data.exactMatches ?? []);
-        setSimilarWords(data.similarWords ?? []);
+        const exact = data.exactMatches ?? [];
+        const similar = data.similarWords ?? [];
+        setExactMatches(exact);
+        setSimilarWords(similar);
+        trackDictionarySearch({
+          searchQuery: q,
+          dictionaryType: dict,
+          resultsFound: exact.length > 0 || similar.length > 0,
+          exactMatchCount: exact.length,
+          similarMatchCount: similar.length,
+        });
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   };
+
+  useEffect(() => {
+    trackSession();
+    trackPageVisit("dictionary");
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => runSearch(query), 250);
@@ -70,6 +91,9 @@ export default function NewDictionaryPage() {
             <button
               className={dict === "dariToNuristani" ? "is-active" : ""}
               onClick={() => {
+                if (dict !== "dariToNuristani") {
+                  trackDictionaryTabSwitch({ fromDictionary: dict, toDictionary: "dariToNuristani" });
+                }
                 setDict("dariToNuristani");
                 setQuery("");
                 setHasSearched(false);
@@ -80,6 +104,9 @@ export default function NewDictionaryPage() {
             <button
               className={dict === "nuristaniToPashtoDari" ? "is-active" : ""}
               onClick={() => {
+                if (dict !== "nuristaniToPashtoDari") {
+                  trackDictionaryTabSwitch({ fromDictionary: dict, toDictionary: "nuristaniToPashtoDari" });
+                }
                 setDict("nuristaniToPashtoDari");
                 setQuery("");
                 setHasSearched(false);
@@ -169,7 +196,10 @@ export default function NewDictionaryPage() {
                 <button
                   key={i}
                   className="bg-(--surface) border border-(--line) rounded-full px-[18px] py-[9px] text-[0.9rem] hover:border-(--accent) hover:text-(--accent)"
-                  onClick={() => setQuery(w)}
+                  onClick={() => {
+                    trackButtonClick({ buttonType: "similar-word-click", buttonLabel: w, dictionaryType: dict });
+                    setQuery(w);
+                  }}
                 >
                   {w}
                 </button>

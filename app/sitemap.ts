@@ -1,10 +1,38 @@
 import { MetadataRoute } from 'next';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '@/utils/firebase-config';
 import { locales, localeUrl, buildLanguageAlternates } from '@/utils/locales';
 
-// Firestore web SDK keeps a persistent stream that doesn't survive the one-shot `next build` step.
+// Runs fresh on every request so new articles show up without a redeploy.
 export const dynamic = 'force-dynamic';
+
+// Plain REST instead of the Firestore client SDK: the SDK opens a
+// persistent, browser-oriented stream that is unreliable in a one-shot
+// serverless invocation (it caused intermittent "sitemap could not be
+// read" failures in Google Search Console). REST is a single fetch.
+const FIRESTORE_ARTICLES_URL = `https://firestore.googleapis.com/v1/projects/${process.env.NEXT_PUBLIC_FB_PROJECTID}/databases/(default)/documents/articles`;
+
+async function fetchArticleIds(): Promise<string[]> {
+  const ids: string[] = [];
+  let pageToken: string | undefined;
+
+  do {
+    const url = new URL(FIRESTORE_ARTICLES_URL);
+    url.searchParams.set('key', process.env.NEXT_PUBLIC_FB_APIKEY!);
+    url.searchParams.set('pageSize', '300');
+    if (pageToken) url.searchParams.set('pageToken', pageToken);
+
+    const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) throw new Error(`Firestore REST list failed: ${res.status}`);
+    const data = await res.json();
+
+    for (const doc of data.documents ?? []) {
+      const id = doc.name?.split('/').pop();
+      if (id) ids.push(id);
+    }
+    pageToken = data.nextPageToken;
+  } while (pageToken);
+
+  return ids;
+}
 
 const staticPaths = [
   { path: '', priority: 1.0, changeFrequency: 'weekly' as const },
@@ -40,9 +68,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   );
 
   try {
-    const snapshot = await getDocs(collection(db, 'articles'));
-    for (const doc of snapshot.docs) {
-      routes.push(...entriesFor(`articles/${doc.id}`, 0.6, 'monthly'));
+    const articleIds = await fetchArticleIds();
+    for (const id of articleIds) {
+      routes.push(...entriesFor(`articles/${id}`, 0.6, 'monthly'));
     }
   } catch (error) {
     console.error('Error fetching articles for sitemap:', error);

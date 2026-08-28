@@ -161,14 +161,14 @@ export default function HomeClient({ articles, books }: { articles: Article[]; b
 
         <div className="wrap relative z-2">
           <div className="max-w-145 motion-safe:animate-[heroFadeUp_0.7s_ease-out]">
-            <div className="w-14 h-14 rounded-full border border-white/35 flex items-center justify-center mb-8">
+            <div className="w-14 h-14 rounded-full border border-white/60 bg-(--ink)/40 backdrop-blur-sm shadow-[0_4px_16px_rgba(0,0,0,0.35)] flex items-center justify-center mb-8">
               <Image
                 src="/logo_original_noLabel_invert.png"
                 alt=""
-                width={26}
-                height={26}
+                width={28}
+                height={28}
                 priority
-                className="opacity-90 transition-opacity duration-300 hover:opacity-100"
+                className="transition-opacity duration-300 hover:opacity-90"
               />
             </div>
 

@@ -49,7 +49,19 @@
       "Bash(npx eslint *)",
       "Bash(curl -sI http://localhost:3000/en/new/alphabet)",
       "Bash(curl -s http://localhost:3000/en/new/calendar)",
-      "Bash(jobs -l)"
+      "Bash(jobs -l)",
+      "Bash(/usr/bin/curl -s -o /dev/null -w \"bg.jpg: %{http_code}\\\\n\" http://localhost:3000/bg.jpg)",
+      "Bash(/usr/bin/curl -s -o /dev/null -w \"heroImage01.webp: %{http_code}\\\\n\" http://localhost:3000/heroImage01.webp)",
+      "Bash(cd *)",
+      "Bash(curl -s -o /dev/null -w \"bg.jpg optimized: %{http_code}, content-type: %{content_type}\\\\n\" \"http://localhost:3000/_next/image?url=%2Fbg.jpg&w=1920&q=80\")",
+      "Bash(curl -s -o /dev/null -w \"heroImage01.webp optimized: %{http_code}, content-type: %{content_type}\\\\n\" \"http://localhost:3000/_next/image?url=%2FheroImage01.webp&w=1920&q=75\")",
+      "Bash(curl -sI \"http://localhost:3000/_next/image?url=%2Fbg.jpg&w=1920&q=80\")",
+      "Bash(curl -s \"http://localhost:3000/_next/image?url=%2Fbg.jpg&w=1920&q=80\")",
+      "Bash(identify /Users/mnuristani/Desktop/Projects/nuristani_redesign/public/bg.jpg)",
+      "Bash(curl -s \"http://localhost:3000/_next/image?url=%2FheroImage01-pattern.webp&w=400&q=75\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" \"http://localhost:3000/heroImage01-pattern.webp\")",
+      "Bash(curl *)",
+      "Bash(lsof -i -P -sTCP:LISTEN)"
     ],
     "deny": []
   }

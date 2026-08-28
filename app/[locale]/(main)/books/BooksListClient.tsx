@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
 import { phrases } from "@/utils/i18n";
+import { trackSession, trackPageVisit, trackButtonClick } from "@/utils/analytics";
 
 export interface Book {
   id: string;
@@ -23,6 +24,11 @@ export default function BooksListClient({ books }: { books: Book[] }) {
   const [q, setQ] = useState("");
   const [page, setPage] = useState(1);
 
+  useEffect(() => {
+    trackSession();
+    trackPageVisit("books-library");
+  }, []);
+
   const filtered = useMemo(() => {
     if (!q.trim()) return books;
     const needle = q.trim().toLowerCase();
@@ -38,6 +44,16 @@ export default function BooksListClient({ books }: { books: Book[] }) {
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
   const pageItems = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+
+  const goToPage = (p: number) => {
+    trackButtonClick({
+      buttonType: "suggestion-click",
+      buttonLabel: `Page ${p}`,
+      additionalData: { fromPage: page, toPage: p, totalPages },
+    });
+    setPage(p);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -80,6 +96,13 @@ export default function BooksListClient({ books }: { books: Book[] }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 key={b.id}
+                onClick={() =>
+                  trackButtonClick({
+                    buttonType: "suggestion-click",
+                    buttonLabel: b.title,
+                    additionalData: { bookId: b.id, author: b.author, translator: b.translator || "N/A" },
+                  })
+                }
               >
                 <div className="relative w-full aspect-[3/4] rounded-md overflow-hidden bg-(--surface-2) mb-3">
                   {b.coverUrl && (
@@ -98,7 +121,7 @@ export default function BooksListClient({ books }: { books: Book[] }) {
             <button
               className="min-w-9 h-9 px-2.5 rounded-[7px] border border-(--line) bg-(--surface) text-[1.1rem] mono disabled:opacity-40"
               disabled={page === 1}
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              onClick={() => goToPage(Math.max(1, page - 1))}
             >
               {phrases.prevPage[lang]}
             </button>
@@ -108,7 +131,7 @@ export default function BooksListClient({ books }: { books: Book[] }) {
                 className={`min-w-9 h-9 px-2.5 rounded-[7px] border text-[1.1rem] mono disabled:opacity-40 ${
                   p === page ? "bg-(--accent) border-(--accent) text-white" : "border-(--line) bg-(--surface)"
                 }`}
-                onClick={() => setPage(p)}
+                onClick={() => goToPage(p)}
               >
                 {p}
               </button>
@@ -116,7 +139,7 @@ export default function BooksListClient({ books }: { books: Book[] }) {
             <button
               className="min-w-9 h-9 px-2.5 rounded-[7px] border border-(--line) bg-(--surface) text-[1.1rem] mono disabled:opacity-40"
               disabled={page === totalPages}
-              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              onClick={() => goToPage(Math.min(totalPages, page + 1))}
             >
               {phrases.nextPage[lang]}
             </button>

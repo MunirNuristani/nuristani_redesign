@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useAppContext } from "@/context/AppContext";
 import { phrases } from "@/utils/i18n";
 import { Locale } from "@/utils/locales";
+import { trackSession, trackPageVisit, trackButtonClick } from "@/utils/analytics";
 
 export interface Article {
   id: string;
@@ -31,6 +32,11 @@ export default function ArticlesListClient({ articles }: { articles: Article[] }
 
   const [q, setQ] = useState("");
   const [filterLang, setFilterLang] = useState("all");
+
+  useEffect(() => {
+    trackSession();
+    trackPageVisit("articles-list");
+  }, []);
 
   const filtered = useMemo(() => {
     let list = [...articles].sort((a, b) => {
@@ -99,7 +105,18 @@ export default function ArticlesListClient({ articles }: { articles: Article[] }
         ) : (
           <div className="list-grid">
             {filtered.map((a) => (
-              <Link className="article-card" href={`/${locale}/articles/${a.id}`} key={a.id}>
+              <Link
+                className="article-card"
+                href={`/${locale}/articles/${a.id}`}
+                key={a.id}
+                onClick={() =>
+                  trackButtonClick({
+                    buttonType: "suggestion-click",
+                    buttonLabel: lang === "en" && a.nameEn ? a.nameEn : a.name,
+                    additionalData: { articleId: a.id, author: lang === "en" ? a.authorEn : a.author, language: a.language },
+                  })
+                }
+              >
                 <h4>{lang === "en" && a.nameEn ? a.nameEn : a.name}</h4>
                 <div className="article-card-meta">
                   <span className="by">{lang === "en" && a.authorEn ? a.authorEn : a.author}</span>

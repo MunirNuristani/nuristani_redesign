@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -8,6 +8,7 @@ import { useAppContext } from "@/context/AppContext";
 import { phrases } from "@/utils/i18n";
 import { Locale } from "@/utils/locales";
 import { ArticleBlock, isArticleBlocks } from "@/utils/articleBlocks";
+import { trackSession, trackPageVisit, trackButtonClick } from "@/utils/analytics";
 
 export interface ArticlePicture {
   id: string;
@@ -31,15 +32,31 @@ export default function ArticleDetailClient({ article }: { article: ArticleData 
   const { language: lang } = state;
   const params = useParams();
   const locale = params.locale as Locale;
+  const articleId = params.id as string;
   const base = `/${locale}`;
   const [lightbox, setLightbox] = useState<string | null>(null);
+
+  useEffect(() => {
+    trackSession();
+    trackPageVisit(`article-detail-${articleId}`);
+  }, [articleId]);
 
   if (!article) {
     return (
       <div className="dict-results" style={{ maxWidth: 860 }}>
         <div className="dict-empty">
           <h3>{phrases.noResultFound[lang]}</h3>
-          <Link href={`${base}/articles`} className="back-link">
+          <Link
+            href={`${base}/articles`}
+            className="back-link"
+            onClick={() =>
+              trackButtonClick({
+                buttonType: "new-search",
+                buttonLabel: "Back to Articles List",
+                additionalData: { fromArticle: articleId },
+              })
+            }
+          >
             {phrases.returnBack[lang]}
           </Link>
         </div>
@@ -63,6 +80,13 @@ export default function ArticleDetailClient({ article }: { article: ArticleData 
             <Link
               href={`${base}/articles`}
               className="group inline-flex items-center gap-[7px] text-[0.85rem] font-semibold text-(--ink) no-underline ps-[14px] pe-[18px] py-[9px] border border-(--line) rounded-full bg-(--surface) transition-[border-color,color,transform,box-shadow] duration-150 ease-in-out hover:border-(--accent) hover:text-(--accent) hover:-translate-y-[1px] hover:shadow-[0_10px_20px_-16px_rgba(20,30,20,0.4)]"
+              onClick={() =>
+                trackButtonClick({
+                  buttonType: "new-search",
+                  buttonLabel: "Back to Articles List",
+                  additionalData: { fromArticle: articleId },
+                })
+              }
             >
               <svg
                 width="15"
